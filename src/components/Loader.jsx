@@ -101,7 +101,7 @@ const Loader = ({ setLoading }) => {
                 transition={{ type: "spring", stiffness: 200, damping: 15 }}
                 className="shrink-0"
               >
-                <LogoIcon className="w-30 h-30 md:w-40 md:h-40" fill="#0f172a" />
+                <LogoIcon className="w-32 h-32 md:w-40 md:h-40" fill="#0f172a" />
               </motion.div>
             )}
             
