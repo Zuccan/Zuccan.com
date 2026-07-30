@@ -69,7 +69,29 @@ const PricingCard = ({
 
       <div className="mt-auto flex flex-col">
         <h4 style={{ color: c.text }} className="text-4xl font-black tracking-tighter mb-1 transition-colors duration-800">{price}</h4>
-        <p className="text-gray-500 text-[10px] font-semibold mb-6">{priceSub}</p>
+        <p className="text-gray-500 text-[10px] font-semibold mb-2">{priceSub}</p>
+        
+        {/* Payment Plan Area */}
+        <div className="flex flex-col items-center mt-2 mb-6 relative">
+          <div className="w-full h-px bg-gray-100 absolute top-2 left-0 z-0"></div>
+          <span className="bg-white px-2 text-[8px] font-bold text-gray-400 tracking-widest uppercase mb-3 z-10">Payment Plan</span>
+          <div className="flex justify-between w-full">
+            <div className="flex flex-col items-center flex-1">
+              <span style={{ color: c.text }} className="font-bold text-[13px] mb-0.5">40%</span>
+              <span className="text-[8px] text-gray-400 font-semibold text-center leading-tight">Advance</span>
+            </div>
+            <div className="w-px h-6 bg-gray-100 self-center"></div>
+            <div className="flex flex-col items-center flex-1">
+              <span style={{ color: c.text }} className="font-bold text-[13px] mb-0.5">30%</span>
+              <span className="text-[8px] text-gray-400 font-semibold text-center leading-tight">Design<br/>Approved</span>
+            </div>
+            <div className="w-px h-6 bg-gray-100 self-center"></div>
+            <div className="flex flex-col items-center flex-1">
+              <span style={{ color: c.text }} className="font-bold text-[13px] mb-0.5">30%</span>
+              <span className="text-[8px] text-gray-400 font-semibold text-center leading-tight">After Project<br/>Completion</span>
+            </div>
+          </div>
+        </div>
         
         <button 
           style={{ 
