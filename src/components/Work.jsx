@@ -29,14 +29,8 @@ const projects = [
   }
 ];
 
-const Work = ({ theme }) => {
-  const colors = {
-    purple: { text: '#2E1065', accent: '#7C3AED', border: 'rgba(46,16,101,0.2)', hoverText: '#7C3AED' },
-    chocolate: { text: '#27140c', accent: '#f59e0b', border: 'rgba(39,20,12,0.2)', hoverText: '#d97706' },
-    violet: { text: '#3b0764', accent: '#9333ea', border: 'rgba(59,7,100,0.15)', hoverText: '#7c3aed' }
-  };
-  
-  const c = colors[theme] || colors.violet;
+const Work = () => {
+  const c = { text: '#3b0764', accent: '#9333ea', border: 'rgba(59,7,100,0.15)', hoverText: '#7c3aed' };
 
   const [activeProject, setActiveProject] = useState(null);
   
@@ -137,4 +131,4 @@ const Work = ({ theme }) => {
   );
 };
 
-export default Work;
+export default React.memo(Work);

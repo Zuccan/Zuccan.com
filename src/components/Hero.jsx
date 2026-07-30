@@ -1,35 +1,15 @@
-import React, { useRef } from 'react';
-import { motion, useTransform, useSpring } from 'framer-motion';
-import { Code2, PenTool, LayoutTemplate, ArrowRight, Activity, Mouse, ArrowUpRight } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Mouse, ArrowUpRight } from 'lucide-react';
 
-const Hero = ({ theme, scrollProgress }) => {
-  const colors = {
-    purple: {
-      primary: '#2E1065',
-      accent: '#7C3AED',
-      text: '#6B7280',
-      bg: '#FFFFFF',
-      border: '#E9D5FF'
-    },
-    chocolate: {
-      primary: '#27140c',
-      accent: '#f59e0b',
-      text: '#78462b',
-      bg: '#fffbeb',
-      border: '#fde68a'
-    }
+const Hero = () => {
+  const c = {
+    primary: '#2E1065',
+    accent: '#7C3AED',
+    text: '#6B7280',
+    bg: '#FFFFFF',
+    border: '#E9D5FF'
   };
-
-  const c = colors[theme] || colors.purple;
-
-  // Scroll animations for the entire Hero section
-  const heroY = useTransform(scrollProgress, [0, 0.4], ['0px', '-200px']);
-  const heroOpacity = useTransform(scrollProgress, [0, 0.3], [1, 0]);
-
-  // Scroll animations specific to the 3D Browser Anchor (Folds backwards and sinks)
-  const browserRotateX = useTransform(scrollProgress, [0, 0.4], ['0deg', '60deg']);
-  const browserScale = useTransform(scrollProgress, [0, 0.4], [1, 0.5]);
-  const browserY = useTransform(scrollProgress, [0, 0.4], ['0px', '400px']);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -45,16 +25,11 @@ const Hero = ({ theme, scrollProgress }) => {
   };
 
   return (
-    <motion.div 
-      style={{ y: heroY, opacity: heroOpacity }}
-      className="flex flex-col lg:flex-row items-center justify-between h-full w-full pt-20 md:pt-5 pb-20 relative z-10 gap-16 lg:gap-8 perspective-1000"
-    >
+    <div className="flex flex-col lg:flex-row items-center justify-between h-full w-full pt-20 md:pt-5 pb-20 relative z-10 gap-16 lg:gap-8 perspective-1000">
       
       {/* Left Content */}
       <div className="flex flex-col w-full lg:w-[55%] xl:w-1/2 relative z-20">
         
-        {/* Eyebrow Text */}
-       
         {/* Main Headline (Text Reveal) */}
         <motion.h1 
           className="text-6xl md:text-7xl lg:text-[85px] font-medium leading-[1.05] tracking-[-0.04em] mb-8"
@@ -91,7 +66,7 @@ const Hero = ({ theme, scrollProgress }) => {
             className="px-7 py-3 rounded-md text-[14px] font-medium flex items-center shadow-xl relative group transition-all"
           >
             <span className="relative z-10 flex items-center">
-              View Our Work
+              Get in touch
               <ArrowUpRight className="w-4 h-4 ml-1.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </span>
           </motion.button>
@@ -101,7 +76,7 @@ const Hero = ({ theme, scrollProgress }) => {
             whileHover={{ y: -2 }}
             className="group relative flex items-center gap-1.5 text-[14px] font-medium pb-1 transition-transform"
           >
-            Our Services
+            View Our Work
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             <span 
               className="absolute left-0 bottom-0 h-[1px] w-full origin-right scale-x-0 group-hover:origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out" 
@@ -111,16 +86,14 @@ const Hero = ({ theme, scrollProgress }) => {
         </motion.div>
       </div>
 
-      {/* Right Content: 2D Browser Iframe */}
+      {/* Right Content - 3D Browser Showcase */}
       <motion.div 
-        style={{ 
-          scale: useTransform(scrollProgress, [0, 0.4], [1, 0.8]), 
-          y: useTransform(scrollProgress, [0, 0.4], ['0px', '200px']),
-          opacity: useTransform(scrollProgress, [0, 0.3], [1, 0])
-        }}
+        initial={{ opacity: 0, rotateY: 20, x: 50 }}
+        animate={{ opacity: 1, rotateY: -15, x: 0 }}
+        transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
         className="w-full lg:w-[50%] xl:w-1/2 relative h-[400px] md:h-[500px] flex items-center justify-center mt-12 lg:mt-0"
       >
-        <motion.div 
+        <div 
           className="w-full h-full rounded-2xl shadow-2xl border-2 flex flex-col overflow-hidden glass-card-dark relative z-10"
           style={{ backgroundColor: c.bg, borderColor: c.border, boxShadow: `0 30px 60px ${c.border}` }}
         >
@@ -169,7 +142,7 @@ const Hero = ({ theme, scrollProgress }) => {
             {/* A subtle shadow overlay */}
             <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] border-t-2" style={{ borderColor: c.border }}></div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Small Floating Accent Orbs */}
         <motion.div 
@@ -182,8 +155,8 @@ const Hero = ({ theme, scrollProgress }) => {
         />
 
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
-export default Hero;
+export default React.memo(Hero);

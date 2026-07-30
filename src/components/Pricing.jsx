@@ -108,14 +108,8 @@ const PricingCard = ({
   );
 };
 
-const Pricing = ({ theme }) => {
-  const colors = {
-    purple: { text: '#2E1065', accent: '#7C3AED', border: 'rgba(46,16,101,0.2)', bgLight: '#f3e8ff' },
-    chocolate: { text: '#27140c', accent: '#f59e0b', border: 'rgba(39,20,12,0.2)', bgLight: '#fef3c7' },
-    violet: { text: '#3b0764', accent: '#9333ea', border: 'rgba(59,7,100,0.15)', bgLight: '#f3e8ff' },
-    teal: { text: '#115e59', accent: '#0d9488', border: 'rgba(17,94,89,0.15)', bgLight: '#ccfbf1' }
-  };
-  const c = colors[theme] || colors.teal;
+const Pricing = () => {
+  const c = { text: '#115e59', accent: '#0d9488', border: 'rgba(17,94,89,0.15)', bgLight: '#ccfbf1' };
 
   return (
     <section id="pricing" className="w-full min-h-screen py-24 md:py-32 flex items-center justify-center bg-transparent transition-colors duration-800 px-6 md:px-12 relative overflow-hidden">
@@ -206,4 +200,4 @@ const Pricing = ({ theme }) => {
   );
 };
 
-export default Pricing;
+export default React.memo(Pricing);

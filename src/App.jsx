@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -8,6 +8,7 @@ import Services from './components/Services';
 import Work from './components/Work';
 import Pricing from './components/Pricing';
 import Contact from './components/Contact';
+import Loader from './components/Loader';
 
 // Noise Overlay Component
 const NoiseOverlay = () => (
@@ -66,6 +67,7 @@ const FloatingParticles = ({ color }) => {
 };
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef(null);
   
   // Smooth scroll tracking using window
@@ -73,6 +75,11 @@ function App() {
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   const [theme, setTheme] = useState('purple');
+
+  // Scroll to top on mount for consistent loading experience
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Initialize Lenis Smooth Scroll
   useEffect(() => {
@@ -159,28 +166,30 @@ function App() {
     document.documentElement.style.setProperty('--cursor-url', `url('${cursorSvg(currentTheme.selectionBg)}') 5 5, auto`);
     document.documentElement.style.setProperty('--theme-bg', currentTheme.bg);
     document.documentElement.style.setProperty('--theme-text', currentTheme.text);
+    document.documentElement.style.setProperty('--theme-primary', currentTheme.primary);
+    document.documentElement.style.setProperty('--theme-accent', currentTheme.accent);
+    document.documentElement.style.setProperty('--theme-border', currentTheme.border);
     document.documentElement.style.setProperty('--sphere-color', currentTheme.particle);
   }, [currentTheme]);
 
-  const sphereY = useTransform(smoothProgress, [0, 0.5], ['0%', '100%']);
-  const sphereScale = useTransform(smoothProgress, [0, 0.5], [1, 3]);
-
   return (
-    <div 
-      ref={containerRef}
-      className={`w-full font-sans relative overflow-x-hidden flex flex-col`}
-      style={{ backgroundColor: 'var(--theme-bg)', color: 'var(--theme-text)', transition: 'background-color 0.8s ease-in-out, color 0.8s ease-in-out' }}
-    >
+    <>
+      <AnimatePresence mode="wait">
+        {isLoading && <Loader setLoading={setIsLoading} />}
+      </AnimatePresence>
 
-      <NoiseOverlay />
-      <FloatingParticles color={currentTheme.particle} />
+      <div 
+        ref={containerRef}
+        className={`w-full font-sans relative overflow-x-hidden flex flex-col`}
+        style={{ backgroundColor: 'var(--theme-bg)', color: 'var(--theme-text)', transition: 'background-color 0.8s ease-in-out, color 0.8s ease-in-out' }}
+      >
+
+        <NoiseOverlay />
+        <FloatingParticles color={currentTheme.particle} />
       
       {/* Background Soft 3D Sphere 1 (Massive Bottom Right) */}
-      <motion.div 
+      <div 
          style={{ 
-           y: sphereY, 
-           scale: sphereScale, 
-           willChange: 'transform',
            backgroundColor: 'var(--sphere-color)',
            filter: 'blur(120px)',
            transition: 'background-color 0.8s ease-in-out'
@@ -189,7 +198,7 @@ function App() {
       />
 
       {/* Background Soft 3D Sphere 2 (Small Top Right) */}
-      <motion.div 
+      <div 
          style={{ 
            backgroundColor: 'var(--sphere-color)',
            filter: 'blur(80px)',
@@ -209,36 +218,37 @@ function App() {
         <SectionTracker setTheme={setTheme} themeName="purple">
           <div className="min-h-screen flex flex-col max-w-[1400px] mx-auto px-6 md:px-12 w-full">
             <div className="flex-1 w-full flex items-center relative">
-                <Hero theme={theme} scrollProgress={smoothProgress} />
+                <Hero />
             </div>
           </div>
         </SectionTracker>
 
         {/* Services Section */}
         <SectionTracker setTheme={setTheme} themeName="chocolate">
-          <Services theme={theme} scrollProgress={smoothProgress} />
+          <Services />
         </SectionTracker>
 
         {/* About Section */}
         <SectionTracker themeName="chocolate" setTheme={setTheme}>
-          <About theme={theme} />
+          <About />
         </SectionTracker>
 
         {/* Work Section */}
         <SectionTracker setTheme={setTheme} themeName="violet">
-          <Work theme={theme} />
+          <Work />
         </SectionTracker>
 
         {/* Pricing Section */}
         <SectionTracker themeName="teal" setTheme={setTheme}>
-          <Pricing theme={theme} />
+          <Pricing />
         </SectionTracker>
 
-        <SectionTracker themeName="rose" setTheme={setTheme}>
-          <Contact theme={theme} />
+        <SectionTracker themeName="purple" setTheme={setTheme}>
+          <Contact />
         </SectionTracker>
       </div>
     </div>
+    </>
   );
 }
 

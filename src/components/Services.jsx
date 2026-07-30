@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useTransform } from 'framer-motion';
 import { PenTool, Code, Sparkles, TrendingUp, Headphones, ArrowRight, Activity, Code2, Paintbrush, Server, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
-const Services = ({ theme, scrollProgress }) => {
+const Services = () => {
   const servicesList = [
     { num: '01', icon: <PenTool className="w-5 h-5" />, title: 'Web Design', desc: 'Beautiful, user-centered designs.' },
     { num: '02', icon: <Code className="w-5 h-5" />, title: 'Web Development', desc: 'Fast, scalable and secure websites.' },
@@ -11,28 +11,15 @@ const Services = ({ theme, scrollProgress }) => {
     { num: '05', icon: <Headphones className="w-5 h-5" />, title: 'Maintenance', desc: 'Ongoing updates and support.' }
   ];
 
-  const colors = {
-    purple: {
-      primary: '#2E1065',
-      accent: '#7C3AED',
-      text: '#6B7280',
-      bg: '#FFFFFF',
-      border: '#E9D5FF',
-      cardHoverBg: 'rgba(233, 213, 255, 0.3)',
-      darkAccent: '#6D28D9'
-    },
-    chocolate: {
-      primary: '#27140c',
-      accent: '#f59e0b',
-      text: '#78462b',
-      bg: '#fffbeb',
-      border: '#fde68a',
-      cardHoverBg: 'rgba(253, 230, 138, 0.2)',
-      darkAccent: '#d97706'
-    }
+  const c = {
+    primary: '#27140c',
+    accent: '#f59e0b',
+    text: '#78462b',
+    bg: '#fffbeb',
+    border: '#fde68a',
+    cardHoverBg: 'rgba(253, 230, 138, 0.2)',
+    darkAccent: '#d97706'
   };
-
-  const c = colors[theme] || colors.purple;
 
   // Deck of Cards State (5 Cards)
   const [cards, setCards] = useState([0, 1, 2, 3, 4]);
@@ -399,4 +386,4 @@ const Services = ({ theme, scrollProgress }) => {
   );
 };
 
-export default Services;
+export default React.memo(Services);

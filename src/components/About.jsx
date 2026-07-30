@@ -15,17 +15,14 @@ const Word = ({ children, progress, range, isAccent, c }) => {
   );
 };
 
-const About = ({ theme }) => {
-  const colors = {
-    purple: { text: '#2E1065', accent: '#7C3AED' },
-    chocolate: { text: '#27140c', accent: '#f59e0b' },
-    violet: { text: '#3b0764', accent: '#9333ea' },
-    teal: { text: '#115e59', accent: '#0d9488' },
-    rose: { text: '#881337', accent: '#e11d48' },
-    charcoal: { text: '#f8fafc', accent: '#facc15' }
+const About = () => {
+  const c = {
+    primary: '#27140c',
+    accent: '#f59e0b',
+    text: '#78462b',
+    bg: '#fffbeb',
+    border: '#fde68a'
   };
-  // Default to chocolate theme since it's replacing the old Services slot
-  const c = colors[theme] || colors.chocolate;
 
   const containerRef = useRef(null);
   
@@ -95,4 +92,4 @@ const About = ({ theme }) => {
   );
 };
 
-export default About;
+export default React.memo(About);
