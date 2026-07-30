@@ -39,3 +39,12 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+::selection { 
+  background-color: var(--selection-bg, #7C3AED); 
+  color: var(--selection-text, #ffffff); 
+}
+
+body, a, button, input, select, textarea { 
+  cursor: var(--cursor-url, auto) !important; 
+}

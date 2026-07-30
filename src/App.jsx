@@ -141,12 +141,13 @@ function App() {
       initial={false}
       animate={{ backgroundColor: currentTheme.bg, color: currentTheme.text }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
+      style={{
+        '--selection-bg': currentTheme.selectionBg,
+        '--selection-text': currentTheme.selectionText,
+        '--cursor-url': `url('${cursorSvg(currentTheme.selectionBg)}') 5 5, auto`
+      }}
       className={`w-full font-sans relative overflow-x-hidden flex flex-col`}
     >
-      <style>{`
-        ::selection { background-color: ${currentTheme.selectionBg}; color: ${currentTheme.selectionText}; }
-        body, a, button, input, select, textarea { cursor: url('${cursorSvg(currentTheme.selectionBg)}') 5 5, auto !important; }
-      `}</style>
 
       <NoiseOverlay />
       <FloatingParticles color={currentTheme.particle} />
