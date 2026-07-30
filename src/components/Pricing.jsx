@@ -2,8 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDownRight, Zap, Shield, Headphones, Award, CheckCircle2, ArrowUpRight } from 'lucide-react';
 
-const FeatureBlurb = ({ icon, title, desc, c }) => (
-  <div className="flex items-center gap-4 group cursor-default">
+const FeatureBlurb = ({ icon, title, desc, c, delay }) => (
+  <motion.div 
+    initial={{ opacity: 0, x: -30 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.5, delay }}
+    viewport={{ once: true, margin: "-100px" }}
+    className="flex items-center gap-4 group cursor-default"
+  >
     <div style={{ backgroundColor: c.bgLight, color: c.accent }} className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-all duration-300 shadow-sm">
       {icon}
     </div>
@@ -11,7 +17,7 @@ const FeatureBlurb = ({ icon, title, desc, c }) => (
       <h4 style={{ color: c.text }} className="font-bold text-base transition-colors duration-800">{title}</h4>
       <p className="text-gray-500 text-xs font-medium">{desc}</p>
     </div>
-  </div>
+  </motion.div>
 );
 
 const PricingCard = ({ 
@@ -23,11 +29,16 @@ const PricingCard = ({
   features, 
   buttonText, 
   isPopular,
-  c 
+  c,
+  delay
 }) => {
   return (
     <motion.div 
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
       whileHover={{ y: -5 }}
+      transition={{ duration: 0.6, delay }}
       style={{ borderColor: isPopular ? c.accent : 'rgba(0,0,0,0.05)' }}
       className={`relative w-full h-full flex flex-col bg-white rounded-3xl p-6 transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] ${isPopular ? 'border-2 z-10' : 'border z-0'}`}
     >
@@ -90,13 +101,25 @@ const Pricing = ({ theme }) => {
         
         {/* Header Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-6">
-           <div className="flex flex-col">
-             <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">04 — Pricing<span style={{ color: c.accent }} className="transition-colors duration-800">.</span></span>
+           <motion.div 
+             initial={{ opacity: 0, y: 30 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true, margin: "-100px" }}
+             transition={{ duration: 0.6 }}
+             className="flex flex-col"
+           >
+            
              <h2 style={{ color: c.text }} className="text-5xl md:text-7xl font-black tracking-tighter leading-[1.1] transition-colors duration-800">
                Transparent<br/><span style={{ color: c.accent }} className="transition-colors duration-800">Pricing.</span>
              </h2>
-           </div>
-           <div className="flex flex-col items-start md:items-end text-left md:text-right gap-6">
+           </motion.div>
+           <motion.div 
+             initial={{ opacity: 0, x: 30 }}
+             whileInView={{ opacity: 1, x: 0 }}
+             viewport={{ once: true, margin: "-100px" }}
+             transition={{ duration: 0.6, delay: 0.2 }}
+             className="flex flex-col items-start md:items-end text-left md:text-right gap-6"
+           >
              <p className="text-gray-600 text-base font-medium max-w-sm leading-relaxed">
                No hidden fees. No surprises. Choose the plan that fits your goals and let's build something amazing.
              </p>
@@ -106,7 +129,7 @@ const Pricing = ({ theme }) => {
                </div>
                Let's build your project
              </button>
-           </div>
+           </motion.div>
         </div>
 
         {/* Content Grid */}
@@ -116,27 +139,34 @@ const Pricing = ({ theme }) => {
           <div className="xl:col-span-3 flex flex-col justify-between gap-8 py-2 relative">
             {/* Choose Your Plan Rotated Text */}
             <div className="hidden xl:block absolute left-[-40px] top-[40%] -rotate-90 origin-center opacity-30 text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400">
-              Choose your plan
+             
             </div>
 
             <div className="flex flex-col gap-6">
-               <FeatureBlurb c={c} icon={<Zap className="w-5 h-5" />} title="Fast Delivery" desc="On-time, every time." />
-               <FeatureBlurb c={c} icon={<Shield className="w-5 h-5" />} title="Fixed Pricing" desc="No hidden charges." />
-               <FeatureBlurb c={c} icon={<Headphones className="w-5 h-5" />} title="Ongoing Support" desc="We've got your back." />
+               <FeatureBlurb c={c} delay={0.2} icon={<Zap className="w-5 h-5" />} title="Fast Delivery" desc="On-time, every time." />
+               <FeatureBlurb c={c} delay={0.3} icon={<Shield className="w-5 h-5" />} title="Fixed Pricing" desc="No hidden charges." />
+               <FeatureBlurb c={c} delay={0.4} icon={<Headphones className="w-5 h-5" />} title="Ongoing Support" desc="We've got your back." />
             </div>
             
-            <div className="bg-white rounded-2xl p-4 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-row items-center gap-4 mt-auto border border-gray-50">
+            <motion.div 
+               initial={{ opacity: 0, scale: 0.9 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               viewport={{ once: true, margin: "-100px" }}
+               transition={{ duration: 0.5, delay: 0.5 }}
+               className="bg-white rounded-2xl p-4 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-row items-center gap-4 mt-auto border border-gray-50"
+            >
                <div style={{ backgroundColor: c.accent }} className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-white shadow-md transition-colors duration-800">
                  <Award className="w-4 h-4" />
                </div>
                <p className="text-xs font-bold text-gray-800 leading-tight">All plans come with 7 days of post-launch support.</p>
-            </div>
+            </motion.div>
           </div>
 
           {/* Pricing Cards (Right) */}
           <div className="xl:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-5">
             <PricingCard 
               c={c}
+              delay={0.2}
               plan="Startup"
               title="Launch"
               desc="Perfect for startups and personal projects to get online."
@@ -153,6 +183,7 @@ const Pricing = ({ theme }) => {
             />
             <PricingCard 
               c={c}
+              delay={0.4}
               plan="Growth"
               title="Scale"
               desc="Ideal for growing businesses that need more power."
@@ -171,6 +202,7 @@ const Pricing = ({ theme }) => {
             />
             <PricingCard 
               c={c}
+              delay={0.6}
               plan="Enterprise"
               title="Elevate"
               desc="For large businesses that need custom solutions."

@@ -18,6 +18,20 @@ const NoiseOverlay = () => (
   </div>
 );
 
+// Helper component to track which section is in view
+const SectionTracker = ({ children, setTheme, themeName }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { margin: "-40% 0px -40% 0px" });
+
+  useEffect(() => {
+    if (isInView) {
+      setTheme(themeName);
+    }
+  }, [isInView, setTheme, themeName]);
+
+  return <div ref={ref} className="w-full">{children}</div>;
+};
+
 const cursorSvg = (color) => `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23${color.replace('#', '')}" stroke="white" stroke-width="1.5" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.84c.45 0 .67-.54.35-.85L5.85 2.86a.5.5 0 0 0-.85.35Z"/></svg>`;
 
 // Floating Particles
@@ -54,28 +68,12 @@ const FloatingParticles = ({ color }) => {
 
 function App() {
   const containerRef = useRef(null);
-  const servicesRef = useRef(null);
   
   // Smooth scroll tracking using window
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   const [theme, setTheme] = useState('purple');
-
-  useEffect(() => {
-    const unsubscribe = smoothProgress.on("change", (latest) => {
-      if (latest > 0.65) {
-        setTheme('teal');
-      } else if (latest > 0.35) {
-        setTheme('violet');
-      } else if (latest > 0.10) {
-        setTheme('chocolate');
-      } else {
-        setTheme('purple');
-      }
-    });
-    return () => unsubscribe();
-  }, [smoothProgress]);
 
   const themeConfig = {
     purple: {
@@ -163,25 +161,34 @@ function App() {
 
       <div className="relative z-10 w-full flex flex-col">
         
-        {/* Container for Navbar & Hero (min-h-screen) */}
-        <div className="min-h-screen flex flex-col max-w-[1400px] mx-auto px-6 md:px-12 w-full">
+        {/* Container for Navbar */}
+        <div className="px-6 md:px-12 w-full">
             <Navbar theme={theme} />
+        </div>
+
+        {/* Hero Section */}
+        <SectionTracker setTheme={setTheme} themeName="purple">
+          <div className="min-h-screen flex flex-col max-w-[1400px] mx-auto px-6 md:px-12 w-full">
             <div className="flex-1 w-full flex items-center relative">
-                {/* Pass scroll progress to Hero so it can fade/fold out on scroll */}
                 <Hero theme={theme} scrollProgress={smoothProgress} />
             </div>
-        </div>
+          </div>
+        </SectionTracker>
 
         {/* Services Section */}
-        <div ref={servicesRef}>
+        <SectionTracker setTheme={setTheme} themeName="chocolate">
           <Services theme={theme} scrollProgress={smoothProgress} />
-        </div>
+        </SectionTracker>
 
         {/* Work Section */}
-        <Work theme={theme} />
+        <SectionTracker setTheme={setTheme} themeName="violet">
+          <Work theme={theme} />
+        </SectionTracker>
 
         {/* Pricing Section */}
-        <Pricing theme={theme} />
+        <SectionTracker setTheme={setTheme} themeName="teal">
+          <Pricing theme={theme} />
+        </SectionTracker>
 
       </div>
     </motion.div>
