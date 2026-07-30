@@ -118,7 +118,7 @@ const Pricing = ({ theme }) => {
   const c = colors[theme] || colors.teal;
 
   return (
-    <section id="pricing" className="w-full h-screen min-h-[800px] flex items-center justify-center bg-transparent transition-colors duration-800 px-6 md:px-12 relative overflow-hidden">
+    <section id="pricing" className="w-full min-h-screen py-24 md:py-32 flex items-center justify-center bg-transparent transition-colors duration-800 px-6 md:px-12 relative overflow-hidden">
       <div className="w-full max-w-[1400px] mx-auto flex flex-col gap-10 relative z-10">
         
         {/* Header Grid */}
@@ -155,12 +155,12 @@ const Pricing = ({ theme }) => {
         </div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch">
+        <div className="grid grid-cols-1 2xl:grid-cols-12 gap-8 items-stretch">
           
           {/* Features Column (Left) */}
-          <div className="xl:col-span-3 flex flex-col justify-between gap-8 py-2 relative">
+          <div className="2xl:col-span-3 flex flex-col justify-between gap-8 py-2 relative">
             {/* Choose Your Plan Rotated Text */}
-            <div className="hidden xl:block absolute left-[-40px] top-[40%] -rotate-90 origin-center opacity-30 text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400">
+            <div className="hidden 2xl:block absolute left-[-40px] top-[40%] -rotate-90 origin-center opacity-30 text-[10px] font-bold tracking-[0.3em] uppercase text-gray-400">
              
             </div>
 
@@ -189,7 +189,7 @@ const Pricing = ({ theme }) => {
           </div>
 
           {/* Pricing Cards (Right) */}
-          <div className="xl:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="2xl:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
               { plan: "Basic", title: "Startup", desc: "Perfect for startups & small businesses to get online.", price: "₹6,499", priceSub: "Project Based Pricing", buttonText: "Get Started", features: ["5 Pages Website", "Responsive Design", "Contact Form", "Basic SEO Setup", "Social Media Integration", "1 Round of Revisions", "Delivery in 7-10 Days"] },
               { plan: "Professional", title: "Growth", desc: "Perfect for growing businesses that need more power.", price: "₹9,999", priceSub: "Project Based Pricing", buttonText: "Get Started", isPopular: true, features: ["8-10 Pages Website", "Custom UI/UX Design", "Advanced SEO Setup", "WhatsApp Chat Integration", "Google Maps Integration", "2 Rounds of Revisions", "Delivery in 10-15 Days"] },
