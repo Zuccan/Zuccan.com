@@ -213,14 +213,14 @@ function App() {
           </div>
         </SectionTracker>
 
-        {/* About Section */}
-        <SectionTracker themeName="charcoal" setTheme={setTheme}>
-          <About theme={theme} />
-        </SectionTracker>
-
         {/* Services Section */}
         <SectionTracker setTheme={setTheme} themeName="chocolate">
           <Services theme={theme} scrollProgress={smoothProgress} />
+        </SectionTracker>
+
+        {/* About Section */}
+        <SectionTracker themeName="chocolate" setTheme={setTheme}>
+          <About theme={theme} />
         </SectionTracker>
 
         {/* Work Section */}

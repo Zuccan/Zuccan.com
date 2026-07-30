@@ -1,5 +1,19 @@
 import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+
+const Word = ({ children, progress, range, isAccent, c }) => {
+  const opacity = useTransform(progress, range, [0.15, 1]);
+  return (
+    <span className="inline-block pb-2 mr-[2vw] md:mr-5">
+      <motion.span 
+        style={{ opacity, color: isAccent ? c.accent : c.text }}
+        className={`inline-block transition-colors duration-800 ${isAccent ? 'font-serif italic font-light' : 'font-medium'}`}
+      >
+        {children}
+      </motion.span>
+    </span>
+  );
+};
 
 const About = ({ theme }) => {
   const colors = {
@@ -10,39 +24,42 @@ const About = ({ theme }) => {
     rose: { text: '#881337', accent: '#e11d48' },
     charcoal: { text: '#f8fafc', accent: '#facc15' }
   };
-  const c = colors[theme] || colors.charcoal;
+  // Default to chocolate theme since it's replacing the old Services slot
+  const c = colors[theme] || colors.chocolate;
 
   const containerRef = useRef(null);
+  
+  // Track scroll progress within the container for the highlight effect
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 80%", "end 60%"]
+  });
 
-  const wordContainer = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.04, delayChildren: 0.1 }
-    }
-  };
+  const textBlocks = [
+    { text: "We are a digital agency that", isAccent: false },
+    { text: "refuses to", isAccent: true },
+    { text: "blend in. We craft", isAccent: false },
+    { text: "immersive experiences that elevate", isAccent: false },
+    { text: "brands, engage audiences, and", isAccent: false },
+    { text: "drive", isAccent: false },
+    { text: "measurable results.", isAccent: true },
+    { text: "No fluff. Just", isAccent: false },
+    { text: "raw creativity", isAccent: true },
+    { text: "and pixel-perfect engineering.", isAccent: false }
+  ];
 
-  const wordItem = {
-    hidden: { y: "120%", rotate: 4, opacity: 0 },
-    show: { y: "0%", rotate: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-  };
+  // Flatten into individual words to calculate scroll ranges
+  const words = [];
+  textBlocks.forEach(block => {
+    block.text.split(" ").forEach(word => {
+      if(word) words.push({ word, isAccent: block.isAccent });
+    });
+  });
 
-  const renderWords = (text, isAccent = false) => {
-    return text.split(" ").map((word, index) => (
-      <span key={index} className="inline-block overflow-hidden pb-2 mr-[2vw] md:mr-5">
-        <motion.span 
-          variants={wordItem} 
-          className={`inline-block ${isAccent ? 'font-serif italic font-light' : 'font-medium'}`}
-          style={{ color: isAccent ? c.accent : c.text }}
-        >
-          {word}
-        </motion.span>
-      </span>
-    ));
-  };
+  const totalWords = words.length;
 
   return (
-    <section ref={containerRef} id="about" className="w-full min-h-screen py-32 md:py-48 flex items-center justify-center bg-transparent relative z-10 px-6 md:px-12">
+    <section id="about" className="w-full min-h-screen py-32 md:py-48 flex items-center justify-center bg-transparent relative z-10 px-6 md:px-12 transition-colors duration-800">
       <div className="w-full max-w-[1400px] mx-auto flex flex-col items-center">
         
         {/* Intro Label */}
@@ -52,45 +69,26 @@ const About = ({ theme }) => {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-16 md:mb-24 flex items-center gap-6"
         >
-          <div className="w-16 h-px bg-current opacity-30" style={{ color: c.text }}></div>
-          <span style={{ color: c.accent }} className="font-bold text-xs md:text-sm uppercase tracking-[0.3em]">Who We Are</span>
-          <div className="w-16 h-px bg-current opacity-30" style={{ color: c.text }}></div>
+          <div className="w-16 h-px bg-current opacity-30 transition-colors duration-800" style={{ color: c.text }}></div>
+          <span style={{ color: c.accent }} className="font-bold text-xs md:text-sm uppercase tracking-[0.3em] transition-colors duration-800">Who We Are</span>
+          <div className="w-16 h-px bg-current opacity-30 transition-colors duration-800" style={{ color: c.text }}></div>
         </motion.div>
 
-        {/* Massive Text Reveal */}
-        <motion.div 
-          variants={wordContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="text-4xl md:text-6xl lg:text-[75px] xl:text-[90px] leading-[1.2] md:leading-[1.1] tracking-[-0.03em] max-w-[100%] xl:max-w-[90%] text-center flex flex-col items-center"
+        {/* Massive Text Highlight */}
+        <div 
+          ref={containerRef}
+          className="text-4xl md:text-6xl lg:text-[75px] xl:text-[90px] leading-[1.2] md:leading-[1.1] tracking-[-0.03em] max-w-[100%] xl:max-w-[90%] text-center flex flex-wrap justify-center items-center w-full"
         >
-          <div className="flex flex-wrap justify-center items-center w-full">
-            {renderWords("We are a digital agency that")}
-          </div>
-          <div className="flex flex-wrap justify-center items-center w-full">
-            {renderWords("refuses to", true)}
-            {renderWords("blend in. We craft")}
-          </div>
-          <div className="flex flex-wrap justify-center items-center w-full">
-            {renderWords("immersive experiences that elevate")}
-          </div>
-          <div className="flex flex-wrap justify-center items-center w-full">
-            {renderWords("brands, engage audiences, and")}
-          </div>
-          <div className="flex flex-wrap justify-center items-center w-full">
-            {renderWords("drive")}
-            {renderWords("measurable results.", true)}
-          </div>
-
-          <div className="mt-20 md:mt-32 flex flex-wrap justify-center items-center w-full text-3xl md:text-5xl lg:text-[60px] opacity-90">
-             {renderWords("No fluff. Just")}
-             {renderWords("raw creativity", true)}
-          </div>
-          <div className="flex flex-wrap justify-center items-center w-full text-3xl md:text-5xl lg:text-[60px] opacity-90">
-             {renderWords("and pixel-perfect engineering.")}
-          </div>
-        </motion.div>
+          {words.map((item, i) => {
+            const start = i / totalWords;
+            const end = start + (1 / totalWords);
+            return (
+              <Word key={i} progress={scrollYProgress} range={[start, end]} isAccent={item.isAccent} c={c}>
+                {item.word}
+              </Word>
+            );
+          })}
+        </div>
 
       </div>
     </section>
