@@ -128,14 +128,14 @@ function App() {
       sphereShadow: '-30px -30px 80px rgba(255,255,255,1), 40px 40px 80px rgba(13,148,136,0.15)',
       particle: '#2dd4bf'
     },
-    midnight: {
-      bg: '#020617',
-      text: '#f8fafc',
-      selectionBg: '#3b82f6',
+    rose: {
+      bg: '#fff1f2',
+      text: '#881337',
+      selectionBg: '#e11d48',
       selectionText: '#ffffff',
-      sphereGrad: 'radial-gradient(circle at 35% 35%, #1e3a8a 0%, #0f172a 40%, #020617 100%)',
-      sphereShadow: '-30px -30px 80px rgba(59,130,246,0.1), 40px 40px 80px rgba(30,64,175,0.2)',
-      particle: '#60a5fa'
+      sphereGrad: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #ffe4e6 40%, #fecdd3 100%)',
+      sphereShadow: '-30px -30px 80px rgba(255,255,255,1), 40px 40px 80px rgba(225,29,72,0.15)',
+      particle: '#fb7185'
     }
   };
 
@@ -218,7 +218,7 @@ function App() {
           <Pricing theme={theme} />
         </SectionTracker>
 
-        <SectionTracker themeName="midnight" setTheme={setTheme}>
+        <SectionTracker themeName="rose" setTheme={setTheme}>
           <Contact theme={theme} />
         </SectionTracker>
       </div>

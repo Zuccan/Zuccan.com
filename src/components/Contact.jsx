@@ -8,9 +8,9 @@ const Contact = ({ theme }) => {
     chocolate: { text: '#27140c', accent: '#f59e0b', border: 'rgba(39,20,12,0.2)', bgLight: '#fef3c7' },
     violet: { text: '#3b0764', accent: '#9333ea', border: 'rgba(59,7,100,0.15)', bgLight: '#f3e8ff' },
     teal: { text: '#115e59', accent: '#0d9488', border: 'rgba(17,94,89,0.15)', bgLight: '#ccfbf1' },
-    midnight: { text: '#f8fafc', accent: '#3b82f6', border: 'rgba(248,250,252,0.2)', bgLight: '#0f172a' }
+    rose: { text: '#881337', accent: '#e11d48', border: 'rgba(136,19,55,0.2)', bgLight: '#ffe4e6' }
   };
-  const c = colors[theme] || colors.midnight;
+  const c = colors[theme] || colors.rose;
 
   const [formData, setFormData] = useState({ name: '', company: '', project: '', budget: '', email: '' });
   const [isSubmitted, setIsSubmitted] = useState(false);
