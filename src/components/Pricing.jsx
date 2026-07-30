@@ -165,9 +165,13 @@ const Pricing = ({ theme }) => {
             </div>
 
             <div className="flex flex-col gap-6">
-               <FeatureBlurb c={c} delay={0.2} icon={<Zap className="w-5 h-5" />} title="Fast Delivery" desc="On-time, every time." />
-               <FeatureBlurb c={c} delay={0.3} icon={<Shield className="w-5 h-5" />} title="Fixed Pricing" desc="No hidden charges." />
-               <FeatureBlurb c={c} delay={0.4} icon={<Headphones className="w-5 h-5" />} title="Ongoing Support" desc="We've got your back." />
+               {[
+                 { icon: <Zap className="w-5 h-5" />, title: "Fast Delivery", desc: "On-time, every time." },
+                 { icon: <Shield className="w-5 h-5" />, title: "Fixed Pricing", desc: "No hidden charges." },
+                 { icon: <Headphones className="w-5 h-5" />, title: "Ongoing Support", desc: "We've got your back." }
+               ].map((b, i) => (
+                 <FeatureBlurb key={i} c={c} delay={0.2 + (i * 0.1)} {...b} />
+               ))}
             </div>
             
             <motion.div 
@@ -186,65 +190,13 @@ const Pricing = ({ theme }) => {
 
           {/* Pricing Cards (Right) */}
           <div className="xl:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-5">
-            <PricingCard 
-              c={c}
-              delay={0.2}
-              plan="Basic"
-              title="Startup"
-              desc="Perfect for startups & small businesses to get online."
-              price="₹6,499"
-              priceSub="Project Based Pricing"
-              buttonText="Get Started"
-              features={[
-                "5 Pages Website",
-                "Responsive Design",
-                "Contact Form",
-                "Basic SEO Setup",
-                "Social Media Integration",
-                "1 Round of Revisions",
-                "Delivery in 7-10 Days"
-              ]}
-            />
-            <PricingCard 
-              c={c}
-              delay={0.4}
-              plan="Professional"
-              title="Growth"
-              desc="Perfect for growing businesses that need more power."
-              price="₹9,999"
-              priceSub="Project Based Pricing"
-              buttonText="Get Started"
-              isPopular={true}
-              features={[
-                "8-10 Pages Website",
-                "Custom UI/UX Design",
-                "Advanced SEO Setup",
-                "WhatsApp Chat Integration",
-                "Google Maps Integration",
-                "2 Rounds of Revisions",
-                "Delivery in 10-15 Days"
-              ]}
-            />
-            <PricingCard 
-              c={c}
-              delay={0.6}
-              plan="Premium"
-              title="Enterprise"
-              desc="Perfect for brands & enterprises that need custom solutions."
-              price="₹14,999"
-              priceSub="Project Based Pricing"
-              buttonText="Contact Us"
-              features={[
-                "15+ Pages Website",
-                "Custom UI/UX Design",
-                "E-Commerce / Booking",
-                "Advanced SEO + Speed Opt.",
-                "WhatsApp + Live Chat",
-                "Google Analytics Setup",
-                "3 Rounds of Revisions",
-                "Delivery in 15-20 Days"
-              ]}
-            />
+            {[
+              { plan: "Basic", title: "Startup", desc: "Perfect for startups & small businesses to get online.", price: "₹6,499", priceSub: "Project Based Pricing", buttonText: "Get Started", features: ["5 Pages Website", "Responsive Design", "Contact Form", "Basic SEO Setup", "Social Media Integration", "1 Round of Revisions", "Delivery in 7-10 Days"] },
+              { plan: "Professional", title: "Growth", desc: "Perfect for growing businesses that need more power.", price: "₹9,999", priceSub: "Project Based Pricing", buttonText: "Get Started", isPopular: true, features: ["8-10 Pages Website", "Custom UI/UX Design", "Advanced SEO Setup", "WhatsApp Chat Integration", "Google Maps Integration", "2 Rounds of Revisions", "Delivery in 10-15 Days"] },
+              { plan: "Premium", title: "Enterprise", desc: "Perfect for brands & enterprises that need custom solutions.", price: "₹14,999", priceSub: "Project Based Pricing", buttonText: "Contact Us", features: ["15+ Pages Website", "Custom UI/UX Design", "E-Commerce / Booking", "Advanced SEO + Speed Opt.", "WhatsApp + Live Chat", "Google Analytics Setup", "3 Rounds of Revisions", "Delivery in 15-20 Days"] }
+            ].map((data, index) => (
+              <PricingCard key={index} c={c} delay={0.2 + (index * 0.2)} {...data} />
+            ))}
           </div>
 
         </div>
