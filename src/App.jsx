@@ -3,6 +3,7 @@ import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-mo
 import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import About from './components/About';
 import Services from './components/Services';
 import Work from './components/Work';
 import Pricing from './components/Pricing';
@@ -136,6 +137,15 @@ function App() {
       sphereGrad: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #ffe4e6 40%, #fecdd3 100%)',
       sphereShadow: '-30px -30px 80px rgba(255,255,255,1), 40px 40px 80px rgba(225,29,72,0.15)',
       particle: '#fb7185'
+    },
+    charcoal: {
+      bg: '#0f172a',
+      text: '#f8fafc',
+      selectionBg: '#facc15',
+      selectionText: '#0f172a',
+      sphereGrad: 'radial-gradient(circle at 35% 35%, #334155 0%, #1e293b 40%, #0f172a 100%)',
+      sphereShadow: '-30px -30px 80px rgba(51,65,85,0.2), 40px 40px 80px rgba(30,41,59,0.3)',
+      particle: '#facc15'
     }
   };
 
@@ -201,6 +211,11 @@ function App() {
                 <Hero theme={theme} scrollProgress={smoothProgress} />
             </div>
           </div>
+        </SectionTracker>
+
+        {/* About Section */}
+        <SectionTracker themeName="charcoal" setTheme={setTheme}>
+          <About theme={theme} />
         </SectionTracker>
 
         {/* Services Section */}
