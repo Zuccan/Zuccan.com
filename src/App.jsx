@@ -147,18 +147,18 @@ function App() {
     document.documentElement.style.setProperty('--selection-bg', currentTheme.selectionBg);
     document.documentElement.style.setProperty('--selection-text', currentTheme.selectionText);
     document.documentElement.style.setProperty('--cursor-url', `url('${cursorSvg(currentTheme.selectionBg)}') 5 5, auto`);
+    document.documentElement.style.setProperty('--theme-bg', currentTheme.bg);
+    document.documentElement.style.setProperty('--theme-text', currentTheme.text);
   }, [currentTheme]);
 
   const sphereY = useTransform(smoothProgress, [0, 0.5], ['0%', '100%']);
   const sphereScale = useTransform(smoothProgress, [0, 0.5], [1, 3]);
 
   return (
-    <motion.div 
+    <div 
       ref={containerRef}
-      initial={false}
-      animate={{ backgroundColor: currentTheme.bg, color: currentTheme.text }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
       className={`w-full font-sans relative overflow-x-hidden flex flex-col`}
+      style={{ backgroundColor: 'var(--theme-bg)', color: 'var(--theme-text)', transition: 'background-color 0.8s ease-in-out, color 0.8s ease-in-out' }}
     >
 
       <NoiseOverlay />
@@ -222,7 +222,7 @@ function App() {
           <Contact theme={theme} />
         </SectionTracker>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
