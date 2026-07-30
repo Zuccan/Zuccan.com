@@ -6,6 +6,7 @@ import Hero from './components/Hero';
 import Services from './components/Services';
 import Work from './components/Work';
 import Pricing from './components/Pricing';
+import Contact from './components/Contact';
 
 // Noise Overlay Component
 const NoiseOverlay = () => (
@@ -126,6 +127,15 @@ function App() {
       sphereGrad: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #ccfbf1 40%, #99f6e4 100%)',
       sphereShadow: '-30px -30px 80px rgba(255,255,255,1), 40px 40px 80px rgba(13,148,136,0.15)',
       particle: '#2dd4bf'
+    },
+    midnight: {
+      bg: '#020617',
+      text: '#f8fafc',
+      selectionBg: '#3b82f6',
+      selectionText: '#ffffff',
+      sphereGrad: 'radial-gradient(circle at 35% 35%, #1e3a8a 0%, #0f172a 40%, #020617 100%)',
+      sphereShadow: '-30px -30px 80px rgba(59,130,246,0.1), 40px 40px 80px rgba(30,64,175,0.2)',
+      particle: '#60a5fa'
     }
   };
 
@@ -204,10 +214,13 @@ function App() {
         </SectionTracker>
 
         {/* Pricing Section */}
-        <SectionTracker setTheme={setTheme} themeName="teal">
+        <SectionTracker themeName="teal" setTheme={setTheme}>
           <Pricing theme={theme} />
         </SectionTracker>
 
+        <SectionTracker themeName="midnight" setTheme={setTheme}>
+          <Contact theme={theme} />
+        </SectionTracker>
       </div>
     </motion.div>
   );
