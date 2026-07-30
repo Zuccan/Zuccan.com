@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion';
+import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -75,6 +76,24 @@ function App() {
 
   const [theme, setTheme] = useState('purple');
 
+  // Initialize Lenis Smooth Scroll
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+      wheelMultiplier: 1,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy();
+  }, []);
+
   const themeConfig = {
     purple: {
       bg: '#FFFFFF',
@@ -139,7 +158,7 @@ function App() {
       {/* Background Soft 3D Sphere 1 (Massive Bottom Right) */}
       <motion.div 
          animate={{ background: currentTheme.sphereGrad, boxShadow: currentTheme.sphereShadow }}
-         style={{ y: sphereY, scale: sphereScale }}
+         style={{ y: sphereY, scale: sphereScale, willChange: 'transform' }}
          transition={{ 
            background: { duration: 0.8, ease: "easeInOut" },
            boxShadow: { duration: 0.8, ease: "easeInOut" }
