@@ -129,9 +129,16 @@ function App() {
     }
   };
 
-  const currentTheme = themeConfig[theme];
+  // Derive the current theme object
+  const currentTheme = themeConfig[theme] || themeConfig.purple;
 
-  // Map scroll progress to the massive sphere to make it move down and swallow the screen
+  // Apply global CSS variables for dynamic cursor and selection colors without causing DOM lag
+  useEffect(() => {
+    document.documentElement.style.setProperty('--selection-bg', currentTheme.selectionBg);
+    document.documentElement.style.setProperty('--selection-text', currentTheme.selectionText);
+    document.documentElement.style.setProperty('--cursor-url', `url('${cursorSvg(currentTheme.selectionBg)}') 5 5, auto`);
+  }, [currentTheme]);
+
   const sphereY = useTransform(smoothProgress, [0, 0.5], ['0%', '100%']);
   const sphereScale = useTransform(smoothProgress, [0, 0.5], [1, 3]);
 
@@ -141,11 +148,6 @@ function App() {
       initial={false}
       animate={{ backgroundColor: currentTheme.bg, color: currentTheme.text }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      style={{
-        '--selection-bg': currentTheme.selectionBg,
-        '--selection-text': currentTheme.selectionText,
-        '--cursor-url': `url('${cursorSvg(currentTheme.selectionBg)}') 5 5, auto`
-      }}
       className={`w-full font-sans relative overflow-x-hidden flex flex-col`}
     >
 

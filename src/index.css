@@ -45,6 +45,6 @@ body {
   color: var(--selection-text, #ffffff); 
 }
 
-body, a, button, input, select, textarea { 
+* { 
   cursor: var(--cursor-url, auto) !important; 
 }
