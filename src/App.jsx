@@ -159,6 +159,7 @@ function App() {
     document.documentElement.style.setProperty('--cursor-url', `url('${cursorSvg(currentTheme.selectionBg)}') 5 5, auto`);
     document.documentElement.style.setProperty('--theme-bg', currentTheme.bg);
     document.documentElement.style.setProperty('--theme-text', currentTheme.text);
+    document.documentElement.style.setProperty('--sphere-color', currentTheme.particle);
   }, [currentTheme]);
 
   const sphereY = useTransform(smoothProgress, [0, 0.5], ['0%', '100%']);
@@ -176,25 +177,25 @@ function App() {
       
       {/* Background Soft 3D Sphere 1 (Massive Bottom Right) */}
       <motion.div 
-         animate={{ background: currentTheme.sphereGrad, boxShadow: currentTheme.sphereShadow }}
-         style={{ y: sphereY, scale: sphereScale, willChange: 'transform' }}
-         transition={{ 
-           background: { duration: 0.8, ease: "easeInOut" },
-           boxShadow: { duration: 0.8, ease: "easeInOut" }
+         style={{ 
+           y: sphereY, 
+           scale: sphereScale, 
+           willChange: 'transform',
+           backgroundColor: 'var(--sphere-color)',
+           filter: 'blur(120px)',
+           transition: 'background-color 0.8s ease-in-out'
          }}
-         className="fixed top-[20%] right-[-10%] w-[800px] h-[800px] md:w-[1300px] md:h-[1300px] rounded-full z-0 pointer-events-none"
-      >
-        <div className="w-full h-full rounded-full" />
-      </motion.div>
+         className="fixed top-[20%] right-[-10%] w-[600px] h-[600px] md:w-[1000px] md:h-[1000px] rounded-full z-0 pointer-events-none opacity-40"
+      />
 
       {/* Background Soft 3D Sphere 2 (Small Top Right) */}
       <motion.div 
-         animate={{ background: currentTheme.sphereGrad, boxShadow: currentTheme.sphereShadow }}
-         transition={{ 
-           background: { duration: 0.8, ease: "easeInOut" },
-           boxShadow: { duration: 0.8, ease: "easeInOut" }
+         style={{ 
+           backgroundColor: 'var(--sphere-color)',
+           filter: 'blur(80px)',
+           transition: 'background-color 0.8s ease-in-out'
          }}
-         className="fixed top-[5%] right-[10%] w-[200px] h-[200px] md:w-[350px] md:h-[350px] rounded-full z-0 pointer-events-none"
+         className="fixed top-[5%] right-[10%] w-[200px] h-[200px] md:w-[350px] md:h-[350px] rounded-full z-0 pointer-events-none opacity-40"
       />
 
       <div className="relative z-10 w-full flex flex-col">
