@@ -167,55 +167,60 @@ const Pricing = ({ theme }) => {
             <PricingCard 
               c={c}
               delay={0.2}
-              plan="Startup"
-              title="Launch"
-              desc="Perfect for startups and personal projects to get online."
-              price="₹9,999"
-              priceSub="One-time Payment"
+              plan="Basic"
+              title="Startup"
+              desc="Perfect for startups & small businesses to get online."
+              price="₹6,499"
+              priceSub="Project Based Pricing"
               buttonText="Get Started"
               features={[
-                "5 Page Website",
+                "5 Pages Website",
                 "Responsive Design",
-                "Basic SEO",
                 "Contact Form",
-                "7 Days Support"
+                "Basic SEO Setup",
+                "Social Media Integration",
+                "1 Round of Revisions",
+                "Delivery in 7-10 Days"
               ]}
             />
             <PricingCard 
               c={c}
               delay={0.4}
-              plan="Growth"
-              title="Scale"
-              desc="Ideal for growing businesses that need more power."
-              price="₹19,999"
-              priceSub="One-time Payment"
+              plan="Professional"
+              title="Growth"
+              desc="Perfect for growing businesses that need more power."
+              price="₹9,999"
+              priceSub="Project Based Pricing"
               buttonText="Get Started"
               isPopular={true}
               features={[
-                "Up to 15 Pages",
-                "Custom Design",
-                "Advanced SEO",
-                "CMS Integration",
-                "15 Days Support",
-                "Performance Optimization"
+                "8-10 Pages Website",
+                "Custom UI/UX Design",
+                "Advanced SEO Setup",
+                "WhatsApp Chat Integration",
+                "Google Maps Integration",
+                "2 Rounds of Revisions",
+                "Delivery in 10-15 Days"
               ]}
             />
             <PricingCard 
               c={c}
               delay={0.6}
-              plan="Enterprise"
-              title="Elevate"
-              desc="For large businesses that need custom solutions."
-              price="Custom"
-              priceSub="Tailored for You"
+              plan="Premium"
+              title="Enterprise"
+              desc="Perfect for brands & enterprises that need custom solutions."
+              price="₹14,999"
+              priceSub="Project Based Pricing"
               buttonText="Contact Us"
               features={[
-                "Unlimited Pages",
-                "Custom Development",
-                "Advanced Integrations",
-                "Priority Support",
-                "30 Days Support",
-                "Dedicated Account Manager"
+                "15+ Pages Website",
+                "Custom UI/UX Design",
+                "E-Commerce / Booking",
+                "Advanced SEO + Speed Opt.",
+                "WhatsApp + Live Chat",
+                "Google Analytics Setup",
+                "3 Rounds of Revisions",
+                "Delivery in 15-20 Days"
               ]}
             />
           </div>
