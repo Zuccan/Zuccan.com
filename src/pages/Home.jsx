@@ -2,12 +2,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import About from '../components/About';
-import Services from '../components/Services';
-import Work from '../components/Work';
-import Pricing from '../components/Pricing';
-import Contact from '../components/Contact';
 import Loader from '../components/Loader';
+
+// Lazy load below-the-fold components to reduce main bundle size and fix TBT
+const LazyAbout = React.lazy(() => import('../components/About'));
+const LazyServices = React.lazy(() => import('../components/Services'));
+const LazyWork = React.lazy(() => import('../components/Work'));
+const LazyPricing = React.lazy(() => import('../components/Pricing'));
+const LazyContact = React.lazy(() => import('../components/Contact'));
 
 // Noise Overlay Component
 const NoiseOverlay = React.memo(() => (
@@ -197,29 +199,31 @@ function Home() {
           </div>
         </SectionTracker>
 
-        {/* Services Section */}
-        <SectionTracker themeName="chocolate">
-          <Services />
-        </SectionTracker>
+        <React.Suspense fallback={<div className="h-screen w-full"></div>}>
+          {/* Services Section */}
+          <SectionTracker themeName="chocolate">
+            <LazyServices />
+          </SectionTracker>
 
-        {/* About Section */}
-        <SectionTracker themeName="chocolate">
-          <About />
-        </SectionTracker>
+          {/* About Section */}
+          <SectionTracker themeName="chocolate">
+            <LazyAbout />
+          </SectionTracker>
 
-        {/* Work Section */}
-        <SectionTracker themeName="violet">
-          <Work />
-        </SectionTracker>
+          {/* Work Section */}
+          <SectionTracker themeName="violet">
+            <LazyWork />
+          </SectionTracker>
 
-        {/* Pricing Section */}
-        <SectionTracker themeName="teal">
-          <Pricing />
-        </SectionTracker>
+          {/* Pricing Section */}
+          <SectionTracker themeName="teal">
+            <LazyPricing />
+          </SectionTracker>
 
-        <SectionTracker themeName="purple">
-          <Contact />
-        </SectionTracker>
+          <SectionTracker themeName="purple">
+            <LazyContact />
+          </SectionTracker>
+        </React.Suspense>
       </div>
     </div>
     </>
