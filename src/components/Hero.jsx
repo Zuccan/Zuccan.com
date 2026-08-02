@@ -5,6 +5,14 @@ import { Mouse, ArrowUpRight } from 'lucide-react';
 const Hero = () => {
   const scrollWrapperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Check immediately
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -98,16 +106,17 @@ const Hero = () => {
       </div>
 
       {/* Right Content - 3D Browser Showcase */}
-      <motion.div 
-        initial={{ opacity: 0, rotateY: 20, x: 50 }}
-        animate={{ opacity: 1, rotateY: -15, x: 0 }}
-        transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-        className="w-full lg:w-[50%] xl:w-1/2 relative h-[400px] md:h-[500px] flex items-center justify-center mt-12 lg:mt-0"
-      >
-        <div 
-          className="w-full h-full rounded-2xl shadow-2xl border-2 flex flex-col overflow-hidden glass-card-dark relative z-10"
-          style={{ backgroundColor: c.bg, borderColor: c.border, boxShadow: `0 30px 60px ${c.border}` }}
+      {!isMobile && (
+        <motion.div 
+          initial={{ opacity: 0, rotateY: 20, x: 50 }}
+          animate={{ opacity: 1, rotateY: -15, x: 0 }}
+          transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+          className="hidden md:flex w-full lg:w-[50%] xl:w-1/2 relative h-[400px] md:h-[500px] items-center justify-center mt-12 lg:mt-0"
         >
+          <div 
+            className="w-full h-full rounded-2xl shadow-2xl border-2 flex flex-col overflow-hidden glass-card-dark relative z-10"
+            style={{ backgroundColor: c.bg, borderColor: c.border, boxShadow: `0 30px 60px ${c.border}` }}
+          >
           {/* Browser Header */}
           <div className="h-10 w-full border-b-2 flex items-center px-4 gap-3 shrink-0" style={{ borderColor: c.border }}>
              <div className="w-3 h-3 rounded-full bg-red-400 shadow-sm"></div>
@@ -175,7 +184,8 @@ const Hero = () => {
           style={{ backgroundColor: c.primary }}
         />
 
-      </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 };
