@@ -45,7 +45,7 @@ const ProjectPage = () => {
           <button className="hidden md:flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-gray-600 hover:text-black transition-colors">
             NEXT PROJECT <div className="w-6 h-6 border border-gray-300 rounded-full flex items-center justify-center"><ArrowRight className="w-3 h-3" /></div>
           </button>
-          <button className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors text-black">
+          <button aria-label="Share project" className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors text-black">
             <Menu className="w-4 h-4" />
           </button>
         </div>
