@@ -107,10 +107,8 @@ const Work = () => {
       {!isMobile && (
         <motion.div
           style={{
-            x: springX,
-            y: springY,
-            translateX: "-50%",
-            translateY: "-50%",
+            x,
+            y,
             rotate,
           }}
           initial={{ opacity: 0, scale: 0.5 }}
