@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zuccan.github.io/Zuccan.com/sitemap.xml
