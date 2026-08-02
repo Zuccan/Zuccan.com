@@ -31,7 +31,7 @@ const Hero = () => {
   };
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: isMobile ? 1 : 0 },
     show: {
       opacity: 1,
       transition: { staggerChildren: 0.1, delayChildren: 0.2 }
@@ -39,7 +39,7 @@ const Hero = () => {
   };
 
   const textItemVariants = {
-    hidden: { y: "120%", opacity: 0 },
+    hidden: { y: isMobile ? "0%" : "120%", opacity: isMobile ? 1 : 0 },
     show: { y: "0%", opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
   };
 

@@ -110,7 +110,7 @@ const SectionTracker = ({ children, themeName }) => {
 };
 
 function Home() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => window.innerWidth >= 768);
   const containerRef = useRef(null);
 
   // Scroll to top on mount for consistent loading experience
@@ -122,6 +122,8 @@ function Home() {
 
   // Initialize Locomotive Scroll
   useEffect(() => {
+    if (window.innerWidth < 768) return;
+    
     const locomotiveScroll = new LocomotiveScroll();
 
     return () => {
