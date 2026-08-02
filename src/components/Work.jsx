@@ -10,6 +10,22 @@ const Work = () => {
 
   const [activeProject, setActiveProject] = useState(null);
   const navigate = useNavigate();
+  const videoRefs = useRef([]);
+
+  useEffect(() => {
+    projects.forEach((_, i) => {
+      const video = videoRefs.current[i];
+      if (video) {
+        if (activeProject === i) {
+          video.play().catch(e => console.log("Video play interrupted", e));
+        } else {
+          video.pause();
+          // Optional: reset video to start when paused
+          // video.currentTime = 0; 
+        }
+      }
+    });
+  }, [activeProject]);
   
   // Motion values for exact mouse tracking
   const mouseX = useMotionValue(0);
@@ -109,12 +125,11 @@ const Work = () => {
               transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
               className="absolute inset-0 w-full h-full"
             >
-              {/* Always mounted video ensures it autoplays properly without browser injection restrictions */}
+              {/* Video only plays when hovered to save resources */}
               <video 
+                ref={el => videoRefs.current[i] = el}
                 src={showcaseVideo}
-                autoPlay
                 loop
-                muted
                 playsInline
                 className="w-full h-full object-cover"
               />
