@@ -113,6 +113,12 @@ const SectionTracker = ({ children, themeName }) => {
 function Home() {
   const [isLoading, setIsLoading] = useState(() => window.innerWidth >= 768);
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   const containerRef = useRef(null);
 
   // Scroll to top on mount for consistent loading experience
@@ -120,10 +126,6 @@ function Home() {
     window.scrollTo(0, 0);
     // Initialize initial theme
     updateTheme('purple');
-    
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Initialize Locomotive Scroll dynamically on desktop
@@ -147,7 +149,6 @@ function Home() {
         {isLoading && <Loader setLoading={setIsLoading} />}
       </AnimatePresence>
 
-      {!isMobile && <NoiseOverlay />}
       <div 
         className="fixed inset-0 z-[-1] pointer-events-none"
         style={{ 
@@ -162,33 +163,34 @@ function Home() {
         className={`w-full font-sans relative overflow-x-hidden flex flex-col`}
         style={{ color: 'var(--theme-text)' }}
       >
-
-        <NoiseOverlay />
+        {/* Absolute Background Elements */}
+        {!isMobile && <NoiseOverlay />}
       
       {/* Background Soft 3D Sphere 1 (Massive Bottom Right) */}
       {!isMobile && (
         <div 
-           className="absolute -right-[20%] -bottom-[20%] w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] rounded-full hidden md:block"
            style={{ 
              backgroundColor: 'var(--sphere-color)',
              filter: 'blur(12px)',
              transform: 'scale(10) translateZ(0)',
-             willChange: 'transform'
+             willChange: 'background-color',
+             transition: 'background-color 0.8s ease-in-out'
            }}
+           className="fixed top-[40%] right-[10%] w-[60px] h-[60px] md:w-[100px] md:h-[100px] rounded-full z-0 pointer-events-none opacity-40 origin-center hidden md:block"
         />
       )}
-
-      {/* Background Soft 3D Sphere 2 (Smaller Top Left) */}
+      
+      {/* Background Soft 3D Sphere 2 (Top Left) */}
       {!isMobile && (
         <div 
-           className="absolute -left-[10%] top-[10%] w-[40vw] h-[40vw] max-w-[600px] max-h-[600px] rounded-full hidden md:block"
            style={{ 
              backgroundColor: 'var(--sphere-color)',
-             filter: 'blur(10px)',
+             filter: 'blur(8px)',
              transform: 'scale(10) translateZ(0)',
-             willChange: 'transform',
-             opacity: 0.6
+             willChange: 'background-color',
+             transition: 'background-color 0.8s ease-in-out'
            }}
+           className="fixed top-[-10%] right-[-5%] w-[40px] h-[40px] md:w-[60px] md:h-[60px] rounded-full z-0 pointer-events-none opacity-60 origin-center hidden md:block"
         />
       )}
 
