@@ -119,7 +119,7 @@ const Hero = () => {
               className="absolute top-0 left-0 w-full h-[calc(100%+60px)]"
             >
               <iframe 
-                 src="http://naseer-047.github.io/DeveloperOS-offical-website/" 
+                 src="https://naseer-047.github.io/DeveloperOS-offical-website/" 
                  className="absolute top-0 left-0 h-full border-none"
                  style={{ width: 'calc(100% + 20px)' }}
                  title="Live Website Preview"
