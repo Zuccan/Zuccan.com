@@ -105,9 +105,7 @@ const SectionTracker = ({ children, themeName }) => {
 };
 
 function Home() {
-  // Bypass loader for performance bots (Lighthouse, PageSpeed) to achieve 90+ score without quality drop for real users
-  const isBot = typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling|lighthouse|speed/i.test(navigator.userAgent);
-  const [isLoading, setIsLoading] = useState(!isBot);
+  const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef(null);
 
   // Scroll to top on mount for consistent loading experience
