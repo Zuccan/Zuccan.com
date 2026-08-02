@@ -1,29 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Navbar = ({ theme }) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const colors = {
-    purple: {
-      primary: '#2E1065',
-      accent: '#7C3AED',
-      text: '#6B7280',
-      hoverPrimary: '#4C1D95',
-      bg: '#FFFFFF',
-      border: '#E9D5FF'
-    },
-    chocolate: {
-      primary: '#27140c',
-      accent: '#f59e0b',
-      text: '#57331f',
-      hoverPrimary: '#1a0d08',
-      bg: '#fffbeb',
-      border: '#fde68a'
-    }
+  const c = {
+    primary: 'var(--theme-primary)',
+    accent: 'var(--theme-accent)',
+    text: 'var(--theme-text)',
+    bg: 'var(--theme-bg)',
+    border: 'var(--theme-border)'
   };
-
-  const c = colors[theme] || colors.purple;
 
   return (
     <motion.nav animate={{ color: c.primary }} transition={{ duration: 0.8, ease: "easeInOut" }} className="w-full py-8 md:py-3 flex items-center justify-between z-50 relative">
