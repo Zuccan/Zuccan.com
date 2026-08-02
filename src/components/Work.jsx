@@ -8,6 +8,13 @@ const Work = () => {
   const c = { text: '#3b0764', accent: '#9333ea', border: 'rgba(59,7,100,0.15)', hoverText: '#7c3aed' };
 
   const [activeProject, setActiveProject] = useState(null);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   const navigate = useNavigate();
   const videoRefs = useRef([]);
 
@@ -96,51 +103,56 @@ const Work = () => {
         </ul>
       </div>
 
-      {/* Floating Magnetic Image Reveal (App Frame Style) */}
-      <motion.div
-        style={{
-          x,
-          y,
-          rotate,
-        }}
-        animate={{
-          scale: activeProject !== null ? 1 : 0.5,
-          opacity: activeProject !== null ? 1 : 0,
-        }}
-        transition={{
-          scale: springConfig,
-          opacity: springConfig,
-        }}
-        className="fixed top-0 left-0 w-[400px] h-[500px] md:w-[600px] md:h-[450px] pointer-events-none z-50 overflow-hidden rounded-[2rem] shadow-2xl hidden md:flex items-center justify-center bg-white p-2"
-      >
-        {/* Inner Screen Area */}
-        <div className="w-full h-full relative overflow-hidden rounded-[1.5rem] bg-black shadow-inner">
-          {projects.map((p, i) => (
-            <motion.div
-              key={p.id}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ 
-                opacity: activeProject === i ? 1 : 0,
-                y: activeProject === i ? 0 : 50,
-                scale: activeProject === i ? 1 : 1.1
-              }}
-              transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-              className="absolute inset-0 w-full h-full"
-            >
-              {/* Video only plays when hovered to save resources */}
-              <video 
-                ref={el => videoRefs.current[i] = el}
-                src={p.video}
-                loop
-                playsInline
-                preload="none"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      {/* Hidden Video Container (Now strictly removed on mobile) */}
+      {!isMobile && (
+        <motion.div
+          style={{
+            x: springX,
+            y: springY,
+            translateX: "-50%",
+            translateY: "-50%",
+            rotate,
+          }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{
+            opacity: activeProject !== null ? 1 : 0,
+            scale: activeProject !== null ? 1 : 0.5,
+          }}
+          transition={{
+            scale: springConfig,
+            opacity: springConfig,
+          }}
+          className="fixed top-0 left-0 w-[400px] h-[500px] md:w-[600px] md:h-[450px] pointer-events-none z-50 overflow-hidden rounded-[2rem] shadow-2xl hidden md:flex items-center justify-center bg-white p-2"
+        >
+          {/* Inner Screen Area */}
+          <div className="w-full h-full relative overflow-hidden rounded-[1.5rem] bg-black shadow-inner">
+            {projects.map((p, i) => (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ 
+                  opacity: activeProject === i ? 1 : 0,
+                  y: activeProject === i ? 0 : 50,
+                  scale: activeProject === i ? 1 : 1.1
+                }}
+                transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                className="absolute inset-0 w-full h-full"
+              >
+                {/* Video only plays when hovered to save resources */}
+                <video 
+                  ref={el => videoRefs.current[i] = el}
+                  src={p.video}
+                  loop
+                  playsInline
+                  preload="none"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 };

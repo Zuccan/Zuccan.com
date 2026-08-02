@@ -5,7 +5,7 @@ import { Mouse, ArrowUpRight } from 'lucide-react';
 const Hero = () => {
   const scrollWrapperRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
