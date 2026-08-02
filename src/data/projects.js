@@ -1,0 +1,86 @@
+export const projects = [
+  {
+    id: 1,
+    title: "GCC CLUB",
+    category: "STUDENT COMMUNITY PLATFORM",
+    img: "https://images.unsplash.com/photo-1661956602116-aa6865609028?auto=format&fit=crop&q=80&w=1200",
+    description: "A unified platform for students to connect, collaborate, compete and grow together. We built GCC Club to make campus engagement simple, fun and rewarding.",
+    role: "Full Stack Development",
+    timeline: "3 Weeks",
+    year: "2026",
+    mockups: {
+      desktop: "https://images.unsplash.com/photo-1661956602116-aa6865609028?auto=format&fit=crop&q=80&w=1200",
+      mobile: "https://images.unsplash.com/photo-1661956602116-aa6865609028?auto=format&fit=crop&q=80&w=1200"
+    },
+    stats: [
+      { label: "Active Students", value: "1.2K+", icon: "users" },
+      { label: "Events Conducted", value: "28+", icon: "calendar" },
+      { label: "User Satisfaction", value: "98%", icon: "trophy" },
+      { label: "Avg. Load Time", value: "4.9s", icon: "rocket" }
+    ],
+    overview: "GCC Club is an all-in-one platform designed for college students to manage events, track leaderboards, access resources and connect with peers. Our goal was to build a fast, scalable and enjoyable experience."
+  },
+  {
+    id: 2,
+    title: "BREW",
+    category: "A COFFEE WEBSITE",
+    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
+    description: "An artisanal coffee roastery e-commerce platform offering a seamless subscription model and rich, visually striking product showcases.",
+    role: "UI/UX & Frontend",
+    timeline: "4 Weeks",
+    year: "2025",
+    mockups: {
+      desktop: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
+      mobile: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200"
+    },
+    stats: [
+      { label: "Monthly Sales", value: "$42K", icon: "users" },
+      { label: "Conversion", value: "4.2%", icon: "calendar" },
+      { label: "Bounce Rate", value: "12%", icon: "trophy" },
+      { label: "Speed Index", value: "1.2s", icon: "rocket" }
+    ],
+    overview: "BREW needed a digital presence that matched the quality of their beans. We delivered an immersive, fast, and sensory-driven online store."
+  },
+  {
+    id: 3,
+    title: "MAONO",
+    category: "FRIED CHICKEN BRAND",
+    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
+    description: "Authentic, crispy, fresh handcrafted fried chicken. We built a mouth-watering digital menu and ordering system.",
+    role: "Web Design",
+    timeline: "2 Weeks",
+    year: "2025",
+    mockups: {
+      desktop: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
+      mobile: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200"
+    },
+    stats: [
+      { label: "Daily Orders", value: "350+", icon: "users" },
+      { label: "Locations", value: "4", icon: "calendar" },
+      { label: "Satisfaction", value: "99%", icon: "trophy" },
+      { label: "Uptime", value: "99.9%", icon: "rocket" }
+    ],
+    overview: "MAONO is redefining fast food with premium ingredients. The website acts as a high-conversion funnel for their local delivery operations."
+  },
+  {
+    id: 4,
+    title: "NEXORA",
+    category: "FULL STACK SAAS",
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
+    description: "A next-generation enterprise SaaS dashboard providing real-time analytics, user management, and automated reporting workflows.",
+    role: "Full Stack SaaS",
+    timeline: "8 Weeks",
+    year: "2026",
+    mockups: {
+      desktop: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
+      mobile: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200"
+    },
+    stats: [
+      { label: "Enterprise Clients", value: "45", icon: "users" },
+      { label: "Data Processed", value: "2TB+", icon: "calendar" },
+      { label: "Uptime", value: "99.99%", icon: "trophy" },
+      { label: "Query Speed", value: "12ms", icon: "rocket" }
+    ],
+    overview: "NEXORA required a robust, highly secure, and extremely performant dashboard capable of handling millions of data points in real-time."
+  }
+];

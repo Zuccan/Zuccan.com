@@ -1,38 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useVelocity, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-
-const projects = [
-  {
-    id: 1,
-    title: "GCC  CLUB",
-    category: "A CLUB OPERATING SYSTEM",
-    img: "https://images.unsplash.com/photo-1661956602116-aa6865609028?auto=format&fit=crop&q=80&w=1200",
-  },
-  {
-    id: 2,
-    title: "BREW",
-    category: "A COFFEE WEBSITE",
-    img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
-  },
-  {
-    id: 3,
-    title: "MAONO",
-    category: "A COFFEE WEBSITE",
-    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
-  },
-  {
-    id: 4,
-    title: "Next-Gen SaaS",
-    category: "Full Stack",
-    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
-  }
-];
+import { useNavigate } from 'react-router-dom';
+import { projects } from '../data/projects';
+import showcaseVideo from '../assets/videos/Cinematic_website_showcase_film_1080p_202608021420.mp4';
 
 const Work = () => {
   const c = { text: '#3b0764', accent: '#9333ea', border: 'rgba(59,7,100,0.15)', hoverText: '#7c3aed' };
 
   const [activeProject, setActiveProject] = useState(null);
+  const navigate = useNavigate();
   
   // Motion values for exact mouse tracking
   const mouseX = useMotionValue(0);
@@ -72,19 +49,22 @@ const Work = () => {
         
         {/* Minimal Typography List */}
         <ul className="w-full flex flex-col border-t transition-colors duration-800" style={{ borderColor: c.border }}>
-          {projects.map((project, index) => (
-            <li 
+          {projects.map((project, i) => (
+            <li
               key={project.id}
-              onMouseEnter={() => setActiveProject(index)}
+              onClick={() => navigate('/project/' + project.id)}
+              onMouseEnter={() => setActiveProject(i)}
               onMouseLeave={() => setActiveProject(null)}
-              className="group flex flex-col md:flex-row md:items-center justify-between py-12 md:py-16 border-b cursor-pointer relative z-10 transition-colors duration-800"
+              className="group relative flex flex-col md:flex-row items-start md:items-center justify-between py-8 md:py-12 border-b-2 cursor-pointer"
               style={{ borderColor: c.border }}
             >
-              <div className="flex items-center gap-8 md:gap-16 transform transition-transform duration-500 ease-out group-hover:translate-x-8">
-                <span style={{ color: c.text, opacity: 0.3 }} className="text-xl md:text-3xl font-medium font-mono transition-colors duration-800">0{index + 1}</span>
+              <div className="flex-1">
+                <span style={{ color: c.text, opacity: 0.5 }} className="text-sm md:text-lg font-mono mb-2 md:mb-4 block transition-colors duration-800">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
                 <h3 
-                  style={{ color: activeProject === index ? c.hoverText : c.text }}
-                  className="text-5xl md:text-8xl font-black uppercase tracking-tighter transition-colors duration-500"
+                  style={{ color: c.text }} 
+                  className="text-4xl md:text-6xl lg:text-8xl font-black uppercase tracking-tighter transition-colors duration-800 group-hover:pl-4 group-hover:text-purple-600"
                 >
                   {project.title}
                 </h3>
@@ -113,17 +93,33 @@ const Work = () => {
           scale: springConfig,
           opacity: springConfig,
         }}
-        className="fixed top-0 left-0 w-[300px] h-[400px] md:w-[380px] md:h-[480px] pointer-events-none z-50 overflow-hidden rounded-[2rem] shadow-2xl hidden md:flex items-center justify-center bg-white p-2"
+        className="fixed top-0 left-0 w-[400px] h-[500px] md:w-[600px] md:h-[450px] pointer-events-none z-50 overflow-hidden rounded-[2rem] shadow-2xl hidden md:flex items-center justify-center bg-white p-2"
       >
         {/* Inner Screen Area */}
         <div className="w-full h-full relative overflow-hidden rounded-[1.5rem] bg-black shadow-inner">
           {projects.map((p, i) => (
-            <img 
-              key={p.id} 
-              src={p.img} 
-              alt={p.title}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out ${activeProject === i ? 'opacity-100' : 'opacity-0'}`}
-            />
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ 
+                opacity: activeProject === i ? 1 : 0,
+                y: activeProject === i ? 0 : 50,
+                scale: activeProject === i ? 1 : 1.1
+              }}
+              transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+              className="absolute inset-0 w-full h-full"
+            >
+              {/* Always mounted video ensures it autoplays properly without browser injection restrictions */}
+              <video 
+                src={showcaseVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            </motion.div>
           ))}
         </div>
       </motion.div>
