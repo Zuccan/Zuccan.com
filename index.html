@@ -33,7 +33,43 @@
     <link rel="canonical" href="https://zuccan.github.io/Zuccan.com/" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static Pre-render for instant mobile LCP/FCP -->
+      <style>
+        .pre-hero {
+          display: flex;
+          flex-direction: column;
+          padding-top: 5rem;
+          padding-left: 1.5rem;
+          padding-right: 1.5rem;
+          font-family: 'Inter', sans-serif;
+          background-color: #FFFFFF;
+          min-height: 100vh;
+        }
+        .pre-h1 {
+          font-size: 3.75rem;
+          font-weight: 500;
+          line-height: 1.05;
+          letter-spacing: -0.04em;
+          margin-bottom: 2rem;
+          margin-top: 0;
+          color: #2E1065;
+        }
+        .pre-p {
+          font-size: 1.125rem;
+          color: #6B7280;
+          margin: 0;
+          line-height: 1.6;
+        }
+        @media (min-width: 768px) {
+          .pre-hero { display: none; }
+        }
+      </style>
+      <div class="pre-hero">
+        <h1 class="pre-h1">We build<br/>websites that<br/>drive results.</h1>
+        <p class="pre-p">Zuccano is a premium web development and design agency specializing in modern, cinematic, and high-performance websites for forward-thinking brands.</p>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

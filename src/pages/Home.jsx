@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import LocomotiveScroll from 'locomotive-scroll';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import About from '../components/About';
@@ -120,14 +119,18 @@ function Home() {
     updateTheme('purple');
   }, []);
 
-  // Initialize Locomotive Scroll
+  // Initialize Locomotive Scroll dynamically on desktop
   useEffect(() => {
     if (window.innerWidth < 768) return;
     
-    const locomotiveScroll = new LocomotiveScroll();
+    let locomotiveScroll;
+    import('locomotive-scroll').then((module) => {
+      const LocomotiveScroll = module.default;
+      locomotiveScroll = new LocomotiveScroll();
+    });
 
     return () => {
-      locomotiveScroll.destroy();
+      if (locomotiveScroll) locomotiveScroll.destroy();
     };
   }, []);
 
