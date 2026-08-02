@@ -1,8 +1,19 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Mouse, ArrowUpRight } from 'lucide-react';
 
 const Hero = () => {
+  const scrollWrapperRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   const c = {
     primary: '#2E1065',
     accent: '#7C3AED',
@@ -111,16 +122,21 @@ const Hero = () => {
           </div>
           
           {/* Iframe Content */}
-          <div className="flex-1 w-full bg-white relative overflow-hidden">
-            {/* Animate a slight initial bump to indicate it's a webpage */}
-            <motion.div
-              animate={{ y: [0, -60, 0] }}
-              transition={{ duration: 2.5, delay: 1, ease: "easeInOut" }}
-              className="absolute top-0 left-0 w-full h-[calc(100%+60px)]"
+          <div 
+            className="flex-1 w-full bg-white relative overflow-hidden group"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Iframe Container */}
+            <motion.div 
+              ref={scrollWrapperRef}
+              animate={isHovered ? { y: 0 } : { y: [0, -10, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-[calc(100%+10px)] rounded-b-2xl overflow-hidden"
             >
               <iframe 
-                 src="https://naseer-047.github.io/DeveloperOS-offical-website/" 
-                 className="absolute top-0 left-0 h-full border-none"
+                 src="https://naseer-047.github.io/cafe-website2/" 
+                 className="w-full h-full border-none"
                  style={{ width: 'calc(100% + 20px)' }}
                  title="Live Website Preview"
                  sandbox="allow-scripts allow-same-origin"
@@ -128,16 +144,21 @@ const Hero = () => {
             </motion.div>
             
             {/* Scroll Indicator Overlay */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 3.5, duration: 0.5 }}
-              className="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none z-20 flex flex-col items-center gap-2"
-            >
-              <div className="bg-black/70 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-full border border-white/20 shadow-xl flex items-center gap-2">
-                <Mouse className="w-3 h-3 animate-bounce" /> Scroll to explore
-              </div>
-            </motion.div>
+            <AnimatePresence>
+              {!isHovered && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none z-20 flex flex-col items-center gap-2"
+                >
+                  <div className="bg-black/70 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-full border border-white/20 shadow-xl flex items-center gap-2">
+                    <Mouse className="w-3 h-3 animate-bounce" /> Hover to take control
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             
             {/* A subtle shadow overlay */}
             <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] border-t-2" style={{ borderColor: c.border }}></div>

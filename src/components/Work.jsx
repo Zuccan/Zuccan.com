@@ -5,20 +5,20 @@ import { ArrowRight } from 'lucide-react';
 const projects = [
   {
     id: 1,
-    title: "E-Commerce",
-    category: "Web Development",
+    title: "GCC  CLUB",
+    category: "A CLUB OPERATING SYSTEM",
     img: "https://images.unsplash.com/photo-1661956602116-aa6865609028?auto=format&fit=crop&q=80&w=1200",
   },
   {
     id: 2,
-    title: "Fintech App",
-    category: "UI/UX Design",
+    title: "BREW",
+    category: "A COFFEE WEBSITE",
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
   },
   {
     id: 3,
-    title: "AI Startup",
-    category: "Branding",
+    title: "MAONO",
+    category: "A COFFEE WEBSITE",
     img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
   },
   {
