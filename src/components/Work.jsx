@@ -3,7 +3,6 @@ import { motion, useMotionValue, useSpring, useVelocity, useTransform } from 'fr
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { projects } from '../data/projects';
-import showcaseVideo from '../assets/videos/Cinematic_website_showcase_film_1080p_202608021420.mp4';
 
 const Work = () => {
   const c = { text: '#3b0764', accent: '#9333ea', border: 'rgba(59,7,100,0.15)', hoverText: '#7c3aed' };
@@ -17,11 +16,14 @@ const Work = () => {
       const video = videoRefs.current[i];
       if (video) {
         if (activeProject === i) {
-          video.play().catch(e => console.log("Video play interrupted", e));
+          video.play().catch(e => {
+            console.log("Audio playback blocked by browser, falling back to muted", e);
+            video.muted = true;
+            video.play().catch(err => console.log("Muted playback also failed", err));
+          });
         } else {
           video.pause();
-          // Optional: reset video to start when paused
-          // video.currentTime = 0; 
+          video.currentTime = 0; 
         }
       }
     });
@@ -128,7 +130,7 @@ const Work = () => {
               {/* Video only plays when hovered to save resources */}
               <video 
                 ref={el => videoRefs.current[i] = el}
-                src={showcaseVideo}
+                src={p.video}
                 loop
                 playsInline
                 className="w-full h-full object-cover"

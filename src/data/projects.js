@@ -1,8 +1,13 @@
+import gccVideo from '../assets/videos/Cinematic_website_showcase_film_1080p_202608021420.mp4';
+import brewVideo from '../assets/videos/Cinematic_website_reveal_film_1080p_202608021449.mp4';
+import maonoVideo from '../assets/videos/Website_reveal_film_MAONO_1080p_202608021501.mp4';
+
 export const projects = [
   {
     id: 1,
     title: "GCC CLUB",
     category: "STUDENT COMMUNITY PLATFORM",
+    video: gccVideo,
     img: "https://images.unsplash.com/photo-1661956602116-aa6865609028?auto=format&fit=crop&q=80&w=1200",
     description: "A unified platform for students to connect, collaborate, compete and grow together. We built GCC Club to make campus engagement simple, fun and rewarding.",
     role: "Full Stack Development",
@@ -24,6 +29,7 @@ export const projects = [
     id: 2,
     title: "BREW",
     category: "A COFFEE WEBSITE",
+    video: brewVideo,
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
     description: "An artisanal coffee roastery e-commerce platform offering a seamless subscription model and rich, visually striking product showcases.",
     role: "UI/UX & Frontend",
@@ -45,6 +51,7 @@ export const projects = [
     id: 3,
     title: "MAONO",
     category: "FRIED CHICKEN BRAND",
+    video: maonoVideo,
     img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
     description: "Authentic, crispy, fresh handcrafted fried chicken. We built a mouth-watering digital menu and ordering system.",
     role: "Web Design",
@@ -66,6 +73,7 @@ export const projects = [
     id: 4,
     title: "NEXORA",
     category: "FULL STACK SAAS",
+    video: brewVideo,
     img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
     description: "A next-generation enterprise SaaS dashboard providing real-time analytics, user management, and automated reporting workflows.",
     role: "Full Stack SaaS",
