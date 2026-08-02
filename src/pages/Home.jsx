@@ -13,7 +13,7 @@ import Loader from '../components/Loader';
 // Noise Overlay Component
 const NoiseOverlay = React.memo(() => (
   <div 
-    className="pointer-events-none fixed inset-0 z-50 w-full h-full opacity-[0.15] mix-blend-soft-light"
+    className="pointer-events-none fixed inset-0 z-50 w-full h-full opacity-[0.15] mix-blend-soft-light hidden md:block"
     style={{ 
       backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")', 
       backgroundRepeat: 'repeat',
@@ -161,7 +161,7 @@ function Home() {
            willChange: 'background-color',
            transition: 'background-color 0.8s ease-in-out'
          }}
-         className="fixed top-[40%] right-[10%] w-[60px] h-[60px] md:w-[100px] md:h-[100px] rounded-full z-0 pointer-events-none opacity-40 origin-center"
+         className="fixed top-[40%] right-[10%] w-[60px] h-[60px] md:w-[100px] md:h-[100px] rounded-full z-0 pointer-events-none opacity-40 origin-center hidden md:block"
       />
 
       {/* Background Soft 3D Sphere 2 (Small Top Right) */}
@@ -173,7 +173,7 @@ function Home() {
            willChange: 'background-color',
            transition: 'background-color 0.8s ease-in-out'
          }}
-         className="fixed top-[15%] right-[20%] w-[20px] h-[20px] md:w-[35px] md:h-[35px] rounded-full z-0 pointer-events-none opacity-40 origin-center"
+         className="fixed top-[-10%] right-[-5%] w-[40px] h-[40px] md:w-[60px] md:h-[60px] rounded-full z-0 pointer-events-none opacity-60 origin-center hidden md:block"
       />
 
       <div className="relative z-10 w-full flex flex-col">
