@@ -133,6 +133,7 @@ const Work = () => {
                 src={p.video}
                 loop
                 playsInline
+                preload="none"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
