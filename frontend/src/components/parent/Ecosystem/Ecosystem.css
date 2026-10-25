@@ -1,174 +1,295 @@
-.ecosystem-section {
-  padding: 6rem 0;
-  background-color: #fafafa;
-  border-top: 1px solid #f0f0f0;
-}
+/* ────────────────────────────────────────────────
+   Ecosystem — "Two Pillars. One Vision."
+   Exact reference design — fully responsive
+──────────────────────────────────────────────── */
 
-.ecosystem-header {
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto 4.5rem;
-}
-
-.section-pill {
-  display: inline-block;
-  font-family: var(--font-heading);
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #6b7280;
-  background: #f3f4f6;
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-  margin-bottom: 1.2rem;
-}
-
-.ecosystem-title {
-  font-size: clamp(2rem, 3.8vw, 3.2rem);
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  color: #000000;
-  line-height: 1.15;
-  margin-bottom: 1rem;
-}
-
-.ecosystem-sub {
-  font-size: 1.1rem;
-  color: #4b5563;
-  line-height: 1.5;
-}
-
-/* Grid */
-.ecosystem-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-}
-
-.division-card {
+.eco-section {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: var(--radius-lg);
-  padding: 3rem 2.5rem;
+  padding: 8rem 0;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* ── Container ── */
+.eco-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+/* ══════════════════════════════════════
+   TOP HEADER ROW
+══════════════════════════════════════ */
+.eco-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.eco-header-left {
+  flex: 0 0 auto;
+  max-width: 560px;
+}
+
+.eco-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #111111;
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+}
+
+.eco-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 4.5vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  color: #000000;
+  margin: 0;
+}
+
+.eco-dot {
+  color: #e60000;
+}
+
+.eco-header-right {
+  flex: 0 0 auto;
+  max-width: 280px;
+  padding-bottom: 0.5rem;
+}
+
+.eco-intro-text {
+  font-size: 0.92rem;
+  color: #333333;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   HORIZONTAL RULE
+══════════════════════════════════════ */
+.eco-h-rule {
+  width: 100%;
+  height: 1px;
+  background: #d0d0d0;
+  margin-bottom: 4rem;
+}
+
+/* ══════════════════════════════════════
+   TWO PILLARS
+══════════════════════════════════════ */
+.eco-pillars {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+/* Each pillar takes equal width */
+.eco-pillar {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 0; /* prevent flex overflow */
 }
 
-.division-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
-  border-color: #d1d5db;
+/* Vertical divider */
+.eco-v-rule {
+  flex: 0 0 1px;
+  background: #d0d0d0;
+  margin: 0 4rem;
+  align-self: stretch;
 }
 
-.card-top {
+/* ── Number row ── */
+.eco-pillar-number-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 2rem;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
 }
 
-.division-tag {
-  font-size: 0.82rem;
+.eco-num {
+  font-size: 0.75rem;
   font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #e60000;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.eco-num-line {
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: #000000;
+  flex-shrink: 0;
+}
+
+/* ── Big heading (B2B / B2C) ── */
+.eco-pillar-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(4rem, 7vw, 6.5rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: #000000;
+  line-height: 0.95;
+  margin: 0 0 0.6rem;
+}
+
+/* ── Tag ── */
+.eco-pillar-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #111111;
-  background: #f3f4f6;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
+  color: #666666;
+  margin: 0 0 1.4rem;
 }
 
-.division-icon {
-  color: #000000;
+/* ── Description ── */
+.eco-pillar-desc {
+  font-size: 0.9rem;
+  color: #222222;
+  line-height: 1.65;
+  margin: 0 0 2rem;
+  max-width: 320px;
 }
 
-.division-heading {
-  font-size: 1.85rem;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  color: #000000;
-  margin-bottom: 0.8rem;
-}
-
-.division-desc {
-  font-size: 1rem;
-  color: #4b5563;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-.division-points {
+/* ── Dash bullets ── */
+.eco-bullet-list {
   list-style: none;
+  padding: 0;
+  margin: 0 0 2.8rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  margin-bottom: 2.5rem;
+  gap: 0.6rem;
   flex-grow: 1;
 }
 
-.division-points li {
+.eco-bullet-list li {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  font-size: 0.92rem;
-  color: #374151;
-  line-height: 1.45;
+  gap: 1rem;
+  font-size: 0.88rem;
+  color: #222222;
+  line-height: 1.5;
 }
 
-.division-points li svg {
-  flex-shrink: 0;
-  margin-top: 2px;
+.eco-dash {
   color: #000000;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 0.05em;
 }
 
-.highlight-bullet {
-  font-size: 0.85rem;
-  line-height: 1;
-  margin-top: 2px;
-}
-
-.card-action-btn {
+/* ── CTA link ── */
+.eco-cta-link {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px 24px;
-  border-radius: var(--radius-full);
-  font-family: var(--font-heading);
-  font-size: 0.98rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.card-action-btn.dark {
-  background: #000000;
-  color: #ffffff;
-}
-
-.card-action-btn.dark:hover {
-  background: #ff1f1f;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px -5px rgba(255, 31, 31, 0.4);
-}
-
-.card-action-btn.light {
-  background: #ffffff;
+  gap: 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: #000000;
-  border: 1.5px solid #000000;
+  text-decoration: none;
+  border-bottom: 1.5px solid #000000;
+  padding-bottom: 3px;
+  width: fit-content;
+  transition: color 0.2s ease, border-color 0.2s ease, gap 0.2s ease;
 }
 
-.card-action-btn.light:hover {
-  background: #f9fafb;
-  transform: translateY(-2px);
+.eco-cta-link:hover {
+  color: #e60000;
+  border-color: #e60000;
+  gap: 0.75rem;
 }
 
-@media (max-width: 860px) {
-  .ecosystem-cards-grid {
-    grid-template-columns: 1fr;
+.eco-cta-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.eco-cta-link:hover .eco-cta-icon {
+  transform: translate(2px, -2px);
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — TABLET (≤ 960px)
+══════════════════════════════════════ */
+@media (max-width: 960px) {
+  .eco-container {
+    padding: 0 2.5rem;
   }
-  .division-card {
-    padding: 2.2rem 1.75rem;
+
+  .eco-section {
+    padding: 6rem 0;
+  }
+
+  /* Header: stack vertically */
+  .eco-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.8rem;
+    margin-bottom: 3rem;
+  }
+
+  .eco-header-right {
+    max-width: 100%;
+    padding-bottom: 0;
+  }
+
+  .eco-intro-text {
+    max-width: 480px;
+  }
+
+  /* Pillars: stack vertically */
+  .eco-pillars {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Vertical divider → horizontal */
+  .eco-v-rule {
+    width: 100%;
+    height: 1px;
+    margin: 3rem 0;
+    align-self: auto;
+    flex: 0 0 auto;
+  }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 560px)
+══════════════════════════════════════ */
+@media (max-width: 560px) {
+  .eco-container {
+    padding: 0 1.5rem;
+  }
+
+  .eco-section {
+    padding: 5rem 0;
+  }
+
+  .eco-header-row {
+    margin-bottom: 2.5rem;
+    gap: 1.5rem;
+  }
+
+  .eco-h-rule {
+    margin-bottom: 3rem;
+  }
+
+  .eco-pillar-desc {
+    max-width: 100%;
+  }
+
+  .eco-v-rule {
+    margin: 2.5rem 0;
   }
 }

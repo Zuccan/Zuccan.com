@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Zuccano</title>
+    <script>
+      // GitHub Pages SPA redirect fix
+      // When a user hits a URL like /business or /customers directly,
+      // GitHub Pages serves this 404.html. We encode the path into
+      // sessionStorage and redirect to /, where the React app reads
+      // it back and navigates to the correct route.
+      (function () {
+        var path = window.location.pathname;
+        var search = window.location.search;
+        var hash = window.location.hash;
+        // Don't redirect the root itself
+        if (path === '/' || path === '') return;
+        sessionStorage.setItem('spa-redirect', path + search + hash);
+        window.location.replace('/');
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

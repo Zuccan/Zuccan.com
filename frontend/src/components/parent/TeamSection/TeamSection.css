@@ -1,0 +1,262 @@
+/* ────────────────────────────────────────────────
+   TeamSection — "Three people. One direction."
+   Pixel-perfect match to reference design
+──────────────────────────────────────────────── */
+
+.team-section {
+  background: #ffffff;
+  padding: 8rem 0;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* ── Container ── */
+.team-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+/* ══════════════════════════════════════
+   HEADER ROW
+══════════════════════════════════════ */
+.team-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 4.5rem;
+}
+
+.team-header-left {
+  flex: 0 0 auto;
+  max-width: 580px;
+}
+
+.team-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #111111;
+  margin-bottom: 1.4rem;
+}
+
+.team-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 4.5vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  color: #000000;
+  margin: 0;
+}
+
+.team-title-block {
+  display: block;
+}
+
+.team-dot {
+  color: #e60000;
+}
+
+.team-header-right {
+  flex: 0 0 auto;
+  max-width: 280px;
+  padding-bottom: 0.5rem;
+}
+
+.team-intro-text {
+  font-size: 0.88rem;
+  color: #555555;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   MEMBER ROWS
+══════════════════════════════════════ */
+.team-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0;
+  border-top: 1px solid #d8d8d8;
+  transition: background 0.2s ease;
+}
+
+.team-row:last-child {
+  border-bottom: 1px solid #d8d8d8;
+}
+
+/* Red number */
+.team-row-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #e60000;
+  flex-shrink: 0;
+  width: 2rem;
+}
+
+/* Bold name */
+.team-row-name {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: #000000;
+  line-height: 1;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Vertical pipe divider */
+.team-row-divider {
+  display: block;
+  width: 1px;
+  height: 1.8rem;
+  background: #cccccc;
+  flex-shrink: 0;
+  margin: 0 1rem;
+}
+
+/* Role tag */
+.team-row-role {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #555555;
+  flex-shrink: 0;
+  min-width: 220px;
+}
+
+/* ══════════════════════════════════════
+   ROW HOVER — subtle darkening
+══════════════════════════════════════ */
+.team-row.is-hovered .team-row-name {
+  color: #000000;
+}
+
+.team-row.is-hovered .team-row-num {
+  transform: scale(1.1);
+}
+
+/* ══════════════════════════════════════
+   FLOATING CURSOR AVATAR
+══════════════════════════════════════ */
+.team-hover-avatar {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -120%);
+  will-change: transform;
+}
+
+.team-hover-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 3px solid #ffffff;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.12);
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — TABLET (≤ 960px)
+══════════════════════════════════════ */
+@media (max-width: 960px) {
+  .team-container {
+    padding: 0 2.5rem;
+  }
+
+  .team-section {
+    padding: 6rem 0;
+  }
+
+  .team-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.8rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .team-header-right {
+    max-width: 100%;
+    padding-bottom: 0;
+  }
+
+  .team-intro-text {
+    max-width: 480px;
+  }
+
+  .team-row {
+    gap: 1.5rem;
+    padding: 1.8rem 0;
+  }
+
+  .team-row-divider {
+    margin: 0 0.5rem;
+  }
+
+  .team-row-role {
+    min-width: 0;
+  }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 640px)
+══════════════════════════════════════ */
+@media (max-width: 640px) {
+  .team-container {
+    padding: 0 1.5rem;
+  }
+
+  .team-section {
+    padding: 5rem 0;
+  }
+
+  .team-header-row {
+    margin-bottom: 3rem;
+  }
+
+  /* Stack name above role on very small screens */
+  .team-row {
+    flex-wrap: wrap;
+    gap: 0.8rem 1.2rem;
+    padding: 1.6rem 0;
+    align-items: flex-start;
+  }
+
+  .team-row-num {
+    width: auto;
+    padding-top: 0.35em;
+  }
+
+  .team-row-name {
+    flex: 1 0 60%;
+  }
+
+  .team-row-divider {
+    display: none; /* hide pipe on mobile — clean look */
+  }
+
+  .team-row-role {
+    padding-left: calc(0.75rem + 2rem + 1.2rem); /* align under name */
+    min-width: 100%;
+    font-size: 0.65rem;
+  }
+}

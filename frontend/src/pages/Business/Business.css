@@ -1,65 +1,425 @@
-.business-page {
-  position: relative;
-  width: 100%;
-}
+/* ────────────────────────────────────────────────
+   Shared Waitlist Page Styles
+   Used by both /business and /customers
+──────────────────────────────────────────────── */
 
-.business-ticker-wrapper {
-  padding: 1.4rem 0;
-  border-top: 1px solid rgba(245, 158, 11, 0.2);
-  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
-  background: rgba(245, 158, 11, 0.03);
-}
-
-.business-ticker-item {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #fde68a;
-}
-
-.solutions-grid {
+/* ── Full-viewport split layout ── */
+.wl-page {
+  min-height: 100vh;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
+  grid-template-columns: 1fr 1fr;
+  background: #ffffff;
 }
 
-.solution-card {
+/* ══════════════════════════════════════
+   LEFT PANEL
+══════════════════════════════════════ */
+.wl-left {
+  display: flex;
+  align-items: center;
+  padding: 7rem 5rem 7rem 6rem;
+  border-right: 1px solid #e5e5e5;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.wl-left-inner {
+  max-width: 480px;
+}
+
+.wl-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #111111;
+  margin-bottom: 1.5rem;
+}
+
+.wl-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 4vw, 4.6rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  color: #000000;
+  margin: 0 0 1.8rem;
+}
+
+.wl-title-accent {
+  color: #000000;
+}
+
+.wl-dot {
+  color: #e60000;
+}
+
+.wl-desc {
+  font-size: 0.95rem;
+  color: #444444;
+  line-height: 1.7;
+  margin: 0 0 2.4rem;
+  max-width: 400px;
+}
+
+/* ── Perk list ── */
+.wl-perks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.4rem;
   display: flex;
   flex-direction: column;
+  gap: 0.65rem;
 }
 
-.solution-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+.wl-perk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #222222;
+  line-height: 1.45;
+}
+
+.wl-perk-dash {
+  color: #000000;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ── Badges ── */
+.wl-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.wl-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #555555;
+  border: 1px solid #d0d0d0;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+/* ══════════════════════════════════════
+   RIGHT PANEL
+══════════════════════════════════════ */
+.wl-right {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--space-md);
+  padding: 6rem 5rem 6rem 5rem;
+  background: #fafafa;
 }
 
-.solution-icon-svg {
-  color: var(--accent-business);
+.wl-form-card {
+  width: 100%;
+  max-width: 480px;
 }
 
-.solution-title {
-  font-size: 1.35rem;
+/* ── Form header ── */
+.wl-form-header {
+  margin-bottom: 2.2rem;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 2rem;
+}
+
+.wl-form-num {
+  font-size: 0.72rem;
   font-weight: 700;
-  color: #ffffff;
-  margin-bottom: var(--space-xs);
+  letter-spacing: 0.1em;
+  color: #e60000;
+  margin: 0 0 0.8rem;
 }
 
-.solution-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
+.wl-form-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #000000;
+  margin: 0 0 0.6rem;
+}
+
+.wl-form-sub {
+  font-size: 0.88rem;
+  color: #555555;
   line-height: 1.6;
+  margin: 0;
 }
 
-@media (max-width: 768px) {
-  .solutions-grid {
+/* ── Form ── */
+.wl-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.wl-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.wl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.wl-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #333333;
+}
+
+.wl-optional {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #999999;
+  font-size: 0.68rem;
+}
+
+.wl-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: #000000;
+  background: #ffffff;
+  border: 1.5px solid #d8d8d8;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+}
+
+.wl-input::placeholder {
+  color: #b0b0b0;
+}
+
+.wl-input:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+.wl-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.wl-textarea {
+  resize: none;
+  min-height: 90px;
+}
+
+/* ── Counter strip (consumers) ── */
+.wl-counter-strip {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0.9rem 1.2rem;
+  background: #f3f3f3;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+}
+
+.wl-counter-num {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #000000;
+}
+
+.wl-counter-label {
+  font-size: 0.82rem;
+  color: #555555;
+}
+
+/* ── Submit button ── */
+.wl-submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 15px 24px;
+  background: #000000;
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 0.4rem;
+}
+
+.wl-submit-btn:hover:not(:disabled) {
+  background: #e60000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(230, 0, 0, 0.35);
+}
+
+.wl-submit-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.wl-loading {
+  background: #333333;
+}
+
+/* ── Spinner ── */
+.wl-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: wl-spin 0.7s linear infinite;
+}
+
+@keyframes wl-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Fine print ── */
+.wl-fine-print {
+  font-size: 0.75rem;
+  color: #aaaaaa;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════════════
+   SUCCESS STATE
+══════════════════════════════════════ */
+.wl-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 0;
+  gap: 1.2rem;
+}
+
+.wl-success-icon {
+  color: #000000;
+  flex-shrink: 0;
+}
+
+.wl-success-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #000000;
+  margin: 0;
+}
+
+.wl-success-sub {
+  font-size: 0.92rem;
+  color: #444444;
+  line-height: 1.65;
+  max-width: 340px;
+  margin: 0;
+}
+
+.wl-success-sub strong {
+  color: #000000;
+  font-weight: 700;
+}
+
+.wl-success-num {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1rem;
+  padding: 1.2rem 2.5rem;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 12px;
+}
+
+.wl-success-num-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888888;
+}
+
+.wl-success-num-val {
+  font-family: var(--font-heading);
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #e60000;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — TABLET (≤ 960px)
+══════════════════════════════════════ */
+@media (max-width: 960px) {
+  .wl-page {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .wl-left {
+    position: static;
+    height: auto;
+    padding: 7rem 2.5rem 4rem;
+    border-right: none;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .wl-left-inner {
+    max-width: 100%;
+  }
+
+  .wl-right {
+    padding: 4rem 2.5rem 6rem;
+  }
+
+  .wl-form-card {
+    max-width: 100%;
+  }
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 560px)
+══════════════════════════════════════ */
+@media (max-width: 560px) {
+  .wl-left {
+    padding: 6rem 1.5rem 3.5rem;
+  }
+
+  .wl-right {
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .wl-field-row {
     grid-template-columns: 1fr;
   }
 }

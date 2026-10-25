@@ -1,65 +1,15 @@
-.customers-page {
-  position: relative;
-  width: 100%;
+/* Customers waitlist — imports shared waitlist styles from Business.css */
+/* All base styles are in Business.css (wl-* classes) */
+/* Consumer-specific overrides below */
+
+@import '../Business/Business.css';
+
+/* Consumer page: slightly warmer left panel bg tint */
+.wl-page-consumer .wl-left {
+  background: #fdfdfd;
 }
 
-.customer-ticker-wrapper {
-  padding: 1.4rem 0;
-  border-top: 1px solid rgba(6, 182, 212, 0.2);
-  border-bottom: 1px solid rgba(6, 182, 212, 0.2);
-  background: rgba(6, 182, 212, 0.03);
-}
-
-.customer-ticker-item {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #67e8f9;
-}
-
-.perks-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
-}
-
-.perk-card {
-  display: flex;
-  flex-direction: column;
-}
-
-.perk-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  background: rgba(6, 182, 212, 0.12);
-  border: 1px solid rgba(6, 182, 212, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--space-md);
-}
-
-.perk-icon-svg {
-  color: var(--accent-customer);
-}
-
-.perk-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: var(--space-xs);
-}
-
-.perk-desc {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-@media (max-width: 768px) {
-  .perks-grid {
-    grid-template-columns: 1fr;
-  }
+/* Consumer: success icon uses red accent */
+.wl-page-consumer .wl-success-icon {
+  color: #e60000;
 }

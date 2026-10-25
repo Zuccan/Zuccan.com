@@ -1,93 +1,185 @@
-import React from 'react';
-import { CustomerHero } from '../../components/customers/CustomerHero/CustomerHero';
-import { Marquee } from '../../components/effects/Marquee/Marquee';
-import { GlowCard } from '../../components/common/GlowCard/GlowCard';
-import { ShoppingBag, Zap, Award, Gift, Smartphone, HeartHandshake } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowUpRight, Zap, Gift, Award, Smartphone, CheckCircle2 } from 'lucide-react';
 import './Customers.css';
 
-const CONSUMER_PERKS = [
-  {
-    icon: Zap,
-    title: '1-Tap Micro-Checkout',
-    description: 'Zero typing required. Authenticate securely with biometrics for instant checkout across partner stores.'
-  },
-  {
-    icon: Award,
-    title: 'Up to 5% Instant Cashback',
-    description: 'No points that expire. Real liquid cashback instantly credited to your Zuccano Pay balance.'
-  },
-  {
-    icon: Gift,
-    title: 'Exclusive Brand Drops',
-    description: 'Early access to limited edition product drops, VIP concerts, and luxury lifestyle events.'
-  },
-  {
-    icon: Smartphone,
-    title: 'Smart Spending AI',
-    description: 'Intelligent budgets, automated bill negotiation, and real-time alerts so you never overpay.'
-  }
+const PERKS = [
+  { icon: Zap,       text: '1-tap biometric checkout at partner stores' },
+  { icon: Award,     text: 'Real cashback — no points, no expiry' },
+  { icon: Gift,      text: 'Exclusive drops, VIP events & curated perks' },
+  { icon: Smartphone,text: 'Smart spending AI built into your pocket' },
 ];
 
 export const Customers = () => {
+  const [form, setForm]         = useState({ name: '', email: '', city: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading]   = useState(false);
+
+  const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await new Promise(r => setTimeout(r, 1200));
+    setLoading(false);
+    setSubmitted(true);
+  };
+
   return (
-    <div className="customers-page">
-      {/* 1. High Energy B2C Hero with App Preview & Lead Capture */}
-      <CustomerHero />
+    <div className="wl-page wl-page-consumer">
 
-      {/* 2. Consumer Feature Ticker */}
-      <div className="customer-ticker-wrapper">
-        <Marquee
-          items={[
-            '⚡ 1-TAP CHECKOUT',
-            '💎 VIP CASHBACK',
-            '🔒 BIOMETRIC SECURITY',
-            '🎁 CURATED PERKS',
-            '📱 SEAMLESS MOBILE APP',
-            '✨ ZERO HIDDEN FEES'
-          ].map((text, i) => (
-            <span key={i} className="customer-ticker-item">
-              {text}
-            </span>
-          ))}
-          speed={24}
-        />
-      </div>
+      {/* ── LEFT PANEL ── */}
+      <div className="wl-left">
+        <div className="wl-left-inner">
+          <span className="wl-eyebrow">For Everyone</span>
 
-      {/* 3. Key Customer Benefits Grid */}
-      <section id="features" className="section">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-label" style={{ color: 'var(--accent-customer)' }}>
-              Built for Modern Shoppers
-            </span>
-            <h2 className="section-title text-gradient-customer">
-              Why Millions Choose Zuccano
-            </h2>
-            <p className="section-desc">
-              Every detail engineered to give you the most effortless shopping and rewards experience possible.
-            </p>
-          </div>
+          <motion.h1
+            className="wl-title"
+            spellCheck={false}
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          >
+            Shopping<br />
+            that actually<br />
+            works for<br />
+            <span className="wl-title-accent">you<span className="wl-dot">.</span></span>
+          </motion.h1>
 
-          <div className="perks-grid">
-            {CONSUMER_PERKS.map((perk, idx) => {
-              const Icon = perk.icon;
-              return (
-                <GlowCard
-                  key={idx}
-                  className="perk-card"
-                  glowColor="rgba(6, 182, 212, 0.16)"
-                >
-                  <div className="perk-icon-wrap">
-                    <Icon size={24} className="perk-icon-svg" />
-                  </div>
-                  <h3 className="perk-title">{perk.title}</h3>
-                  <p className="perk-desc">{perk.description}</p>
-                </GlowCard>
-              );
-            })}
+          <motion.p
+            className="wl-desc"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.12 }}
+          >
+            Be the first to experience 1-tap checkout, real instant cashback,
+            and a smarter way to shop. Join the waitlist — spots are limited.
+          </motion.p>
+
+          <motion.ul
+            className="wl-perks"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.22, duration: 0.6 }}
+          >
+            {PERKS.map(({ icon: Icon, text }, i) => (
+              <li key={i} className="wl-perk-item">
+                <span className="wl-perk-dash">—</span>
+                <span>{text}</span>
+              </li>
+            ))}
+          </motion.ul>
+
+          <div className="wl-badge-row">
+            <span className="wl-badge">Free Forever</span>
+            <span className="wl-badge">Zero Hidden Fees</span>
+            <span className="wl-badge">Biometric Secure</span>
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* ── RIGHT PANEL ── */}
+      <div className="wl-right">
+        <div className="wl-form-card">
+
+          {!submitted ? (
+            <>
+              <div className="wl-form-header">
+                <p className="wl-form-num">01</p>
+                <h2 className="wl-form-title">Join the Waitlist</h2>
+                <p className="wl-form-sub">
+                  Early members get priority access, bonus cashback, and founding member perks.
+                </p>
+              </div>
+
+              <form className="wl-form" onSubmit={handleSubmit} noValidate>
+                <div className="wl-field">
+                  <label className="wl-label" htmlFor="c-name">Your Name</label>
+                  <input
+                    id="c-name"
+                    className="wl-input"
+                    type="text"
+                    name="name"
+                    placeholder="Kavana G Aridhiya"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="wl-field">
+                  <label className="wl-label" htmlFor="c-email">Email Address</label>
+                  <input
+                    id="c-email"
+                    className="wl-input"
+                    type="email"
+                    name="email"
+                    placeholder="you@email.com"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="wl-field">
+                  <label className="wl-label" htmlFor="c-city">Your City</label>
+                  <input
+                    id="c-city"
+                    className="wl-input"
+                    type="text"
+                    name="city"
+                    placeholder="Bangalore, Hyderabad, Mumbai..."
+                    value={form.city}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                {/* Referral counter display */}
+                <div className="wl-counter-strip">
+                  <span className="wl-counter-num">2,841</span>
+                  <span className="wl-counter-label">people already on the list</span>
+                </div>
+
+                <button
+                  type="submit"
+                  className={`wl-submit-btn${loading ? ' wl-loading' : ''}`}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <span className="wl-spinner" />
+                  ) : (
+                    <>
+                      <span>Secure My Spot</span>
+                      <ArrowUpRight size={18} />
+                    </>
+                  )}
+                </button>
+
+                <p className="wl-fine-print">No spam. Unsubscribe anytime. We only email when it matters.</p>
+              </form>
+            </>
+          ) : (
+            <motion.div
+              className="wl-success"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <CheckCircle2 size={52} className="wl-success-icon" />
+              <h2 className="wl-success-title">You're in!</h2>
+              <p className="wl-success-sub">
+                We'll notify <strong>{form.email}</strong> the moment Zuccano launches in <strong>{form.city}</strong>. Get ready.
+              </p>
+              <div className="wl-success-num">
+                <span className="wl-success-num-label">Your position</span>
+                <span className="wl-success-num-val">#2,842</span>
+              </div>
+            </motion.div>
+          )}
+
+        </div>
+      </div>
     </div>
   );
 };

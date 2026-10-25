@@ -1,37 +1,184 @@
-.not-found-page {
-  min-height: 80vh;
+/* ────────────────────────────────────────────────
+   Custom 404 — "Nothing here."
+   Minimal editorial, full-viewport
+──────────────────────────────────────────────── */
+
+.nf-root {
+  position: relative;
+  min-height: 100vh;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 120px 0 60px;
+  overflow: hidden;
 }
 
-.not-found-content {
+/* ── Giant ghost background 404 ── */
+.nf-bg-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: clamp(18rem, 32vw, 38rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  color: #f0f0f0;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+  /* slightly below content */
+  z-index: 0;
+}
+
+/* ── Foreground content ── */
+.nf-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 2rem;
+  width: 100%;
+}
+
+.nf-inner {
+  max-width: 480px;
+  width: 100%;
+}
+
+/* ── Eyebrow ── */
+.nf-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #e60000;
+  margin-bottom: 1.4rem;
+}
+
+/* ── Heading ── */
+.nf-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: #000000;
+  margin: 0 0 2rem;
+}
+
+.nf-dot {
+  color: #e60000;
+}
+
+/* ── Rule ── */
+.nf-rule {
+  width: 100%;
+  height: 1px;
+  background: #e0e0e0;
+  margin-bottom: 2rem;
+}
+
+/* ── Description ── */
+.nf-desc {
+  font-size: 0.95rem;
+  color: #555555;
+  line-height: 1.7;
+  margin: 0 0 2.5rem;
+}
+
+/* ── Action links ── */
+.nf-links {
   display: flex;
   flex-direction: column;
+  gap: 1.4rem;
+  margin-bottom: 4rem;
+}
+
+.nf-btn-primary {
+  display: inline-flex;
   align-items: center;
-  max-width: 500px;
-}
-
-.not-found-code {
-  font-family: var(--font-heading);
-  font-size: 7rem;
-  font-weight: 900;
-  line-height: 1;
-  margin-bottom: var(--space-xs);
-}
-
-.not-found-title {
-  font-size: 2rem;
-  font-weight: 800;
+  gap: 0.5rem;
+  padding: 13px 26px;
+  background: #000000;
   color: #ffffff;
-  margin-bottom: var(--space-xs);
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-radius: 8px;
+  width: fit-content;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.not-found-desc {
-  color: var(--text-secondary);
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: var(--space-lg);
+.nf-btn-primary:hover {
+  background: #e60000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(230, 0, 0, 0.3);
+}
+
+.nf-btn-primary:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.nf-btn-primary svg {
+  transition: transform 0.2s ease;
+}
+
+.nf-secondary-links {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.nf-link-ghost {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666666;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.nf-link-ghost:hover {
+  color: #000000;
+  border-color: #000000;
+}
+
+.nf-link-sep {
+  color: #cccccc;
+  font-size: 0.9rem;
+}
+
+/* ── Branding watermark ── */
+.nf-brand {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #cccccc;
+}
+
+.nf-brand-dot {
+  color: #e60000;
+}
+
+/* ── Responsive ── */
+@media (max-width: 560px) {
+  .nf-inner {
+    padding: 0 0.5rem;
+  }
+
+  .nf-bg-num {
+    font-size: 60vw;
+    opacity: 0.6;
+  }
 }
