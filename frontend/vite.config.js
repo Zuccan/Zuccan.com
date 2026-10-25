@@ -4,5 +4,5 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/', // Custom domain: zuccano.me — no subdirectory needed
+  base: '/', // Custom domain: zuccano.in — no subdirectory needed
 })
