@@ -1,0 +1,17 @@
+.text-reveal-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: hidden;
+}
+
+.reveal-word-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.reveal-word-inner {
+  display: inline-block;
+  will-change: transform, opacity;
+}

@@ -1,0 +1,207 @@
+.zuccano-hero-root {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 6rem 1.5rem 5rem;
+  overflow: hidden;
+}
+
+.hero-inner-container {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Headings */
+.hero-headings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.hero-line {
+  font-family: var(--font-heading);
+  font-size: clamp(2.8rem, 6.4vw, 5.8rem);
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: -0.038em;
+  line-height: 1.08;
+  margin: 0;
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.04);
+}
+
+.nowrap-token {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+/* Perfectly round dot matching the reference image */
+.dot-red {
+  display: inline-block;
+  width: clamp(10px, 1.1vw, 15px);
+  height: clamp(10px, 1.1vw, 15px);
+  background-color: #ff2222;
+  border-radius: 50%;
+  margin-left: 4px;
+  transform: translateY(-0.08em);
+  flex-shrink: 0;
+}
+
+/* Subtitle */
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  color: #4b5563;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-top: 1.8rem;
+  margin-bottom: 2.6rem;
+  max-width: 650px;
+  line-height: 1.45;
+}
+
+/* Dual CTA Button Group */
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.hero-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 36px;
+  font-family: var(--font-heading);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.pill-arrow {
+  transition: transform 0.2s ease;
+}
+
+.hero-pill-btn:hover .pill-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Dark Pill Button (For Business) */
+.hero-pill-btn.btn-dark {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1.5px solid #000000;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-pill-btn.btn-dark:hover {
+  background-color: #ff1f1f;
+  border-color: #ff1f1f;
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px -6px rgba(255, 31, 31, 0.45);
+}
+
+/* Light Pill Button (For Everyone) */
+.hero-pill-btn.btn-light {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1.5px solid #000000;
+}
+
+.hero-pill-btn.btn-light:hover {
+  background-color: #f9fafb;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.08);
+}
+
+/* Bottom Scroll to Explore Indicator */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  transition: opacity 0.2s ease;
+}
+
+.hero-scroll-indicator:hover {
+  opacity: 0.75;
+}
+
+.scroll-label {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #4b5563;
+  letter-spacing: -0.01em;
+}
+
+.scroll-arrow-icon {
+  color: #111111;
+}
+
+/* Responsiveness */
+@media (max-width: 640px) {
+  .zuccano-hero-root {
+    padding: 7rem 1.25rem 6rem;
+  }
+  
+  .hero-line {
+    font-size: clamp(2rem, 8.8vw, 2.85rem);
+  }
+
+  .dot-red {
+    width: 8px;
+    height: 8px;
+    margin-left: 3px;
+  }
+
+  .hero-subtitle {
+    margin-top: 1.3rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.85rem;
+  }
+
+  .hero-pill-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 24px;
+  }
+
+  .hero-scroll-indicator {
+    bottom: 1.4rem;
+  }
+}

@@ -1,0 +1,10 @@
+.zuccano-app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.zuccano-main-content {
+  flex-grow: 1;
+}

@@ -1,0 +1,70 @@
+.portal-switcher-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(18, 18, 26, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 4px;
+}
+
+.portal-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.portal-tab:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.portal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.parent-dot { background-color: var(--accent-primary); }
+.customer-dot { background-color: var(--accent-customer); }
+.business-dot { background-color: var(--accent-business); }
+
+.portal-tab-active {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.portal-tab-active.parent-active {
+  background: rgba(99, 102, 241, 0.18);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+}
+
+.portal-tab-active.customer-active {
+  background: rgba(6, 182, 212, 0.18);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+}
+
+.portal-tab-active.business-active {
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+@media (max-width: 640px) {
+  .portal-switcher-pill {
+    width: 100%;
+    justify-content: space-around;
+  }
+  .portal-tab {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+}

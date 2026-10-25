@@ -1,0 +1,260 @@
+.zuccano-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 2rem 3.5rem;
+  background: transparent !important;
+  pointer-events: none;
+  transition: padding 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.zuccano-header.header-scrolled {
+  padding: 1.5rem 3.5rem;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+.header-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.header-brand,
+.header-menu-btn {
+  pointer-events: auto;
+}
+
+/* Brand Logo + Name */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.header-brand:hover {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.18));
+}
+
+.header-logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.header-brand-name {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.035em;
+  color: #000000;
+  line-height: 1;
+}
+
+/* Circular Black Menu Button */
+.header-menu-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22), 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.header-menu-btn:hover {
+  background-color: #ff1f1f;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px -4px rgba(255, 31, 31, 0.55), 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.header-menu-btn:active {
+  transform: scale(0.95);
+}
+
+.hamburger-lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.line {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 1px;
+}
+
+/* Menu Overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  padding: 2.2rem 3.5rem;
+  overflow-y: auto;
+}
+
+.menu-overlay-header {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+}
+
+.menu-overlay-content {
+  max-width: 1440px;
+  width: 100%;
+  margin: auto auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.menu-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.menu-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: -0.03em;
+  transition: transform 0.25s ease, color 0.2s ease;
+}
+
+.menu-nav-arrow {
+  opacity: 0;
+  transform: translateX(-10px) translateY(10px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-nav-item:hover {
+  transform: translateX(12px);
+  color: var(--accent-red);
+}
+
+.menu-nav-item:hover .menu-nav-arrow {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+.menu-overlay-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-left: 1px solid #e5e7eb;
+  padding-left: 3rem;
+}
+
+.footer-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9ca3af;
+  margin-bottom: 0.5rem;
+}
+
+.menu-footer-contact p {
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.portal-buttons-wrap {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.mini-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mini-pill-btn.dark {
+  background: #000000;
+  color: #ffffff;
+}
+
+.mini-pill-btn.dark:hover {
+  background: #ff1f1f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px -4px rgba(255, 31, 31, 0.4);
+}
+
+.mini-pill-btn.light {
+  background: #ffffff;
+  color: #000000;
+  border: 1.5px solid #000000;
+}
+
+.mini-pill-btn.light:hover {
+  background: #f3f4f6;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+  .zuccano-header {
+    padding: 1.5rem 1.5rem;
+  }
+  .menu-overlay {
+    padding: 1.5rem 1.5rem;
+  }
+  .menu-overlay-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .menu-overlay-footer {
+    border-left: none;
+    border-top: 1px solid #e5e7eb;
+    padding-left: 0;
+    padding-top: 1.5rem;
+  }
+}

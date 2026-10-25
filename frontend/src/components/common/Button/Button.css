@@ -1,0 +1,112 @@
+.btn-zuccano {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-base);
+}
+
+.btn-content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-glow-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.25), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 1;
+}
+
+.btn-zuccano:hover .btn-glow-layer {
+  opacity: 1;
+}
+
+/* Sizes */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+
+.btn-md {
+  padding: 0.75rem 1.6rem;
+  font-size: 0.95rem;
+}
+
+.btn-lg {
+  padding: 1rem 2.2rem;
+  font-size: 1.1rem;
+}
+
+/* Primary Variant (Corporate Indigo) */
+.btn-primary {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #ffffff;
+  box-shadow: 0 4px 20px -5px rgba(99, 102, 241, 0.5);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 25px -4px rgba(99, 102, 241, 0.7);
+}
+
+/* Customer Variant (Cyan & Emerald) */
+.btn-customer {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  color: #ffffff;
+  box-shadow: 0 4px 20px -5px rgba(6, 182, 212, 0.5);
+}
+
+.btn-customer:hover {
+  box-shadow: 0 6px 25px -4px rgba(6, 182, 212, 0.7);
+}
+
+/* Business Variant (Amber & Gold) */
+.btn-business {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #0a0a0f;
+  box-shadow: 0 4px 20px -5px rgba(245, 158, 11, 0.5);
+}
+
+.btn-business:hover {
+  box-shadow: 0 6px 25px -4px rgba(245, 158, 11, 0.7);
+}
+
+/* Glass Variant */
+.btn-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-glow);
+}
+
+/* Outline Variant */
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-outline:hover {
+  border-color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+}
