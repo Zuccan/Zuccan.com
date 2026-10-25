@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from '../components/common/Navbar/Navbar';
 import { Footer } from '../components/common/Footer/Footer';
 import { CustomCursor } from '../components/common/CustomCursor/CustomCursor';
+import { MobileRestrictionOverlay } from '../components/common/MobileRestrictionOverlay/MobileRestrictionOverlay';
 import { useLocomotive } from '../hooks/useLocomotive';
 
 export const MainLayout = () => {
@@ -13,6 +14,9 @@ export const MainLayout = () => {
 
   return (
     <div className="zuccano-app-root">
+      {/* Mobile-Only Phone Access Restricted Screen (Hidden on Desktop) */}
+      <MobileRestrictionOverlay />
+
       {/* Interactive cursor follower */}
       <CustomCursor />
 

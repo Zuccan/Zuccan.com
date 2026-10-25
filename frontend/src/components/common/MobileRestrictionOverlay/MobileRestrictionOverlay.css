@@ -1,0 +1,352 @@
+/* ═══════════════════════════════════════════════════════════════
+   ZUCCANO — MOBILE ACCESS RESTRICTION SCREEN
+   CRITICAL RULE: STRICTLY HIDDEN ON DESKTOP (> 768px)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Absolute Desktop Safety: Hidden by default on all screens ── */
+.mobile-restriction-overlay {
+  display: none !important;
+}
+
+/* ── Only Displayed on Phones & Small Mobile Viewports (<= 768px) ── */
+@media (max-width: 768px) {
+  .mobile-restriction-overlay {
+    display: flex !important;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    background-color: #ffffff;
+    color: #111111;
+    z-index: 9999999;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.6rem 1.4rem 1.6rem;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Background Architectural Grid Lines ── */
+  .mro-grid-lines {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .mro-grid-line {
+    border-right: 1px solid rgba(0, 0, 0, 0.04);
+    height: 100%;
+  }
+
+  /* ── Header ── */
+  .mro-header {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .mro-brand {
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  .mro-brand-text {
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #000000;
+  }
+
+  .mro-brand-dot {
+    font-size: 1.65rem;
+    font-weight: 900;
+    color: #E3262E;
+    margin-left: 1px;
+  }
+
+  .mro-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    background-color: #F5F5F7;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 9999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #333333;
+  }
+
+  .mro-status-pulse {
+    width: 6px;
+    height: 6px;
+    background-color: #E3262E;
+    border-radius: 50%;
+    animation: mroPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes mroPulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(1.3);
+    }
+  }
+
+  /* ── Main Content Area ── */
+  .mro-main {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.8rem 0;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ── Minimalist Laptop Vector Frame ── */
+  .mro-device-graphic {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.6rem;
+  }
+
+  .mro-laptop-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 140px;
+  }
+
+  .mro-screen-inner {
+    width: 130px;
+    height: 82px;
+    background-color: #111114;
+    border-radius: 8px 8px 0 0;
+    border: 2px solid #28282D;
+    padding: 6px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.15);
+  }
+
+  .mro-mockup-header {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 6px;
+  }
+
+  .mro-dot-mockup {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #3E3E46;
+  }
+
+  .mro-mockup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mro-mockup-line-w {
+    width: 55%;
+    height: 5px;
+    background-color: #FFFFFF;
+    border-radius: 2px;
+  }
+
+  .mro-mockup-line-sub {
+    width: 75%;
+    height: 3px;
+    background-color: #55555F;
+    border-radius: 2px;
+    margin-bottom: 4px;
+  }
+
+  .mro-mockup-cards {
+    display: flex;
+    gap: 4px;
+  }
+
+  .mro-mockup-card {
+    flex: 1;
+    height: 28px;
+    border-radius: 4px;
+    background-color: #202026;
+  }
+
+  .mro-mockup-card.active {
+    background-color: #2E2E38;
+    border: 1px solid rgba(227, 38, 46, 0.4);
+  }
+
+  .mro-laptop-base {
+    width: 154px;
+    height: 5px;
+    background-color: #D1D1D8;
+    border-radius: 0 0 4px 4px;
+  }
+
+  /* ── Typography ── */
+  .mro-eyebrow {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #666666;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem;
+  }
+
+  .mro-heading {
+    font-size: clamp(2rem, 7.8vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #000000;
+    line-height: 1.08;
+    margin: 0 0 1.1rem;
+    text-transform: uppercase;
+  }
+
+  .mro-heading-dot {
+    color: #E3262E;
+  }
+
+  .mro-desc {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333333;
+    line-height: 1.5;
+    margin: 0 0 0.6rem;
+  }
+
+  .mro-subdesc {
+    font-size: 0.84rem;
+    font-weight: 400;
+    color: #777984;
+    line-height: 1.55;
+    margin: 0 0 1.8rem;
+  }
+
+  .mro-subdesc strong {
+    color: #111111;
+  }
+
+  /* ── Action Buttons ── */
+  .mro-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .mro-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0.85rem 1.4rem;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .mro-btn-primary:active {
+    transform: scale(0.98);
+    background-color: #222222;
+  }
+
+  .mro-btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0.85rem 1.4rem;
+    background-color: #F5F5F7;
+    color: #222222;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 9999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .mro-btn-secondary:active {
+    background-color: #EAEAEF;
+  }
+
+  .mro-btn-icon {
+    flex-shrink: 0;
+  }
+
+  /* ── Footer ── */
+  .mro-footer {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 0.7rem;
+    color: #777984;
+    letter-spacing: 0.06em;
+  }
+
+  .mro-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mro-f-num {
+    font-weight: 700;
+    color: #111111;
+  }
+
+  .mro-f-line {
+    width: 14px;
+    height: 1px;
+    background-color: #CCCCCC;
+  }
+
+  .mro-f-label {
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+
+  .mro-footer-right {
+    font-weight: 500;
+    color: #9CA3AF;
+  }
+}
