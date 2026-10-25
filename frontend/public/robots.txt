@@ -1,0 +1,9 @@
+# robots.txt for Zuccano
+User-agent: *
+Allow: /
+
+# Host
+Host: https://zuccano.in
+
+# Sitemaps
+Sitemap: https://zuccano.in/sitemap.xml
