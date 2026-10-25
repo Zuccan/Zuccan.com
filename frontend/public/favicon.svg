@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
-  <rect width="128" height="128" rx="28" fill="#000000" />
-  <!-- Modern Geometric 'Z' Letterform -->
-  <path d="M34 38 H94 V48 L52 80 H94 V90 H34 V80 L76 48 H34 Z" fill="#FFFFFF" />
-  <!-- Signature Zuccano Red Dot -->
-  <circle cx="98" cy="85" r="7" fill="#E3262E" />
-</svg>
