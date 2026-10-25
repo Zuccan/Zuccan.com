@@ -1,15 +1,510 @@
-/* Customers waitlist — imports shared waitlist styles from Business.css */
-/* All base styles are in Business.css (wl-* classes) */
-/* Consumer-specific overrides below */
+/* ────────────────────────────────────────────────
+   Zuccano B2C Hero Landing Page
+   100% Pixel-Perfect Match to Reference Image
+──────────────────────────────────────────────── */
 
-@import '../Business/Business.css';
-
-/* Consumer page: slightly warmer left panel bg tint */
-.wl-page-consumer .wl-left {
-  background: #fdfdfd;
+.b2c-page {
+  background: #ffffff;
+  color: #111111;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
 }
 
-/* Consumer: success icon uses red accent */
-.wl-page-consumer .wl-success-icon {
+.b2c-hero {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+/* ════════════════════════════════════════════════
+   6 ARCHITECTURAL VERTICAL GRID LINES
+════════════════════════════════════════════════ */
+.b2c-grid-lines {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 1fr 1fr 1.5fr 1.8fr;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.b2c-grid-col {
+  border-right: 1px solid #eeeeed;
+  height: 100%;
+}
+
+.b2c-grid-col.col-1 {
+  border-left: 1px solid #eeeeed;
+}
+
+/* ════════════════════════════════════════════════
+   HEADER BAR (Aligned with Column Grid)
+════════════════════════════════════════════════ */
+.b2c-header {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 1fr 1fr 1.5fr 1.8fr;
+  align-items: center;
+  border-bottom: 1px solid #eeeeed;
+  height: 82px;
+}
+
+/* Column 1: Brand */
+.b2c-col-brand {
+  padding-left: clamp(2rem, 3.5vw, 4.5rem);
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.b2c-brand {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.b2c-brand-text {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #000000;
+  text-transform: lowercase;
+}
+
+.b2c-brand-dot {
   color: #e60000;
+  font-size: 1.8rem;
+  font-weight: 900;
+  line-height: 0;
+  margin-left: 1px;
 }
+
+/* Column 2, 3, 4: Nav Tabs */
+.b2c-col-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.b2c-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+  padding: 0 1rem;
+}
+
+.b2c-nav-text {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #888888;
+  transition: color 0.2s ease;
+}
+
+.b2c-nav-item.active .b2c-nav-text {
+  color: #000000;
+  font-weight: 800;
+}
+
+.b2c-nav-item:hover .b2c-nav-text {
+  color: #000000;
+}
+
+/* Active solid underline for HOME */
+.b2c-nav-bar {
+  position: absolute;
+  bottom: 0;
+  width: 34px;
+  height: 2px;
+  background: #000000;
+}
+
+/* Column 5: Spacer */
+.b2c-col-spacer {
+  height: 100%;
+}
+
+/* Column 6: Circular Menu Button */
+.b2c-col-menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: clamp(2rem, 3.5vw, 4.5rem);
+  height: 100%;
+}
+
+.b2c-circle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #000000;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.b2c-circle-btn:hover {
+  background: #ff1f1f;
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(255, 31, 31, 0.35);
+}
+
+.b2c-circle-line {
+  width: 17px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+}
+
+/* ════════════════════════════════════════════════
+   MAIN HERO BODY CONTENT
+════════════════════════════════════════════════ */
+.b2c-main {
+  position: relative;
+  z-index: 2;
+  padding: 3.5rem clamp(2rem, 3.5vw, 4.5rem) 2.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Eyebrow */
+.b2c-eyebrow {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #666666;
+  margin: 0 0 2rem;
+}
+
+/* ── Giant Headline (100% Exact Match to Reference Image) ── */
+.b2c-headline {
+  font-family: 'Barlow Semi Condensed', 'Archivo', sans-serif;
+  font-size: clamp(3.2rem, 7.05vw, 6.9rem);
+  font-weight: 900;
+  line-height: 0.78;
+  letter-spacing: -0.012em;
+  text-transform: uppercase;
+  margin: 0 0 clamp(1.6rem, 2.2vw, 2.6rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Line 1: Solid Jet Black */
+.b2c-hl-line-1 {
+  color: #000000;
+  display: block;
+  white-space: nowrap;
+  line-height: 0.78;
+  margin: 0;
+  padding: 0;
+}
+
+/* Line 2: Editorial Charcoal Gray */
+.b2c-hl-line-2 {
+  color: #555555;
+  display: block;
+  white-space: nowrap;
+  line-height: 0.78;
+  margin: 0;
+  padding: 0;
+}
+
+.b2c-everyday-wrap {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+/* Vibrant Circular Red Period Dot */
+.b2c-hl-dot {
+  display: inline-block;
+  width: 0.22em;
+  height: 0.22em;
+  background-color: #ff1f1f;
+  border-radius: 50%;
+  margin-left: 0.1em;
+  transform: translateY(-0.02em);
+  flex-shrink: 0;
+}
+
+/* Subtitle */
+.b2c-subtitle {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: #444444;
+  max-width: 520px;
+  margin: 0 0 2.5rem;
+}
+
+/* CTA Button */
+.b2c-cta-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.b2c-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.2rem;
+  padding: 15px 28px;
+  background: #000000;
+  color: #ffffff;
+  border-radius: 12px;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+}
+
+.b2c-btn:hover {
+  background: #ff1f1f;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px -4px rgba(255, 31, 31, 0.4);
+}
+
+.b2c-btn:hover .b2c-arrow {
+  transform: translate(2px, -2px);
+}
+
+.b2c-arrow {
+  transition: transform 0.2s ease;
+}
+
+/* ════════════════════════════════════════════════
+   BOTTOM FOOTER ROW
+════════════════════════════════════════════════ */
+.b2c-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 2rem clamp(2rem, 3.5vw, 4.5rem) 2.5rem;
+  border-top: 1px solid #eeeeed;
+}
+
+/* Bottom Left: 01 ─── B2C LANDING */
+.b2c-footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.b2c-f-num {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: 0.04em;
+}
+
+.b2c-f-line {
+  display: inline-block;
+  width: 34px;
+  height: 1px;
+  background: #000000;
+  margin: 0 14px;
+}
+
+.b2c-f-label {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #666666;
+}
+
+/* Bottom Right: 01-02-03 Pillars */
+.b2c-footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.b2c-pillar-item {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.b2c-p-num {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #777777;
+  letter-spacing: 0.06em;
+}
+
+.b2c-p-label {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #777777;
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVENESS ACROSS SCREEN SIZES
+════════════════════════════════════════════════ */
+
+/* Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+  .b2c-grid-lines,
+  .b2c-header {
+    grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr 1.5fr;
+  }
+
+  .b2c-headline {
+    font-size: clamp(2.8rem, 6.5vw, 5rem);
+  }
+}
+
+/* Mobile Screens (≤ 768px) */
+@media (max-width: 768px) {
+  .b2c-hero {
+    min-height: 100vh;
+    height: auto;
+  }
+
+  /* Simplify grid lines on mobile */
+  .b2c-grid-lines {
+    grid-template-columns: 1fr;
+  }
+
+  .b2c-grid-col:not(:first-child) {
+    display: none;
+  }
+
+  /* Mobile Header */
+  .b2c-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    height: 72px;
+  }
+
+  .b2c-col-brand {
+    padding-left: 0;
+  }
+
+  .b2c-brand-text {
+    font-size: 1.45rem;
+  }
+
+  .b2c-col-tab,
+  .b2c-col-spacer {
+    display: none;
+  }
+
+  .b2c-col-menu {
+    padding-right: 0;
+  }
+
+  .b2c-circle-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  /* Mobile Hero Content */
+  .b2c-main {
+    padding: 3rem 1.25rem 2rem;
+  }
+
+  .b2c-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 1.25rem;
+  }
+
+  .b2c-headline {
+    font-size: clamp(2.4rem, 10.5vw, 3.8rem);
+    line-height: 0.96;
+    margin-bottom: 1.5rem;
+  }
+
+  .b2c-hl-line-1,
+  .b2c-hl-line-2 {
+    white-space: normal;
+  }
+
+  .b2c-hl-dot {
+    width: 14px;
+    height: 14px;
+    margin-left: 6px;
+    margin-bottom: 2px;
+  }
+
+  .b2c-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .b2c-btn {
+    width: 100%;
+    padding: 15px 24px;
+    font-size: 0.82rem;
+  }
+
+  /* Mobile Hero Footer */
+  .b2c-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.75rem 1.25rem 2.2rem;
+  }
+
+  .b2c-footer-right {
+    width: 100%;
+    gap: 0.65rem;
+    border-top: 1px solid #eeeeed;
+    padding-top: 1.25rem;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   SECTION 2: PRODUCTS SHOWCASE EMBED
+   ════════════════════════════════════════════════ */
+.b2c-products-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+  border-top: 1px solid #eeeeed;
+}
+

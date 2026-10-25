@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from '../components/common/Navbar/Navbar';
 import { Footer } from '../components/common/Footer/Footer';
 import { CustomCursor } from '../components/common/CustomCursor/CustomCursor';
@@ -8,6 +8,8 @@ import { useLocomotive } from '../hooks/useLocomotive';
 export const MainLayout = () => {
   // Initialize smooth scroll engine (Locomotive / Lenis)
   useLocomotive();
+  const location = useLocation();
+  const isCustomLayout = location.pathname.startsWith('/customers') || location.pathname.startsWith('/b2c') || location.pathname.startsWith('/products');
 
   return (
     <div className="zuccano-app-root">
@@ -22,8 +24,8 @@ export const MainLayout = () => {
         <Outlet />
       </main>
 
-      {/* Corporate Group Footer */}
-      <Footer />
+      {/* Corporate Group Footer (hidden on standalone B2C and Products pages) */}
+      {!isCustomLayout && <Footer />}
     </div>
   );
 };

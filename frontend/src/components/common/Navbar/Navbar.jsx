@@ -2,16 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowUpRight } from 'lucide-react';
+import { useNavigation } from '../../../context/NavigationContext';
 import zuccanoLogo from '../../../assets/Zucaano logo.png';
 import './Navbar.css';
 
 export const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [localMenuOpen, setLocalMenuOpen] = useState(false);
+  const { mobileMenuOpen, setMobileMenuOpen } = useNavigation();
   const location = useLocation();
+
+  const menuOpen = localMenuOpen || mobileMenuOpen;
+  const toggleMenu = () => {
+    if (menuOpen) {
+      setLocalMenuOpen(false);
+      setMobileMenuOpen(false);
+    } else {
+      setLocalMenuOpen(true);
+      setMobileMenuOpen(true);
+    }
+  };
+  const closeMenu = () => {
+    setLocalMenuOpen(false);
+    setMobileMenuOpen(false);
+  };
+
+  const isCustomLayout = location.pathname.startsWith('/customers') || location.pathname.startsWith('/b2c') || location.pathname.startsWith('/products');
 
   // Close menu on route navigation
   useEffect(() => {
-    setMenuOpen(false);
+    closeMenu();
   }, [location.pathname]);
 
   // Lock background scroll when menu is active
@@ -30,7 +49,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > 40);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -38,32 +57,34 @@ export const Navbar = () => {
 
   return (
     <>
-      <header className={`zuccano-header ${scrolled ? 'header-scrolled' : ''}`}>
-        <div className="header-container">
-          {/* Logo & Brand Name */}
-          <Link to="/" className="header-brand" aria-label="Zuccano Home">
-            <img
-              src={zuccanoLogo}
-              alt="Zuccano Emblem"
-              className="header-logo-img"
-            />
-            <span className="header-brand-name">Zuccano</span>
-          </Link>
+      {!isCustomLayout && (
+        <header className={`zuccano-header ${scrolled ? 'header-scrolled' : ''}`}>
+          <div className="header-container">
+            {/* Logo & Brand Name */}
+            <Link to="/" className="header-brand" aria-label="Zuccano Home">
+              <img
+                src={zuccanoLogo}
+                alt="Zuccano Emblem"
+                className="header-logo-img"
+              />
+              <span className="header-brand-name">Zuccano</span>
+            </Link>
 
-          {/* Minimalist Circular Black Menu Button */}
-          <button
-            className={`header-menu-btn ${menuOpen ? 'menu-active' : ''}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-          >
-            <div className="hamburger-lines">
-              <span className="line line-top" />
-              <span className="line line-mid" />
-              <span className="line line-bot" />
-            </div>
-          </button>
-        </div>
-      </header>
+            {/* Minimalist Circular Black Menu Button */}
+            <button
+              className={`header-menu-btn ${menuOpen ? 'menu-active' : ''}`}
+              onClick={toggleMenu}
+              aria-label={menuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
+            >
+              <div className="hamburger-lines">
+                <span className="line line-top" />
+                <span className="line line-mid" />
+                <span className="line line-bot" />
+              </div>
+            </button>
+          </div>
+        </header>
+      )}
 
       {/* Full-Screen Minimalist Navigation Drawer */}
       <AnimatePresence>
@@ -76,13 +97,13 @@ export const Navbar = () => {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="menu-overlay-header">
-              <Link to="/" className="header-brand" onClick={() => setMenuOpen(false)}>
+              <Link to="/" className="header-brand" onClick={closeMenu}>
                 <img src={zuccanoLogo} alt="Zuccano" className="header-logo-img" />
                 <span className="header-brand-name">Zuccano</span>
               </Link>
               <button
                 className="header-menu-btn close-btn"
-                onClick={() => setMenuOpen(false)}
+                onClick={closeMenu}
                 aria-label="Close menu"
               >
                 <X size={22} color="#ffffff" />
