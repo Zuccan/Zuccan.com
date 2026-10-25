@@ -291,43 +291,7 @@ export const ProductsShowcase = () => {
       </div>
 
       {/* ── Top Header Bar ── */}
-      <header className="ps-header">
-        {/* Left: Brand Wordmark with signature red dot */}
-        <div className="ps-brand-wrap">
-          <a href="/customers" className="ps-brand-link">
-            <span className="ps-brand-text">zuccano</span>
-            <span className="ps-brand-dot">.</span>
-          </a>
-        </div>
-
-        {/* Center: Navigation Links with active underline on Products */}
-        <nav className="ps-nav-links" aria-label="Main Navigation">
-          <a href="/products" className="ps-nav-link active">
-            <span>Products</span>
-            <span className="ps-nav-underline" />
-          </a>
-          <a href="/#about" className="ps-nav-link">
-            <span>About</span>
-          </a>
-          <a href="/#support" className="ps-nav-link">
-            <span>Support</span>
-          </a>
-        </nav>
-
-        {/* Right: Circular Black Hamburger Menu Button */}
-        <div className="ps-menu-wrap">
-          <button
-            type="button"
-            className="ps-menu-circle-btn"
-            onClick={() => setMobileMenuOpen(true)}
-            aria-label="Open Navigation Drawer"
-          >
-            <span className="ps-menu-bar" />
-            <span className="ps-menu-bar" />
-            <span className="ps-menu-bar" />
-          </button>
-        </div>
-      </header>
+      
 
       {/* ── Left Vertical Index Rail ── */}
       <aside className="ps-index-rail" aria-label="Section Index">
