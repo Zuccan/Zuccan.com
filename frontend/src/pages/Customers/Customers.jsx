@@ -1,13 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useNavigation } from '../../context/NavigationContext';
 import { ProductsShowcase } from '../../components/products/ProductsShowcase/ProductsShowcase';
 import './Customers.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export const Customers = () => {
   const { setMobileMenuOpen } = useNavigation();
   const location = useLocation();
+  const heroRef = useRef(null);
 
   // If user navigates directly to /products or has #products hash, scroll smoothly to products section
   useEffect(() => {
@@ -20,6 +25,60 @@ export const Customers = () => {
       }
     }
   }, [location.pathname, location.hash]);
+
+  // GSAP Hero Entrance Timeline
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      tl.fromTo(
+        '.b2c-header',
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.9 }
+      )
+      .fromTo(
+        '.b2c-eyebrow',
+        { opacity: 0, y: 15, letterSpacing: '0.35em' },
+        { opacity: 1, y: 0, letterSpacing: '0.22em', duration: 0.8 },
+        '-=0.6'
+      )
+      .fromTo(
+        '.b2c-hl-line-1',
+        { opacity: 0, y: 40, skewY: 1.5 },
+        { opacity: 1, y: 0, skewY: 0, duration: 1, ease: 'power4.out' },
+        '-=0.6'
+      )
+      .fromTo(
+        '.b2c-hl-line-2',
+        { opacity: 0, y: 40, skewY: 1.5 },
+        { opacity: 1, y: 0, skewY: 0, duration: 1, ease: 'power4.out' },
+        '-=0.8'
+      )
+      .fromTo(
+        '.b2c-hl-dot',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(2.5)' },
+        '-=0.5'
+      )
+      .fromTo(
+        ['.b2c-subtitle', '.b2c-cta-wrap'],
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.85, stagger: 0.1 },
+        '-=0.6'
+      )
+      .fromTo(
+        '.b2c-footer',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        '-=0.6'
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
 
   const scrollToProducts = (e) => {
     if (e) e.preventDefault();
@@ -34,7 +93,7 @@ export const Customers = () => {
   return (
     <div className="b2c-page">
       {/* ── Section 1: B2C Hero Section ── */}
-      <section id="b2c-hero-section" className="b2c-hero">
+      <section id="b2c-hero-section" className="b2c-hero" ref={heroRef}>
 
         {/* 6 Architectural Vertical Column Grid Lines */}
         <div className="b2c-grid-lines" aria-hidden="true">

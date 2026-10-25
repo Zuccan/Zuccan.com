@@ -146,10 +146,10 @@
 /* ── Left Vertical Index Rail ── */
 .ps-index-rail {
   position: absolute;
-  left: 3rem;
-  top: 9.5rem;
-  bottom: 3.5rem;
-  z-index: 15;
+  left: 2.5rem;
+  top: 4.5rem;
+  bottom: 3rem;
+  z-index: 25;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -279,6 +279,18 @@
   margin: 0.8rem 0 2.2rem;
   padding: 1rem 0;
   overflow: visible;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+}
+
+.ps-carousel-stage.is-dragging {
+  cursor: grabbing;
+}
+
+.ps-carousel-stage * {
+  -webkit-user-drag: none;
 }
 
 /* ── Central Active Card (FocusOS) ── */
@@ -298,7 +310,8 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  will-change: transform;
 }
 
 /* Top-Left Tiny Card Index */
@@ -510,7 +523,13 @@
   padding: 2.8rem 2.2rem;
   display: flex;
   flex-direction: column;
+  opacity: 0.82;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, opacity 0.3s ease;
+  will-change: transform, opacity;
+}
+
+.ps-neighbor-card:hover {
+  opacity: 1;
 }
 
 .ps-neighbor-inner {

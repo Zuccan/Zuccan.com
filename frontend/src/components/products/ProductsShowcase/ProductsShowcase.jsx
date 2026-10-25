@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight, ArrowRight, ArrowLeft } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigation } from '../../../context/NavigationContext';
 import './ProductsShowcase.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // ── 4 Full Product Definitions ──
 const productsData = [
@@ -258,7 +263,16 @@ const ProductAppIcon = ({ type, isNeighbor = false }) => {
 
 export const ProductsShowcase = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const { setMobileMenuOpen } = useNavigation();
+
+  const containerRef = useRef(null);
+  const isPointerDown = useRef(false);
+  const dragStartX = useRef(0);
+  const hasMoved = useRef(false);
+  const lastWheelTime = useRef(0);
 
   const total = productsData.length;
   const currentProduct = productsData[activeIndex];
@@ -272,15 +286,182 @@ export const ProductsShowcase = () => {
   const rightProduct = productsData[rightNeighborIndex];
 
   const handlePrev = () => {
+    setDirection(-1);
     setActiveIndex((prev) => (prev - 1 + total) % total);
   };
 
   const handleNext = () => {
+    setDirection(1);
     setActiveIndex((prev) => (prev + 1) % total);
   };
 
+  const handleSelectProduct = (newIdx) => {
+    setDirection(newIdx > activeIndex ? 1 : -1);
+    setActiveIndex(newIdx);
+  };
+
+  // ── GSAP ScrollTrigger Cinematic Entrance Animation ──
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        }
+      });
+
+      // 1. Grid Lines slide down
+      tl.fromTo(
+        '.ps-grid-line',
+        { scaleY: 0, transformOrigin: 'top' },
+        { scaleY: 1, duration: 1.1, stagger: 0.07, ease: 'power3.out' }
+      );
+
+      // 2. Left index rail float in
+      tl.fromTo(
+        '.ps-index-rail',
+        { opacity: 0, x: -35 },
+        { opacity: 1, x: 0, duration: 0.85, ease: 'power3.out' },
+        '-=0.8'
+      );
+
+      // 3. Intro Eyebrow & Heading
+      tl.fromTo(
+        '.ps-intro-eyebrow',
+        { opacity: 0, y: 22, letterSpacing: '0.3em' },
+        { opacity: 1, y: 0, letterSpacing: '0.2em', duration: 0.8, ease: 'power3.out' },
+        '-=0.7'
+      );
+
+      tl.fromTo(
+        '.ps-intro-heading',
+        { opacity: 0, y: 45, rotateX: 20 },
+        { opacity: 1, y: 0, rotateX: 0, duration: 1, ease: 'power4.out' },
+        '-=0.7'
+      );
+
+      tl.fromTo(
+        '.ps-heading-dot',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2.5)' },
+        '-=0.5'
+      );
+
+      tl.fromTo(
+        '.ps-intro-right',
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' },
+        '-=0.6'
+      );
+
+      // 4. Center & Neighbor Cards 3D Rise
+      tl.fromTo(
+        '.ps-active-card',
+        { opacity: 0, y: 80, scale: 0.93, rotateX: 8 },
+        { opacity: 1, y: 0, scale: 1, rotateX: 0, duration: 1.1, ease: 'power3.out' },
+        '-=0.6'
+      );
+
+      tl.fromTo(
+        '.ps-neighbor-left',
+        { opacity: 0, x: -110, rotateY: 34 },
+        { opacity: 0.82, x: 0, rotateY: 16, duration: 1.2, ease: 'power3.out' },
+        '-=0.9'
+      );
+
+      tl.fromTo(
+        '.ps-neighbor-right',
+        { opacity: 0, x: 110, rotateY: -34 },
+        { opacity: 0.82, x: 0, rotateY: -16, duration: 1.2, ease: 'power3.out' },
+        '-=1.2'
+      );
+
+      // 5. Bottom Controls Entrance
+      tl.fromTo(
+        '.ps-page-pill',
+        { scaleX: 0, opacity: 0 },
+        { scaleX: 1, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power2.out' },
+        '-=0.6'
+      );
+
+      tl.fromTo(
+        '.ps-arrow-btn',
+        { opacity: 0, x: 15 },
+        { opacity: 1, x: 0, duration: 0.6, stagger: 0.08, ease: 'power2.out' },
+        '-=0.5'
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ── Drag & Touch Handlers ──
+  const startDrag = (clientX, target) => {
+    if (target.closest('button') || target.closest('a')) return;
+    isPointerDown.current = true;
+    dragStartX.current = clientX;
+    hasMoved.current = false;
+    setIsDragging(true);
+  };
+
+  const updateDrag = (clientX) => {
+    if (!isPointerDown.current) return;
+    const delta = clientX - dragStartX.current;
+    if (Math.abs(delta) > 6) {
+      hasMoved.current = true;
+    }
+    // Smooth resistance damping
+    setDragOffset(delta * 0.7);
+  };
+
+  const endDrag = () => {
+    if (!isPointerDown.current) return;
+    isPointerDown.current = false;
+    setIsDragging(false);
+
+    // If dragged right (> 40px) -> moves forward to next product (as requested!)
+    if (dragOffset > 40) {
+      handleNext();
+    } else if (dragOffset < -40) {
+      handlePrev();
+    }
+    setDragOffset(0);
+  };
+
+  // Mouse Handlers
+  const onMouseDown = (e) => startDrag(e.clientX, e.target);
+  const onMouseMove = (e) => updateDrag(e.clientX);
+  const onMouseUp = () => endDrag();
+  const onMouseLeave = () => {
+    if (isPointerDown.current) endDrag();
+  };
+
+  // Touch Handlers for Finger Swipe
+  const onTouchStart = (e) => startDrag(e.touches[0].clientX, e.target);
+  const onTouchMove = (e) => updateDrag(e.touches[0].clientX);
+  const onTouchEnd = () => endDrag();
+
+  // Horizontal Wheel / Trackpad Scroll Handler
+  const onWheel = (e) => {
+    if (Math.abs(e.deltaX) > 25) {
+      const now = Date.now();
+      if (now - lastWheelTime.current > 380) {
+        lastWheelTime.current = now;
+        if (e.deltaX > 0) {
+          handleNext();
+        } else {
+          handlePrev();
+        }
+      }
+    }
+  };
+
   return (
-    <div className="ps-root">
+    <div className="ps-root" ref={containerRef}>
       {/* ── Background Subtle Architectural Grid Lines ── */}
       <div className="ps-grid-lines" aria-hidden="true">
         <div className="ps-grid-line line-1" />
@@ -289,9 +470,6 @@ export const ProductsShowcase = () => {
         <div className="ps-grid-line line-4" />
         <div className="ps-grid-line line-5" />
       </div>
-
-      {/* ── Top Header Bar ── */}
-      
 
       {/* ── Left Vertical Index Rail ── */}
       <aside className="ps-index-rail" aria-label="Section Index">
@@ -328,16 +506,32 @@ export const ProductsShowcase = () => {
           </div>
         </section>
 
-        {/* ── Product Carousel Showcase Area ── */}
-        <section className="ps-carousel-stage">
+        {/* ── Product Carousel Showcase Area (Interactive Drag & Touch Swipe) ── */}
+        <section
+          className={`ps-carousel-stage ${isDragging ? 'is-dragging' : ''}`}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseLeave}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onWheel={onWheel}
+        >
           {/* Left Neighboring Card (Partially Visible, 3D Tilted) */}
           <div
             className="ps-neighbor-card ps-neighbor-left"
-            onClick={handlePrev}
+            onClick={() => { if (!hasMoved.current) handlePrev(); }}
             role="button"
             tabIndex={0}
             aria-label={`Switch to previous product: ${leftProduct.name}`}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handlePrev(); }}
+            style={{
+              transform: dragOffset !== 0
+                ? `translateY(-50%) translateX(calc(-40% + ${dragOffset * 0.45}px)) rotateY(16deg) scale(0.92)`
+                : undefined,
+              transition: isDragging ? 'none' : undefined
+            }}
           >
             <div className="ps-neighbor-inner">
               <ProductAppIcon type={leftProduct.iconType} isNeighbor />
@@ -353,62 +547,97 @@ export const ProductsShowcase = () => {
             </div>
           </div>
 
-          {/* Central Dominant Product Card (FocusOS) */}
-          <article className="ps-active-card">
+          {/* Central Dominant Product Card (Active) with Framer Motion AnimatePresence */}
+          <article
+            className="ps-active-card"
+            style={{
+              transform: dragOffset !== 0 ? `translateX(${dragOffset}px)` : undefined,
+              transition: isDragging ? 'none' : undefined
+            }}
+          >
             {/* Small Top-Left Index */}
             <span className="ps-card-index">{currentProduct.index}</span>
 
-            <div className="ps-card-columns">
-              {/* Left Column: Product Identity */}
-              <div className="ps-col-identity">
-                <div className="ps-identity-top">
-                  <ProductAppIcon type={currentProduct.iconType} />
-                  
-                  <h2 className="ps-product-title">
-                    {currentProduct.name}<span className="ps-accent-dot">.</span>
-                  </h2>
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentProduct.id}
+                custom={direction}
+                initial={(dir) => ({ opacity: 0, x: dir > 0 ? 40 : -40, scale: 0.98 })}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={(dir) => ({ opacity: 0, x: dir > 0 ? -40 : 40, scale: 0.98 })}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="ps-card-columns"
+              >
+                {/* Left Column: Product Identity */}
+                <div className="ps-col-identity">
+                  <div className="ps-identity-top">
+                    <motion.div
+                      key={currentProduct.id + '-icon'}
+                      initial={{ scale: 0.82, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                    >
+                      <ProductAppIcon type={currentProduct.iconType} />
+                    </motion.div>
+                    
+                    <h2 className="ps-product-title">
+                      {currentProduct.name}<span className="ps-accent-dot">.</span>
+                    </h2>
 
-                  <p className="ps-product-desc">
-                    {currentProduct.description}
-                  </p>
-                </div>
-
-                <div className="ps-identity-cta">
-                  <a href={`#${currentProduct.id}`} className="ps-cta-btn">
-                    <span>{currentProduct.ctaText}</span>
-                    <ArrowUpRight size={16} className="ps-cta-arrow" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Thin Vertical Column Divider */}
-              <div className="ps-col-divider" />
-
-              {/* Right Column: 4 Feature Rows */}
-              <div className="ps-col-features">
-                {currentProduct.features.map((feat) => (
-                  <div key={feat.id} className="ps-feature-row">
-                    <div className="ps-feature-icon-box">
-                      <FeatureIcon type={feat.icon} />
-                    </div>
-                    <div className="ps-feature-text">
-                      <h4 className="ps-feature-title">{feat.title}</h4>
-                      <p className="ps-feature-desc">{feat.desc}</p>
-                    </div>
+                    <p className="ps-product-desc">
+                      {currentProduct.description}
+                    </p>
                   </div>
-                ))}
-              </div>
-            </div>
+
+                  <div className="ps-identity-cta">
+                    <a href={`#${currentProduct.id}`} className="ps-cta-btn">
+                      <span>{currentProduct.ctaText}</span>
+                      <ArrowUpRight size={16} className="ps-cta-arrow" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* Thin Vertical Column Divider */}
+                <div className="ps-col-divider" />
+
+                {/* Right Column: 4 Feature Rows */}
+                <div className="ps-col-features">
+                  {currentProduct.features.map((feat, i) => (
+                    <motion.div
+                      key={feat.id}
+                      initial={{ opacity: 0, x: 22 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.08 + i * 0.05, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      className="ps-feature-row"
+                    >
+                      <div className="ps-feature-icon-box">
+                        <FeatureIcon type={feat.icon} />
+                      </div>
+                      <div className="ps-feature-text">
+                        <h4 className="ps-feature-title">{feat.title}</h4>
+                        <p className="ps-feature-desc">{feat.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </article>
 
           {/* Right Neighboring Card (Partially Visible, 3D Tilted) */}
           <div
             className="ps-neighbor-card ps-neighbor-right"
-            onClick={handleNext}
+            onClick={() => { if (!hasMoved.current) handleNext(); }}
             role="button"
             tabIndex={0}
             aria-label={`Switch to next product: ${rightProduct.name}`}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleNext(); }}
+            style={{
+              transform: dragOffset !== 0
+                ? `translateY(-50%) translateX(calc(40% + ${dragOffset * 0.45}px)) rotateY(-16deg) scale(0.92)`
+                : undefined,
+              transition: isDragging ? 'none' : undefined
+            }}
           >
             <div className="ps-neighbor-inner">
               <ProductAppIcon type={rightProduct.iconType} isNeighbor />
@@ -434,7 +663,7 @@ export const ProductsShowcase = () => {
                 key={prod.id}
                 type="button"
                 className={`ps-page-pill ${idx === activeIndex ? 'active' : ''}`}
-                onClick={() => setActiveIndex(idx)}
+                onClick={() => handleSelectProduct(idx)}
                 aria-label={`Go to product ${idx + 1}: ${prod.name}`}
                 aria-selected={idx === activeIndex}
               />
