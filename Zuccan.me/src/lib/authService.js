@@ -92,6 +92,41 @@ export const authService = {
   },
 
   /**
+   * Send Password Reset Email via Supabase Auth
+   */
+  async resetPassword(email) {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      return { success: true, data };
+    }
+
+    // Demo fallback
+    return {
+      success: true,
+      demo: true,
+      message: 'Demo password reset link dispatched to console/inbox.',
+    };
+  },
+
+  /**
+   * Update Password after clicking reset link
+   */
+  async updatePassword(newPassword) {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      if (error) throw error;
+      return { success: true, data };
+    }
+
+    return { success: true, message: 'Password updated locally.' };
+  },
+
+  /**
    * Sign Out
    */
   async signOut() {

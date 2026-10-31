@@ -4,6 +4,7 @@ import Login from './components/Login';
 import ApplyJob from './pages/ApplyJob';
 import ChooseProduct from './pages/ChooseProduct';
 import WorkspaceDashboard from './pages/WorkspaceDashboard';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
         {/* Main Employee Login Route — Root Home Page for Zuccano.me */}
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+
+        {/* Password Reset Handler from Supabase Auth */}
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Post-Login Choose Product Page (Exact match to reference) */}
         <Route path="/choose-product" element={<ChooseProduct />} />

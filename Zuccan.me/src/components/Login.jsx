@@ -36,6 +36,8 @@ export const Login = () => {
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotError, setForgotError] = useState('');
 
   // Quick preset loader
   const handleSelectPreset = (role, product, presetEmail) => {
@@ -78,14 +80,22 @@ export const Login = () => {
     }
   };
 
-  const handleForgotSubmit = (e) => {
+  const handleForgotSubmit = async (e) => {
     e.preventDefault();
-    setForgotSent(true);
-    setTimeout(() => {
-      setForgotSent(false);
-      setShowForgotModal(false);
-      setForgotEmail('');
-    }, 2000);
+    if (!forgotEmail) return;
+
+    setForgotLoading(true);
+    setForgotError('');
+
+    try {
+      await authService.resetPassword(forgotEmail);
+      setForgotSent(true);
+    } catch (err) {
+      console.warn('Password reset error:', err);
+      setForgotError(err.message || 'Unable to send reset email. Please try again.');
+    } finally {
+      setForgotLoading(false);
+    }
   };
 
   return (
@@ -395,23 +405,50 @@ export const Login = () => {
             {forgotSent ? (
               <div className="modal-success-state">
                 <CheckCircle2 size={44} className="success-icon" />
-                <h4>Reset Link Sent!</h4>
-                <p>Instructions have been sent to your corporate email if an account exists.</p>
+                <h4>Reset Link Dispatched!</h4>
+                <p>
+                  A secure password reset link has been dispatched via Supabase to <strong>{forgotEmail}</strong>.
+                </p>
+                <p className="modal-success-note">
+                  Please check your inbox (and spam/junk folder). Click the link in the email to set a new password.
+                </p>
+                <button
+                  type="button"
+                  className="modal-submit-btn modal-done-btn"
+                  onClick={() => {
+                    setShowForgotModal(false);
+                    setForgotSent(false);
+                    setForgotEmail('');
+                  }}
+                >
+                  Back to Sign In
+                </button>
               </div>
             ) : (
               <form onSubmit={handleForgotSubmit} className="modal-form">
+                {forgotError && (
+                  <div className="modal-error-banner">
+                    <span>⚠️ {forgotError}</span>
+                  </div>
+                )}
                 <div className="modal-form-group">
-                  <label>Company Email</label>
+                  <label htmlFor="forgotEmailInput">Company / Work Email</label>
                   <input
+                    id="forgotEmailInput"
                     type="email"
                     required
-                    placeholder="Enter your corporate email"
+                    placeholder="e.g. employee@zuccano.me or your email"
                     value={forgotEmail}
                     onChange={(e) => setForgotEmail(e.target.value)}
+                    disabled={forgotLoading}
                   />
                 </div>
-                <button type="submit" className="modal-submit-btn">
-                  <span>Send Reset Link</span>
+                <button
+                  type="submit"
+                  className="modal-submit-btn"
+                  disabled={forgotLoading}
+                >
+                  <span>{forgotLoading ? 'Connecting Supabase...' : 'Send Reset Link'}</span>
                   <ArrowRight size={15} />
                 </button>
               </form>
