@@ -33,8 +33,16 @@ export const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email) return;
-    // Handle login simulation
-    alert(`Logging in as ${selectedRole}: ${email}`);
+    // Save user session and navigate directly to Choose Product page
+    localStorage.setItem(
+      'zuccano_user',
+      JSON.stringify({
+        email,
+        role: selectedRole,
+        loginTime: new Date().toISOString(),
+      })
+    );
+    navigate('/choose-product');
   };
 
   const handleForgotSubmit = (e) => {

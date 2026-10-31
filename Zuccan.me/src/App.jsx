@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import ApplyJob from './pages/ApplyJob';
+import ChooseProduct from './pages/ChooseProduct';
 
 function App() {
   return (
@@ -10,6 +11,10 @@ function App() {
         {/* Main Employee Login Route */}
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
+
+        {/* Post-Login Choose Product Page (Exact match to reference) */}
+        <Route path="/choose-product" element={<ChooseProduct />} />
+        <Route path="/products" element={<ChooseProduct />} />
 
         {/* Dedicated Professional Apply for Job Route */}
         <Route path="/apply" element={<ApplyJob />} />

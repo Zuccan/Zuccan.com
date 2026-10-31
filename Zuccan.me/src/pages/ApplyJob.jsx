@@ -236,10 +236,7 @@ export const ApplyJob = () => {
       <main className="career-main-content">
         {/* Banner Hero */}
         <section className="career-hero-banner">
-          <div className="hero-pill-badge">
-            <span className="pulse-dot" />
-            <span>Join Zuccano Technologies &bull; We're Expanding Rapidly</span>
-          </div>
+         
           <h1 className="hero-main-title">
             Build What's Next<span className="hero-accent-dot">.</span>
           </h1>
