@@ -13,32 +13,55 @@ import {
   ShoppingBag,
   X,
   CheckCircle2,
+  Building,
+  Sparkles
 } from 'lucide-react';
 import './Login.css';
 
 export const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('employee.zfit@zuccano.me');
+  const [password, setPassword] = useState('••••••••••••');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [selectedRole, setSelectedRole] = useState('Employee');
+  const [selectedProduct, setSelectedProduct] = useState('zfit'); // 'zfit' | 'consumer' | 'business' | 'all'
 
   // Interactive forgot password modal
   const [showForgotModal, setShowForgotModal] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotSent, setForgotSent] = useState(false);
 
+  // Quick preset loader
+  const handleSelectPreset = (role, product, presetEmail) => {
+    setSelectedRole(role);
+    setSelectedProduct(product);
+    setEmail(presetEmail);
+    setPassword('••••••••••••');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email) return;
-    // Save user session and navigate directly to Choose Product page
+
+    // Detect product from email or selectedProduct
+    let product = selectedProduct;
+    if (email.includes('consumer')) product = 'consumer';
+    else if (email.includes('business')) product = 'business';
+    else if (email.includes('zfit')) product = 'zfit';
+
+    let role = selectedRole;
+    if (email.includes('ceo')) role = 'CEO';
+    else if (email.includes('cfo')) role = 'CFO';
+
+    // Save user session
     localStorage.setItem(
       'zuccano_user',
       JSON.stringify({
         email,
-        role: selectedRole,
+        role,
+        product,
         loginTime: new Date().toISOString(),
       })
     );
@@ -95,7 +118,10 @@ export const Login = () => {
               <button
                 type="button"
                 className={`role-badge ${selectedRole === 'Employee' ? 'active' : ''}`}
-                onClick={() => setSelectedRole('Employee')}
+                onClick={() => {
+                  setSelectedRole('Employee');
+                  if (email.includes('ceo')) setEmail(`emp.${selectedProduct}@zuccano.me`);
+                }}
               >
                 <Users size={15} className="role-icon" />
                 <span>Employee</span>
@@ -104,16 +130,22 @@ export const Login = () => {
               <button
                 type="button"
                 className={`role-badge ${selectedRole === 'CEO' ? 'active' : ''}`}
-                onClick={() => setSelectedRole('CEO')}
+                onClick={() => {
+                  setSelectedRole('CEO');
+                  setEmail(`ceo.${selectedProduct}@zuccano.me`);
+                }}
               >
                 <Crown size={15} className="role-icon" />
-                <span>CEO's</span>
+                <span>CEO</span>
               </button>
 
               <button
                 type="button"
                 className={`role-badge ${selectedRole === 'CFO' ? 'active' : ''}`}
-                onClick={() => setSelectedRole('CFO')}
+                onClick={() => {
+                  setSelectedRole('CFO');
+                  setEmail(`cfo.${selectedProduct}@zuccano.me`);
+                }}
               >
                 <BarChart2 size={15} className="role-icon" />
                 <span>CFO</span>
@@ -122,14 +154,17 @@ export const Login = () => {
               <button
                 type="button"
                 className={`role-badge ${selectedRole === 'Other Officers' ? 'active' : ''}`}
-                onClick={() => setSelectedRole('Other Officers')}
+                onClick={() => {
+                  setSelectedRole('Other Officers');
+                  setEmail(`officer.${selectedProduct}@zuccano.me`);
+                }}
               >
                 <Shield size={15} className="role-icon" />
                 <span>Other Officers</span>
               </button>
             </div>
 
-            {/* Looking for a Job Card -> Opens Dedicated Professional Application Page */}
+            {/* Looking for a Job Card -> Navigates to Dedicated /apply page */}
             <div className="job-banner-card">
               <div className="job-icon-box">
                 <ShoppingBag size={20} className="job-bag-icon" />
@@ -166,6 +201,39 @@ export const Login = () => {
               <p className="card-subtitle">
                 Access your workspace, manage your profile, and stay connected.
               </p>
+            </div>
+
+            {/* Fast 1-Click Role & Division Tester Pills */}
+            <div className="demo-presets-row">
+              <span className="presets-label">Quick Sign-in:</span>
+              <button
+                type="button"
+                className={`preset-pill ${selectedRole === 'CEO' && selectedProduct === 'zfit' ? 'preset-active' : ''}`}
+                onClick={() => handleSelectPreset('CEO', 'zfit', 'ceo.zfit@zuccano.me')}
+              >
+                👑 ZFIT CEO
+              </button>
+              <button
+                type="button"
+                className={`preset-pill ${selectedRole === 'Employee' && selectedProduct === 'zfit' ? 'preset-active' : ''}`}
+                onClick={() => handleSelectPreset('Employee', 'zfit', 'emp.zfit@zuccano.me')}
+              >
+                💼 ZFIT Employee
+              </button>
+              <button
+                type="button"
+                className={`preset-pill ${selectedRole === 'CEO' && selectedProduct === 'consumer' ? 'preset-active' : ''}`}
+                onClick={() => handleSelectPreset('CEO', 'consumer', 'ceo.consumer@zuccano.me')}
+              >
+                👑 Consumer CEO
+              </button>
+              <button
+                type="button"
+                className={`preset-pill ${selectedRole === 'Employee' && selectedProduct === 'business' ? 'preset-active' : ''}`}
+                onClick={() => handleSelectPreset('Employee', 'business', 'emp.business@zuccano.me')}
+              >
+                💼 Business Dev
+              </button>
             </div>
 
             <form onSubmit={handleSubmit} className="card-form" noValidate>
@@ -217,6 +285,24 @@ export const Login = () => {
                 </div>
               </div>
 
+              {/* Division / Product Assignment Selector */}
+              <div className="form-group">
+                <label htmlFor="prodSelect" className="form-label">
+                  Assigned Product Division
+                </label>
+                <select
+                  id="prodSelect"
+                  className="form-input form-select-input"
+                  value={selectedProduct}
+                  onChange={(e) => setSelectedProduct(e.target.value)}
+                >
+                  <option value="zfit">ZFIT — Smart Mirror & Virtual Fitting</option>
+                  <option value="consumer">Zuccano Consumer — Hardware & Wearables</option>
+                  <option value="business">Zuccano Business — Enterprise & Retail IoT</option>
+                  <option value="all">Global Executive Suite (All Products Access)</option>
+                </select>
+              </div>
+
               {/* Remember Me & Forgot Password Row */}
               <div className="form-options-row">
                 <label className="remember-checkbox-label">
@@ -240,7 +326,7 @@ export const Login = () => {
 
               {/* Primary Login Button */}
               <button type="submit" className="login-primary-btn">
-                <span>Login</span>
+                <span>Login as {selectedRole}</span>
                 <ArrowRight size={16} className="btn-arrow" />
               </button>
 

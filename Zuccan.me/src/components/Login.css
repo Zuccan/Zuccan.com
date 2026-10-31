@@ -311,6 +311,58 @@
   align-items: center;
 }
 
+.demo-presets-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+  padding: 8px 10px;
+  background-color: #f8fafc;
+  border: 1px solid #eef2f6;
+  border-radius: 10px;
+}
+
+.presets-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-right: 2px;
+}
+
+.preset-pill {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #475569;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.preset-pill:hover {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.preset-pill.preset-active {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.form-select-input {
+  padding: 0 1rem;
+  background-color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+}
+
 .input-icon-left {
   position: absolute;
   left: 14px;
