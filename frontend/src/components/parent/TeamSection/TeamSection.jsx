@@ -6,7 +6,7 @@ const TEAM = [
   {
     num: '01',
     name: 'Pavan Reddy',
-    role: 'Chief Executive Officer',
+    role: 'CEO - Zuccano and Zfit ',
     img: '/team-ayaan.jpg',
   },
   {
@@ -17,8 +17,8 @@ const TEAM = [
   },
   {
     num: '03',
-    name: 'Naseer Pasha',
-    role: 'Sde',
+    name: 'Kumar MS',
+    role: 'COO (Chief Operating Officer) ',
     img: '/team-sameer.jpg',
   },
 ];
@@ -51,7 +51,7 @@ export const TeamSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              Three people.{' '}
+              The Team.{' '}
               <span className="team-title-block">
                 One direction<span className="team-dot">.</span>
               </span>
