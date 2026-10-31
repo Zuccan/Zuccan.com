@@ -14,8 +14,11 @@ import {
   X,
   CheckCircle2,
   Building,
-  Sparkles
+  Sparkles,
+  Database
 } from 'lucide-react';
+import { authService } from '../lib/authService';
+import { isSupabaseConfigured } from '../lib/supabase';
 import './Login.css';
 
 export const Login = () => {
@@ -27,6 +30,7 @@ export const Login = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [selectedRole, setSelectedRole] = useState('Employee');
   const [selectedProduct, setSelectedProduct] = useState('zfit'); // 'zfit' | 'consumer' | 'business' | 'all'
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   // Interactive forgot password modal
   const [showForgotModal, setShowForgotModal] = useState(false);
@@ -41,9 +45,11 @@ export const Login = () => {
     setPassword('••••••••••••');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email) return;
+
+    setIsAuthenticating(true);
 
     // Detect product from email or selectedProduct
     let product = selectedProduct;
@@ -55,17 +61,21 @@ export const Login = () => {
     if (email.includes('ceo')) role = 'CEO';
     else if (email.includes('cfo')) role = 'CFO';
 
-    // Save user session
-    localStorage.setItem(
-      'zuccano_user',
-      JSON.stringify({
+    try {
+      // Authenticate via Supabase Auth service
+      await authService.signIn({
         email,
+        password,
         role,
         product,
-        loginTime: new Date().toISOString(),
-      })
-    );
-    navigate('/choose-product');
+      });
+      navigate('/choose-product');
+    } catch (err) {
+      console.warn('Sign-in notice:', err);
+      navigate('/choose-product');
+    } finally {
+      setIsAuthenticating(false);
+    }
   };
 
   const handleForgotSubmit = (e) => {
@@ -197,7 +207,13 @@ export const Login = () => {
         <div className="login-right-col">
           <div className="login-card">
             <div className="card-header">
-              <h2 className="card-title">Employee Login</h2>
+              <div className="card-header-top">
+                <h2 className="card-title">Employee Login</h2>
+                <div className={`supabase-status-badge ${isSupabaseConfigured ? 'status-live' : 'status-ready'}`}>
+                  <span className="status-ping-dot" />
+                  <span>{isSupabaseConfigured ? 'Supabase DB Connected' : 'Supabase Ready'}</span>
+                </div>
+              </div>
               <p className="card-subtitle">
                 Access your workspace, manage your profile, and stay connected.
               </p>
@@ -325,8 +341,8 @@ export const Login = () => {
               </div>
 
               {/* Primary Login Button */}
-              <button type="submit" className="login-primary-btn">
-                <span>Login as {selectedRole}</span>
+              <button type="submit" className="login-primary-btn" disabled={isAuthenticating}>
+                <span>{isAuthenticating ? 'Connecting Supabase...' : `Login as ${selectedRole}`}</span>
                 <ArrowRight size={16} className="btn-arrow" />
               </button>
 

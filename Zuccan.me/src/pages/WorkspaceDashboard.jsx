@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   Crown,
@@ -24,8 +24,17 @@ import {
   Sparkles,
   BarChart3,
   Calendar,
-  Eye
+  Eye,
+  MessageSquare,
+  Send,
+  Hash,
+  Radio,
+  Smile,
+  ShieldCheck,
+  Database
 } from 'lucide-react';
+import { messageService } from '../lib/messageService';
+import { isSupabaseConfigured } from '../lib/supabase';
 import './WorkspaceDashboard.css';
 
 const PRODUCT_CONFIG = {
@@ -76,6 +85,7 @@ const PRODUCT_CONFIG = {
 export const WorkspaceDashboard = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
+  const messagesEndRef = useRef(null);
 
   // Load user session
   const storedUser = localStorage.getItem('zuccano_user');
@@ -85,23 +95,27 @@ export const WorkspaceDashboard = () => {
 
   const currentProduct = PRODUCT_CONFIG[productId] || PRODUCT_CONFIG.zfit;
   const isCeo = user.role?.toLowerCase() === 'ceo';
-  const isCfo = user.role?.toLowerCase() === 'cfo';
 
   // Check access permission
   const userAssignedProduct = user.product || 'zfit';
   const hasAccess = userAssignedProduct === 'all' || userAssignedProduct === productId;
 
-  // Tabs for CEO vs Employee
-  const [activeTab, setActiveTab] = useState(isCeo ? 'executive-overview' : 'work-submissions');
+  // Active Main View Tab: 'overview' | 'messaging'
+  const [workspaceView, setWorkspaceView] = useState('overview');
 
-  // Work Submissions State (shared via localStorage so CEO can see Employee submissions!)
+  // ══════════════════ SUPABASE MESSAGING STATE ══════════════════
+  const [messages, setMessages] = useState([]);
+  const [activeChannel, setActiveChannel] = useState('general-sprint');
+  const [messageInput, setMessageInput] = useState('');
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  // ══════════════════ WORK SUBMISSIONS STATE ══════════════════
   const storageKey = `zuccano_submissions_${productId}`;
   const [submissions, setSubmissions] = useState(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { }
     }
-    // Initial mock submissions
     return [
       {
         id: 'SUB-101',
@@ -137,10 +151,70 @@ export const WorkspaceDashboard = () => {
   const [newNotes, setNewNotes] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState(false);
 
+  // Load and Subscribe to Supabase Messages
+  useEffect(() => {
+    let unsubscribe = () => {};
+
+    const loadMessages = async () => {
+      const data = await messageService.fetchMessages(productId);
+      setMessages(data);
+    };
+
+    loadMessages();
+
+    // Subscribe to realtime updates from Supabase
+    unsubscribe = messageService.subscribeToMessages(productId, (newMsg) => {
+      setMessages((prev) => {
+        if (prev.some((m) => m.id === newMsg.id)) return prev;
+        return [...prev, newMsg];
+      });
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [productId]);
+
+  // Auto-scroll chat to bottom
+  useEffect(() => {
+    if (workspaceView === 'messaging') {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, workspaceView]);
+
   // Save submissions whenever changed
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(submissions));
   }, [submissions, storageKey]);
+
+  // Send Message Handler (Supabase)
+  const handleSendMessage = async (e) => {
+    if (e) e.preventDefault();
+    if (!messageInput.trim()) return;
+
+    const content = messageInput.trim();
+    setMessageInput('');
+    setIsSendingMessage(true);
+
+    try {
+      await messageService.sendMessage({
+        productId,
+        senderEmail: user.email,
+        senderName: user.name || user.email.split('@')[0],
+        senderRole: user.role,
+        channel: activeChannel,
+        content,
+      });
+    } catch (err) {
+      console.error('Failed to send message:', err);
+    } finally {
+      setIsSendingMessage(false);
+    }
+  };
+
+  const handleQuickTemplate = (templateText) => {
+    setMessageInput(templateText);
+  };
 
   // Handle Employee submitting work
   const handleUploadWork = (e) => {
@@ -161,6 +235,17 @@ export const WorkspaceDashboard = () => {
     };
 
     setSubmissions([newSubmission, ...submissions]);
+
+    // Also auto-post notification message to Supabase chat!
+    messageService.sendMessage({
+      productId,
+      senderEmail: user.email,
+      senderName: user.name || user.email.split('@')[0],
+      senderRole: user.role,
+      channel: 'general-sprint',
+      content: `📦 [Work Submitted] ${newTitle.trim()} (${newModule}) - Submitted for CEO Review.`,
+    });
+
     setNewTitle('');
     setNewLink('');
     setNewNotes('');
@@ -177,6 +262,16 @@ export const WorkspaceDashboard = () => {
           : sub
       )
     );
+
+    // Notify team in Supabase chat
+    messageService.sendMessage({
+      productId,
+      senderEmail: user.email,
+      senderName: 'CEO Office',
+      senderRole: 'CEO',
+      channel: 'general-sprint',
+      content: `✅ [CEO Review] Submission ${subId} has been marked as "${newStatus}" by ${user.email}.`,
+    });
   };
 
   const handleLogout = () => {
@@ -221,6 +316,9 @@ export const WorkspaceDashboard = () => {
     );
   }
 
+  // Filter messages for current channel
+  const filteredMessages = messages.filter((m) => !m.channel || m.channel === activeChannel);
+
   return (
     <div className="workspace-page-root">
       {/* ── Top Workspace Header ── */}
@@ -241,6 +339,11 @@ export const WorkspaceDashboard = () => {
           </div>
 
           <div className="navbar-right">
+            <div className={`supabase-indicator-badge ${isSupabaseConfigured ? 'indicator-live' : 'indicator-ready'}`}>
+              <Database size={12} />
+              <span>{isSupabaseConfigured ? 'Supabase Live' : 'Supabase Ready'}</span>
+            </div>
+
             <button
               type="button"
               className="switch-product-nav-btn"
@@ -289,7 +392,7 @@ export const WorkspaceDashboard = () => {
             <div className="live-status-card">
               <div className="pulse-indicator">
                 <span className="live-dot-green" />
-                <span className="live-text">Live Production Cluster</span>
+                <span className="live-text">Live Supabase Database Cluster</span>
               </div>
               <span className="active-role-info">
                 Active Session: <strong>{user.role}</strong> ({user.email})
@@ -298,387 +401,580 @@ export const WorkspaceDashboard = () => {
           </div>
         </section>
 
+        {/* ── High-End Dual Tab Navigation (Overview vs Supabase Team Messaging) ── */}
+        <div className="workspace-tab-navigation">
+          <button
+            type="button"
+            className={`workspace-nav-tab ${workspaceView === 'overview' ? 'tab-active' : ''}`}
+            onClick={() => setWorkspaceView('overview')}
+          >
+            <Briefcase size={16} />
+            <span>{isCeo ? 'Executive Approvals & Roadmap' : 'Work Submissions & Sprint'}</span>
+          </button>
+
+          <button
+            type="button"
+            className={`workspace-nav-tab ${workspaceView === 'messaging' ? 'tab-active' : ''}`}
+            onClick={() => setWorkspaceView('messaging')}
+          >
+            <MessageSquare size={16} />
+            <span>Team Comms & Messaging (Supabase)</span>
+            <span className="live-msg-count-pill">{messages.length}</span>
+          </button>
+        </div>
+
         {/* ══════════════════════════════════════════════════════════════
-            ROLE-BASED DASHBOARD CONTENT
+            VIEW 1: SUPABASE TEAM MESSAGING PANEL
             ══════════════════════════════════════════════════════════════ */}
-
-        {isCeo ? (
-          /* ════════════ CEO EXECUTIVE DASHBOARD ════════════ */
-          <div className="ceo-dashboard-layout">
-            {/* CEO Executive KPI Ribbon */}
-            <div className="kpi-cards-grid">
-              <div className="kpi-stat-card">
-                <div className="kpi-header">
-                  <span className="kpi-label">Active Deployments</span>
-                  <Activity size={18} className="kpi-icon-accent" />
-                </div>
-                <div className="kpi-value">{currentProduct.defaultKpis.activeMirrors || currentProduct.defaultKpis.activeDevices || currentProduct.defaultKpis.clientStores}</div>
-                <span className="kpi-growth-positive">+14.2% MoM growth</span>
+        {workspaceView === 'messaging' && (
+          <div className="team-messaging-card">
+            {/* Channels Sidebar / Selector */}
+            <div className="messaging-sidebar">
+              <div className="sidebar-section-title">
+                <Hash size={13} />
+                <span>CHANNELS</span>
+              </div>
+              <div className="channels-list">
+                <button
+                  type="button"
+                  className={`channel-pill ${activeChannel === 'general-sprint' ? 'channel-active' : ''}`}
+                  onClick={() => setActiveChannel('general-sprint')}
+                >
+                  <Hash size={14} />
+                  <span>general-sprint</span>
+                </button>
+                <button
+                  type="button"
+                  className={`channel-pill ${activeChannel === 'code-review' ? 'channel-active' : ''}`}
+                  onClick={() => setActiveChannel('code-review')}
+                >
+                  <Hash size={14} />
+                  <span>code-review</span>
+                </button>
+                <button
+                  type="button"
+                  className={`channel-pill ${activeChannel === '3d-assets' ? 'channel-active' : ''}`}
+                  onClick={() => setActiveChannel('3d-assets')}
+                >
+                  <Hash size={14} />
+                  <span>3d-assets & design</span>
+                </button>
+                <button
+                  type="button"
+                  className={`channel-pill ${activeChannel === 'ceo-announcements' ? 'channel-active' : ''}`}
+                  onClick={() => setActiveChannel('ceo-announcements')}
+                >
+                  <Crown size={14} />
+                  <span>ceo-announcements</span>
+                </button>
               </div>
 
-              <div className="kpi-stat-card">
-                <div className="kpi-header">
-                  <span className="kpi-label">Weekly Throughput / Users</span>
-                  <TrendingUp size={18} className="kpi-icon-accent" />
-                </div>
-                <div className="kpi-value">{currentProduct.defaultKpis.virtualTryOns || currentProduct.defaultKpis.dailySyncs || currentProduct.defaultKpis.uptimeSla}</div>
-                <span className="kpi-growth-positive">Healthy SLA benchmark</span>
+              <div className="sidebar-section-title" style={{ marginTop: '1.5rem' }}>
+                <Users size={13} />
+                <span>ACTIVE DIVISION TEAM</span>
               </div>
-
-              <div className="kpi-stat-card">
-                <div className="kpi-header">
-                  <span className="kpi-label">Current Sprint Velocity</span>
-                  <BarChart3 size={18} className="kpi-icon-accent" />
+              <div className="online-users-list">
+                <div className="online-user-item">
+                  <span className="online-dot" />
+                  <span>{user.email} (You)</span>
                 </div>
-                <div className="kpi-value">{currentProduct.defaultKpis.sprintProgress}</div>
-                <span className="kpi-growth-positive">{currentProduct.defaultKpis.teamVelocity} delivered</span>
-              </div>
-
-              <div className="kpi-stat-card">
-                <div className="kpi-header">
-                  <span className="kpi-label">Pending Work Approvals</span>
-                  <Clock size={18} className="kpi-icon-warning" />
+                <div className="online-user-item">
+                  <span className="online-dot" />
+                  <span>Sameer Ali (ZFIT CEO)</span>
                 </div>
-                <div className="kpi-value">
-                  {submissions.filter((s) => s.status === 'Pending Review').length} Tasks
+                <div className="online-user-item">
+                  <span className="online-dot" />
+                  <span>Aryan Kulkarni (Core AI)</span>
                 </div>
-                <span className="kpi-growth-neutral">Awaiting CEO Sign-off</span>
               </div>
             </div>
 
-            {/* CEO Review Section: Team Work Submissions & Approvals */}
-            <div className="ceo-submissions-panel">
-              <div className="panel-header-row">
-                <div>
-                  <h3 className="panel-title">Team Work Submissions & Executive Approvals</h3>
-                  <p className="panel-desc">
-                    Review and sign-off on code, design assets, and architecture submitted by {currentProduct.name} employees.
-                  </p>
+            {/* Chat Conversation Area */}
+            <div className="messaging-main-area">
+              <div className="chat-header">
+                <div className="chat-header-title">
+                  <Hash size={18} className="hash-icon" />
+                  <h3>{activeChannel}</h3>
+                  <span className="channel-desc-tag">&bull; {currentProduct.name} Real-time Channel</span>
                 </div>
-                <div className="panel-filter-badge">
-                  <span>{submissions.length} Total Submissions</span>
+                <div className="supabase-sync-badge">
+                  <Radio size={12} className="radio-ping-icon" />
+                  <span>Realtime Database Active</span>
                 </div>
               </div>
 
-              {submissions.length === 0 ? (
-                <div className="empty-submissions-box">
-                  <FileText size={36} className="empty-icon" />
-                  <h4>No submissions yet for {currentProduct.name}</h4>
-                  <p>When team members submit code or designs, they will appear here for review.</p>
+              {/* Messages Stream */}
+              <div className="chat-messages-stream">
+                {filteredMessages.length === 0 ? (
+                  <div className="empty-chat-state">
+                    <MessageSquare size={32} className="empty-chat-icon" />
+                    <h4>No messages yet in #{activeChannel}</h4>
+                    <p>Start the conversation! Post an update or ask a question to the {currentProduct.name} team.</p>
+                  </div>
+                ) : (
+                  filteredMessages.map((msg) => {
+                    const isMsgCeo = msg.sender_role?.toLowerCase() === 'ceo';
+                    const isMyMsg = msg.sender_email === user.email;
+
+                    return (
+                      <div
+                        key={msg.id}
+                        className={`chat-message-bubble ${isMyMsg ? 'msg-own' : ''} ${isMsgCeo ? 'msg-ceo-post' : ''}`}
+                      >
+                        <div className="msg-avatar">
+                          {msg.sender_name?.charAt(0).toUpperCase() || 'U'}
+                        </div>
+                        <div className="msg-content-col">
+                          <div className="msg-meta-row">
+                            <span className="msg-sender-name">{msg.sender_name}</span>
+                            <span className={`msg-role-tag ${isMsgCeo ? 'role-tag-ceo' : 'role-tag-emp'}`}>
+                              {isMsgCeo ? '👑 CEO' : '💼 Employee'}
+                            </span>
+                            <span className="msg-timestamp">
+                              {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </div>
+                          <div className="msg-text-body">{msg.content}</div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Quick Template Chips */}
+              <div className="quick-templates-bar">
+                <span className="templates-label">Quick:</span>
+                <button
+                  type="button"
+                  className="template-chip"
+                  onClick={() => handleQuickTemplate(`🚀 PR open for review: [Enter branch/PR link]`)}
+                >
+                  🚀 PR for Review
+                </button>
+                <button
+                  type="button"
+                  className="template-chip"
+                  onClick={() => handleQuickTemplate(`⚡ Blocker resolved on ${currentProduct.modules[0]}`)}
+                >
+                  ⚡ Blocker Resolved
+                </button>
+                {isCeo && (
+                  <button
+                    type="button"
+                    className="template-chip template-chip-ceo"
+                    onClick={() => handleQuickTemplate(`👑 CEO Priority: Please prioritize mirror mesh latency for today's milestone.`)}
+                  >
+                    👑 CEO Priority Directive
+                  </button>
+                )}
+              </div>
+
+              {/* Message Composer Input */}
+              <form onSubmit={handleSendMessage} className="chat-composer-form">
+                <input
+                  type="text"
+                  className="chat-input-field"
+                  placeholder={`Message #${activeChannel} as ${user.role} (${user.email})... Press Enter to send`}
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  disabled={isSendingMessage}
+                />
+                <button
+                  type="submit"
+                  className="chat-send-btn"
+                  disabled={!messageInput.trim() || isSendingMessage}
+                >
+                  <Send size={15} />
+                  <span>Send</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ══════════════════════════════════════════════════════════════
+            VIEW 2: WORKSPACE OVERVIEW & SUBMISSIONS (CEO VS EMPLOYEE)
+            ══════════════════════════════════════════════════════════════ */}
+        {workspaceView === 'overview' && (
+          isCeo ? (
+            /* ════════════ CEO EXECUTIVE DASHBOARD ════════════ */
+            <div className="ceo-dashboard-layout">
+              {/* CEO Executive KPI Ribbon */}
+              <div className="kpi-cards-grid">
+                <div className="kpi-stat-card">
+                  <div className="kpi-header">
+                    <span className="kpi-label">Active Deployments</span>
+                    <Activity size={18} className="kpi-icon-accent" />
+                  </div>
+                  <div className="kpi-value">{currentProduct.defaultKpis.activeMirrors || currentProduct.defaultKpis.activeDevices || currentProduct.defaultKpis.clientStores}</div>
+                  <span className="kpi-growth-positive">+14.2% MoM growth</span>
                 </div>
-              ) : (
+
+                <div className="kpi-stat-card">
+                  <div className="kpi-header">
+                    <span className="kpi-label">Weekly Throughput / Users</span>
+                    <TrendingUp size={18} className="kpi-icon-accent" />
+                  </div>
+                  <div className="kpi-value">{currentProduct.defaultKpis.virtualTryOns || currentProduct.defaultKpis.dailySyncs || currentProduct.defaultKpis.uptimeSla}</div>
+                  <span className="kpi-growth-positive">Healthy SLA benchmark</span>
+                </div>
+
+                <div className="kpi-stat-card">
+                  <div className="kpi-header">
+                    <span className="kpi-label">Current Sprint Velocity</span>
+                    <BarChart3 size={18} className="kpi-icon-accent" />
+                  </div>
+                  <div className="kpi-value">{currentProduct.defaultKpis.sprintProgress}</div>
+                  <span className="kpi-growth-positive">{currentProduct.defaultKpis.teamVelocity} delivered</span>
+                </div>
+
+                <div className="kpi-stat-card">
+                  <div className="kpi-header">
+                    <span className="kpi-label">Pending Work Approvals</span>
+                    <Clock size={18} className="kpi-icon-warning" />
+                  </div>
+                  <div className="kpi-value">
+                    {submissions.filter((s) => s.status === 'Pending Review').length} Tasks
+                  </div>
+                  <span className="kpi-growth-neutral">Awaiting CEO Sign-off</span>
+                </div>
+              </div>
+
+              {/* CEO Review Section: Team Work Submissions & Approvals */}
+              <div className="ceo-submissions-panel">
+                <div className="panel-header-row">
+                  <div>
+                    <h3 className="panel-title">Team Work Submissions & Executive Approvals</h3>
+                    <p className="panel-desc">
+                      Review and sign-off on code, design assets, and architecture submitted by {currentProduct.name} employees.
+                    </p>
+                  </div>
+                  <div className="panel-filter-badge">
+                    <span>{submissions.length} Total Submissions</span>
+                  </div>
+                </div>
+
+                {submissions.length === 0 ? (
+                  <div className="empty-submissions-box">
+                    <FileText size={36} className="empty-icon" />
+                    <h4>No submissions yet for {currentProduct.name}</h4>
+                    <p>When team members submit code or designs, they will appear here for review.</p>
+                  </div>
+                ) : (
+                  <div className="submissions-table-wrapper">
+                    <table className="submissions-table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Task / Work Title</th>
+                          <th>Module</th>
+                          <th>Submitted By</th>
+                          <th>Timestamp</th>
+                          <th>Status</th>
+                          <th>CEO Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {submissions.map((sub) => (
+                          <tr key={sub.id} className={`row-status-${sub.status.toLowerCase().replace(' ', '-')}`}>
+                            <td className="cell-id">{sub.id}</td>
+                            <td className="cell-title">
+                              <div className="title-bold">{sub.title}</div>
+                              <div className="notes-muted">{sub.notes}</div>
+                              {sub.workLink && (
+                                <a
+                                  href={sub.workLink}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="external-work-link"
+                                >
+                                  <LinkIcon size={12} />
+                                  <span>{sub.workLink}</span>
+                                </a>
+                              )}
+                            </td>
+                            <td className="cell-module">
+                              <span className="module-pill">{sub.module}</span>
+                            </td>
+                            <td className="cell-author">
+                              <div className="author-name">{sub.employeeName}</div>
+                              <div className="author-email">{sub.employeeEmail}</div>
+                            </td>
+                            <td className="cell-date">{sub.date}</td>
+                            <td className="cell-status">
+                              <span className={`status-pill status-${sub.status.toLowerCase().replace(' ', '-')}`}>
+                                {sub.status === 'Approved' && <CheckCircle2 size={12} />}
+                                {sub.status === 'Pending Review' && <Clock size={12} />}
+                                {sub.status === 'Revision Needed' && <AlertCircle size={12} />}
+                                <span>{sub.status}</span>
+                              </span>
+                            </td>
+                            <td className="cell-actions">
+                              {sub.status === 'Pending Review' ? (
+                                <div className="ceo-action-btns">
+                                  <button
+                                    type="button"
+                                    className="btn-approve"
+                                    onClick={() => handleStatusChange(sub.id, 'Approved')}
+                                    title="Approve Work"
+                                  >
+                                    <Check size={14} />
+                                    <span>Approve</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn-revise"
+                                    onClick={() => handleStatusChange(sub.id, 'Revision Needed')}
+                                    title="Request Revision"
+                                  >
+                                    <RotateCcw size={14} />
+                                    <span>Revise</span>
+                                  </button>
+                                </div>
+                              ) : (
+                                <span className="reviewed-by-text">
+                                  Verified by {sub.reviewedBy || 'CEO'}
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {/* CEO Strategic Modules Overview */}
+              <div className="ceo-strategic-grid">
+                <div className="strategic-card">
+                  <h4>{currentProduct.name} Division Roadmaps</h4>
+                  <div className="modules-list-boxed">
+                    {currentProduct.modules.map((m, idx) => (
+                      <div key={m} className="module-item-row">
+                        <div className="module-left">
+                          <span className="module-num">0{idx + 1}</span>
+                          <span className="module-name">{m}</span>
+                        </div>
+                        <span className="module-status-active">● Active Track</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="strategic-card">
+                  <h4>Executive Resource Allocation</h4>
+                  <p className="card-note-text">
+                    Budget allocation & headcounts are strictly controlled under {currentProduct.name} CEO authority.
+                  </p>
+                  <div className="budget-progress-bar">
+                    <div className="bar-fill" style={{ width: '74%' }} />
+                  </div>
+                  <div className="budget-meta">
+                    <span>Q4 Budget Consumed: 74%</span>
+                    <span>Runway: 18 Months</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* ════════════ EMPLOYEE WORKSPACE DASHBOARD ════════════ */
+            <div className="employee-dashboard-layout">
+              {/* Top Grid: Work Submission Card + Active Tasks Card */}
+              <div className="employee-two-col-grid">
+                
+                {/* Card 1: Submit Your Work Form */}
+                <div className="work-upload-card">
+                  <div className="card-top-title">
+                    <div className="title-with-icon">
+                      <Upload size={20} className="upload-header-icon" />
+                      <h3>Submit Your Work / Task Updates</h3>
+                    </div>
+                    <span className="role-indicator-badge">Employee Portal</span>
+                  </div>
+                  <p className="card-subtitle-text">
+                    Log your daily code, feature PRs, designs, or documentation. Submissions are saved to Supabase and automatically notified to the {currentProduct.name} CEO.
+                  </p>
+
+                  {uploadSuccess && (
+                    <div className="upload-success-alert">
+                      <CheckCircle2 size={16} />
+                      <span>Work successfully submitted! Notification sent to team chat.</span>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleUploadWork} className="work-upload-form">
+                    <div className="form-group-field">
+                      <label>Task / Feature Title *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Implemented 3D draping physics on ZFIT Mirror"
+                        value={newTitle}
+                        onChange={(e) => setNewTitle(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="form-row-two">
+                      <div className="form-group-field">
+                        <label>Module / Component *</label>
+                        <select
+                          value={newModule}
+                          onChange={(e) => setNewModule(e.target.value)}
+                        >
+                          {currentProduct.modules.map((m) => (
+                            <option key={m} value={m}>
+                              {m}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="form-group-field">
+                        <label>PR / Artifact / Figma Link</label>
+                        <input
+                          type="url"
+                          placeholder="https://github.com/zuccano/... or drive link"
+                          value={newLink}
+                          onChange={(e) => setNewLink(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group-field">
+                      <label>Implementation Summary / Technical Notes</label>
+                      <textarea
+                        rows={3}
+                        placeholder="Describe what was built, performance metrics improved, or testing verification..."
+                        value={newNotes}
+                        onChange={(e) => setNewNotes(e.target.value)}
+                      />
+                    </div>
+
+                    <button type="submit" className="submit-work-btn">
+                      <Upload size={16} />
+                      <span>Submit Work to Dashboard</span>
+                    </button>
+                  </form>
+                </div>
+
+                {/* Card 2: My Assigned Sprint Tasks */}
+                <div className="assigned-tasks-card">
+                  <div className="card-top-title">
+                    <div className="title-with-icon">
+                      <Layers size={20} className="tasks-header-icon" />
+                      <h3>Current Sprint Objectives</h3>
+                    </div>
+                    <span className="sprint-tag-pill">Active Sprint 24</span>
+                  </div>
+
+                  <div className="sprint-tasks-list">
+                    <div className="sprint-task-item">
+                      <div className="task-checkbox-mock checked">
+                        <Check size={12} />
+                      </div>
+                      <div className="task-info">
+                        <span className="task-title-line line-done">Optical gesture calibration for smart mirror</span>
+                        <span className="task-meta-line">Virtual Fitting AI &bull; Completed</span>
+                      </div>
+                    </div>
+
+                    <div className="sprint-task-item">
+                      <div className="task-checkbox-mock" />
+                      <div className="task-info">
+                        <span className="task-title-line">Optimize 60FPS WebGL canvas renderer</span>
+                        <span className="task-meta-line">3D Asset Pipeline &bull; In Progress</span>
+                      </div>
+                    </div>
+
+                    <div className="sprint-task-item">
+                      <div className="task-checkbox-mock" />
+                      <div className="task-info">
+                        <span className="task-title-line">Bluetooth low-energy pairing protocol test</span>
+                        <span className="task-meta-line">Mirror OS Firmware &bull; Scheduled</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="standup-card-footer">
+                    <div className="standup-pulse">
+                      <span className="pulse-dot-cyan" />
+                      <span>Daily Standup: 10:30 AM IST (Google Meet)</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Bottom Table: Submissions Log History */}
+              <div className="submissions-history-panel">
+                <div className="panel-header-row">
+                  <div>
+                    <h3 className="panel-title">Your Work Log & Review Status</h3>
+                    <p className="panel-desc">
+                      Live record of all contributions submitted under your account ({user.email}).
+                    </p>
+                  </div>
+                  <span className="badge-count">
+                    {submissions.filter((s) => s.employeeEmail === user.email).length} of your submissions
+                  </span>
+                </div>
+
                 <div className="submissions-table-wrapper">
                   <table className="submissions-table">
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Task / Work Title</th>
+                        <th>Work Summary</th>
                         <th>Module</th>
-                        <th>Submitted By</th>
-                        <th>Timestamp</th>
-                        <th>Status</th>
-                        <th>CEO Actions</th>
+                        <th>Submitted Date</th>
+                        <th>CEO Review Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {submissions.map((sub) => (
-                        <tr key={sub.id} className={`row-status-${sub.status.toLowerCase().replace(' ', '-')}`}>
-                          <td className="cell-id">{sub.id}</td>
-                          <td className="cell-title">
-                            <div className="title-bold">{sub.title}</div>
-                            <div className="notes-muted">{sub.notes}</div>
-                            {sub.workLink && (
-                              <a
-                                href={sub.workLink}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="external-work-link"
-                              >
-                                <LinkIcon size={12} />
-                                <span>{sub.workLink}</span>
-                              </a>
-                            )}
-                          </td>
-                          <td className="cell-module">
-                            <span className="module-pill">{sub.module}</span>
-                          </td>
-                          <td className="cell-author">
-                            <div className="author-name">{sub.employeeName}</div>
-                            <div className="author-email">{sub.employeeEmail}</div>
-                          </td>
-                          <td className="cell-date">{sub.date}</td>
-                          <td className="cell-status">
-                            <span className={`status-pill status-${sub.status.toLowerCase().replace(' ', '-')}`}>
-                              {sub.status === 'Approved' && <CheckCircle2 size={12} />}
-                              {sub.status === 'Pending Review' && <Clock size={12} />}
-                              {sub.status === 'Revision Needed' && <AlertCircle size={12} />}
-                              <span>{sub.status}</span>
-                            </span>
-                          </td>
-                          <td className="cell-actions">
-                            {sub.status === 'Pending Review' ? (
-                              <div className="ceo-action-btns">
-                                <button
-                                  type="button"
-                                  className="btn-approve"
-                                  onClick={() => handleStatusChange(sub.id, 'Approved')}
-                                  title="Approve Work"
+                      {submissions
+                        .filter((s) => s.employeeEmail === user.email || !s.employeeEmail)
+                        .map((sub) => (
+                          <tr key={sub.id}>
+                            <td className="cell-id">{sub.id}</td>
+                            <td className="cell-title">
+                              <div className="title-bold">{sub.title}</div>
+                              <div className="notes-muted">{sub.notes}</div>
+                              {sub.workLink && (
+                                <a
+                                  href={sub.workLink}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="external-work-link"
                                 >
-                                  <Check size={14} />
-                                  <span>Approve</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  className="btn-revise"
-                                  onClick={() => handleStatusChange(sub.id, 'Revision Needed')}
-                                  title="Request Revision"
-                                >
-                                  <RotateCcw size={14} />
-                                  <span>Revise</span>
-                                </button>
-                              </div>
-                            ) : (
-                              <span className="reviewed-by-text">
-                                Verified by {sub.reviewedBy || 'CEO'}
+                                  <LinkIcon size={12} />
+                                  <span>{sub.workLink}</span>
+                                </a>
+                              )}
+                            </td>
+                            <td className="cell-module">
+                              <span className="module-pill">{sub.module}</span>
+                            </td>
+                            <td className="cell-date">{sub.date}</td>
+                            <td className="cell-status">
+                              <span className={`status-pill status-${sub.status.toLowerCase().replace(' ', '-')}`}>
+                                {sub.status === 'Approved' && <CheckCircle2 size={12} />}
+                                {sub.status === 'Pending Review' && <Clock size={12} />}
+                                {sub.status === 'Revision Needed' && <AlertCircle size={12} />}
+                                <span>{sub.status}</span>
                               </span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
-              )}
-            </div>
-
-            {/* CEO Strategic Modules Overview */}
-            <div className="ceo-strategic-grid">
-              <div className="strategic-card">
-                <h4>{currentProduct.name} Division Roadmaps</h4>
-                <div className="modules-list-boxed">
-                  {currentProduct.modules.map((m, idx) => (
-                    <div key={m} className="module-item-row">
-                      <div className="module-left">
-                        <span className="module-num">0{idx + 1}</span>
-                        <span className="module-name">{m}</span>
-                      </div>
-                      <span className="module-status-active">● Active Track</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="strategic-card">
-                <h4>Executive Resource Allocation</h4>
-                <p className="card-note-text">
-                  Budget allocation & headcounts are strictly controlled under {currentProduct.name} CEO authority.
-                </p>
-                <div className="budget-progress-bar">
-                  <div className="bar-fill" style={{ width: '74%' }} />
-                </div>
-                <div className="budget-meta">
-                  <span>Q4 Budget Consumed: 74%</span>
-                  <span>Runway: 18 Months</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          /* ════════════ EMPLOYEE WORKSPACE DASHBOARD ════════════ */
-          <div className="employee-dashboard-layout">
-            
-            {/* Top Grid: Work Submission Card + Active Tasks Card */}
-            <div className="employee-two-col-grid">
-              
-              {/* Card 1: Submit Your Work Form */}
-              <div className="work-upload-card">
-                <div className="card-top-title">
-                  <div className="title-with-icon">
-                    <Upload size={20} className="upload-header-icon" />
-                    <h3>Submit Your Work / Task Updates</h3>
-                  </div>
-                  <span className="role-indicator-badge">Employee Portal</span>
-                </div>
-                <p className="card-subtitle-text">
-                  Log your daily code, feature PRs, designs, or documentation. Submissions are saved to the system and reviewed by the {currentProduct.name} CEO.
-                </p>
-
-                {uploadSuccess && (
-                  <div className="upload-success-alert">
-                    <CheckCircle2 size={16} />
-                    <span>Work successfully submitted! Logged for CEO review.</span>
-                  </div>
-                )}
-
-                <form onSubmit={handleUploadWork} className="work-upload-form">
-                  <div className="form-group-field">
-                    <label>Task / Feature Title *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Implemented 3D draping physics on ZFIT Mirror"
-                      value={newTitle}
-                      onChange={(e) => setNewTitle(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-row-two">
-                    <div className="form-group-field">
-                      <label>Module / Component *</label>
-                      <select
-                        value={newModule}
-                        onChange={(e) => setNewModule(e.target.value)}
-                      >
-                        {currentProduct.modules.map((m) => (
-                          <option key={m} value={m}>
-                            {m}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group-field">
-                      <label>PR / Artifact / Figma Link</label>
-                      <input
-                        type="url"
-                        placeholder="https://github.com/zuccano/... or drive link"
-                        value={newLink}
-                        onChange={(e) => setNewLink(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group-field">
-                    <label>Implementation Summary / Technical Notes</label>
-                    <textarea
-                      rows={3}
-                      placeholder="Describe what was built, performance metrics improved, or testing verification..."
-                      value={newNotes}
-                      onChange={(e) => setNewNotes(e.target.value)}
-                    />
-                  </div>
-
-                  <button type="submit" className="submit-work-btn">
-                    <Upload size={16} />
-                    <span>Submit Work to Dashboard</span>
-                  </button>
-                </form>
-              </div>
-
-              {/* Card 2: My Assigned Sprint Tasks */}
-              <div className="assigned-tasks-card">
-                <div className="card-top-title">
-                  <div className="title-with-icon">
-                    <Layers size={20} className="tasks-header-icon" />
-                    <h3>Current Sprint Objectives</h3>
-                  </div>
-                  <span className="sprint-tag-pill">Active Sprint 24</span>
-                </div>
-
-                <div className="sprint-tasks-list">
-                  <div className="sprint-task-item">
-                    <div className="task-checkbox-mock checked">
-                      <Check size={12} />
-                    </div>
-                    <div className="task-info">
-                      <span className="task-title-line line-done">Optical gesture calibration for smart mirror</span>
-                      <span className="task-meta-line">Virtual Fitting AI &bull; Completed</span>
-                    </div>
-                  </div>
-
-                  <div className="sprint-task-item">
-                    <div className="task-checkbox-mock" />
-                    <div className="task-info">
-                      <span className="task-title-line">Optimize 60FPS WebGL canvas renderer</span>
-                      <span className="task-meta-line">3D Asset Pipeline &bull; In Progress</span>
-                    </div>
-                  </div>
-
-                  <div className="sprint-task-item">
-                    <div className="task-checkbox-mock" />
-                    <div className="task-info">
-                      <span className="task-title-line">Bluetooth low-energy pairing protocol test</span>
-                      <span className="task-meta-line">Mirror OS Firmware &bull; Scheduled</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="standup-card-footer">
-                  <div className="standup-pulse">
-                    <span className="pulse-dot-cyan" />
-                    <span>Daily Standup: 10:30 AM IST (Google Meet)</span>
-                  </div>
-                </div>
               </div>
 
             </div>
-
-            {/* Bottom Table: Submissions Log History */}
-            <div className="submissions-history-panel">
-              <div className="panel-header-row">
-                <div>
-                  <h3 className="panel-title">Your Work Log & Review Status</h3>
-                  <p className="panel-desc">
-                    Live record of all contributions submitted under your account ({user.email}).
-                  </p>
-                </div>
-                <span className="badge-count">
-                  {submissions.filter((s) => s.employeeEmail === user.email).length} of your submissions
-                </span>
-              </div>
-
-              <div className="submissions-table-wrapper">
-                <table className="submissions-table">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Work Summary</th>
-                      <th>Module</th>
-                      <th>Submitted Date</th>
-                      <th>CEO Review Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {submissions
-                      .filter((s) => s.employeeEmail === user.email || !s.employeeEmail)
-                      .map((sub) => (
-                        <tr key={sub.id}>
-                          <td className="cell-id">{sub.id}</td>
-                          <td className="cell-title">
-                            <div className="title-bold">{sub.title}</div>
-                            <div className="notes-muted">{sub.notes}</div>
-                            {sub.workLink && (
-                              <a
-                                href={sub.workLink}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="external-work-link"
-                              >
-                                <LinkIcon size={12} />
-                                <span>{sub.workLink}</span>
-                              </a>
-                            )}
-                          </td>
-                          <td className="cell-module">
-                            <span className="module-pill">{sub.module}</span>
-                          </td>
-                          <td className="cell-date">{sub.date}</td>
-                          <td className="cell-status">
-                            <span className={`status-pill status-${sub.status.toLowerCase().replace(' ', '-')}`}>
-                              {sub.status === 'Approved' && <CheckCircle2 size={12} />}
-                              {sub.status === 'Pending Review' && <Clock size={12} />}
-                              {sub.status === 'Revision Needed' && <AlertCircle size={12} />}
-                              <span>{sub.status}</span>
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-          </div>
+          )
         )}
 
       </main>

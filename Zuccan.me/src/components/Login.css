@@ -267,7 +267,16 @@
 }
 
 .card-header {
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .card-title {
@@ -275,7 +284,36 @@
   font-weight: 800;
   letter-spacing: -0.03em;
   color: #0a0a0c;
-  margin: 0 0 0.5rem;
+  margin: 0;
+}
+
+.supabase-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 9999px;
+}
+
+.supabase-status-badge.status-live {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.supabase-status-badge.status-ready {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.status-ping-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #10b981;
 }
 
 .card-subtitle {
