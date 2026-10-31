@@ -1,23 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
-  LayoutDashboard,
-  Users,
-  Server,
-  Layers,
-  Key,
-  Shield,
   LogOut,
-  Bell,
-  Search,
   ExternalLink,
-  Cpu,
-  Activity,
-  CheckCircle,
-  Clock,
+  Users,
+  FolderGit2,
+  Globe,
+  Mail,
   ArrowUpRight,
-  GitBranch,
-  Terminal,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import './EmployeeDashboard.css';
@@ -25,13 +15,11 @@ import './EmployeeDashboard.css';
 export const EmployeeDashboard = () => {
   const navigate = useNavigate();
   const { employee, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'projects' | 'team' | 'infra'
 
   const currentEmployee = employee || {
     name: 'Pavan Reddy',
     email: 'pavan.reddy@zuccano.com',
     role: 'CEO - Zuccano & Zfit',
-    department: 'Executive Leadership',
     avatar: '/team-ayaan.jpg',
   };
 
@@ -42,7 +30,7 @@ export const EmployeeDashboard = () => {
 
   return (
     <div className="employee-dashboard-root">
-      {/* ── Background Architectural Grid Lines ── */}
+      {/* ── Background Grid ── */}
       <div className="ed-grid-lines" aria-hidden="true">
         <div className="ed-grid-col" />
         <div className="ed-grid-col" />
@@ -50,37 +38,17 @@ export const EmployeeDashboard = () => {
         <div className="ed-grid-col" />
       </div>
 
-      {/* ── Top Navigation Bar ── */}
+      {/* ── Top Header ── */}
       <header className="ed-header">
         <div className="ed-header-left">
-          <Link to="/dashboard" className="ed-brand">
+          <Link to="/dashboard" className="ed-brand" title="Zuccano">
             <span className="ed-brand-name">zuccano</span>
             <span className="ed-brand-dot">.</span>
           </Link>
-          <div className="ed-portal-pill">
-            <span className="ed-pill-dot" />
-            <span>ZUCCANO.ME // WORKSPACE</span>
-          </div>
+          <span className="ed-portal-tag">Employees Portal</span>
         </div>
 
-        {/* Global Search Bar */}
-        <div className="ed-search-bar">
-          <Search size={14} className="ed-search-icon" />
-          <input
-            type="text"
-            placeholder="Search internal projects, hardware docs, APIs... (Press ⌘K)"
-            className="ed-search-input"
-          />
-        </div>
-
-        {/* Header Right Profile & Actions */}
         <div className="ed-header-right">
-          <div className="ed-status-badge" title="Systems 100% Operational">
-            <span className="ed-status-dot" />
-            <span>INFRA: OK</span>
-          </div>
-
-          {/* User Profile Pill */}
           <div className="ed-user-profile">
             <img
               src={currentEmployee.avatar || '/team-ayaan.jpg'}
@@ -96,266 +64,164 @@ export const EmployeeDashboard = () => {
             </div>
           </div>
 
-          {/* Sign Out Button */}
           <button
             type="button"
             className="ed-logout-btn"
             onClick={handleSignOut}
-            title="Sign out of Zuccano Workspace"
           >
-            <LogOut size={15} />
+            <LogOut size={14} />
             <span>Sign Out</span>
           </button>
         </div>
       </header>
 
-      {/* ── Main Dashboard Workspace ── */}
-      <div className="ed-body-layout">
-        {/* Sidebar Navigation */}
-        <aside className="ed-sidebar">
-          <nav className="ed-nav-menu">
-            <button
-              type="button"
-              className={`ed-nav-item ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={() => setActiveTab('overview')}
-            >
-              <LayoutDashboard size={16} />
-              <span>Workspace Overview</span>
-            </button>
-
-            <button
-              type="button"
-              className={`ed-nav-item ${activeTab === 'projects' ? 'active' : ''}`}
-              onClick={() => setActiveTab('projects')}
-            >
-              <Layers size={16} />
-              <span>Active Projects (3)</span>
-            </button>
-
-            <button
-              type="button"
-              className={`ed-nav-item ${activeTab === 'team' ? 'active' : ''}`}
-              onClick={() => setActiveTab('team')}
-            >
-              <Users size={16} />
-              <span>Team Directory</span>
-            </button>
-
-            <button
-              type="button"
-              className={`ed-nav-item ${activeTab === 'infra' ? 'active' : ''}`}
-              onClick={() => setActiveTab('infra')}
-            >
-              <Server size={16} />
-              <span>Infrastructure & APIs</span>
-            </button>
-          </nav>
-
-          <div className="ed-sidebar-footer">
-            <div className="ed-version-card">
-              <span className="ed-v-label">INTERNAL ENVIRONMENT</span>
-              <span className="ed-v-num">PROD-ASIA-SOUTH1</span>
-              <span className="ed-v-domain">HOST: zuccano.me</span>
-            </div>
-          </div>
-        </aside>
-
-        {/* Content Viewport */}
-        <main className="ed-main-content">
-          {/* Welcome Eyebrow & Hero Header */}
-          <div className="ed-hero-banner">
-            <div className="ed-hero-eyebrow">
-              <span className="ed-eyebrow-num">01</span>
-              <span className="ed-eyebrow-line" />
-              <span>INTERNAL EXECUTIVE PORTAL</span>
-            </div>
-            <h1 className="ed-hero-title">
-              WELCOME BACK, {currentEmployee.name.split(' ')[0].toUpperCase()}
-              <span className="ed-hero-dot">.</span>
+      {/* ── Dashboard Content ── */}
+      <main className="ed-main">
+        <div className="ed-container">
+          {/* Welcome Title */}
+          <div className="ed-welcome-block">
+            <h1 className="ed-title">
+              Welcome back, {currentEmployee.name.split(' ')[0]}<span className="ed-title-dot">.</span>
             </h1>
-            <p className="ed-hero-subtitle">
-              All production clusters are online. Real-time telemetry, hardware pipelines, and employee directories are synchronized.
+            <p className="ed-subtitle">
+              Zuccano company portal, active projects, and team directory.
             </p>
           </div>
 
-          {/* Metric KPI Cards */}
-          <div className="ed-kpi-grid">
-            <div className="ed-kpi-card">
-              <div className="ed-kpi-top">
-                <span className="ed-kpi-label">DEPLOYED HARDWARE & PLATFORMS</span>
-                <Cpu size={16} className="ed-kpi-icon" />
-              </div>
-              <div className="ed-kpi-val">3 Active</div>
-              <span className="ed-kpi-sub">ZFIT Wearables • B2C Hardware • Enterprise</span>
-            </div>
-
-            <div className="ed-kpi-card">
-              <div className="ed-kpi-top">
-                <span className="ed-kpi-label">GLOBAL UPTIME</span>
-                <Activity size={16} className="ed-kpi-icon ed-icon-green" />
-              </div>
-              <div className="ed-kpi-val">99.98%</div>
-              <span className="ed-kpi-sub">BOM1 Edge Region • 0 Incidents</span>
-            </div>
-
-            <div className="ed-kpi-card">
-              <div className="ed-kpi-top">
-                <span className="ed-kpi-label">ACTIVE PERSONNEL</span>
-                <Users size={16} className="ed-kpi-icon" />
-              </div>
-              <div className="ed-kpi-val">14 Core</div>
-              <span className="ed-kpi-sub">Design, Hardware, Embedded, Cloud</span>
-            </div>
-
-            <div className="ed-kpi-card">
-              <div className="ed-kpi-top">
-                <span className="ed-kpi-label">SECURITY PROTOCOL</span>
-                <Shield size={16} className="ed-kpi-icon ed-icon-red" />
-              </div>
-              <div className="ed-kpi-val">mTLS / 2FA</div>
-              <span className="ed-kpi-sub">Hardware Token Enforced</span>
-            </div>
-          </div>
-
-          {/* Projects & Workspaces Section */}
+          {/* Active Projects Cards */}
           <section className="ed-section">
-            <div className="ed-section-header">
-              <h2 className="ed-section-title">ACTIVE WORKSPACES</h2>
-              <span className="ed-section-tag">PRODUCTION</span>
-            </div>
+            <h2 className="ed-section-heading">Company Projects</h2>
 
-            <div className="ed-projects-grid">
+            <div className="ed-cards-grid">
               {/* Project 1: ZFIT */}
-              <div className="ed-project-card">
-                <div className="ed-p-header">
-                  <div className="ed-p-badge">FLAGSHIP WEARABLE</div>
-                  <span className="ed-p-status online">DEPLOYED</span>
-                </div>
-                <h3 className="ed-p-title">ZFIT — Next-Gen AI Wearable</h3>
-                <p className="ed-p-desc">
-                  Interactive multi-avatar studio, Bluetooth Low Energy sync, biometric health processing engine.
-                </p>
-                <div className="ed-p-footer">
-                  <span className="ed-p-meta">Stack: React + Tailwind + Vite</span>
+              <div className="ed-card">
+                <div className="ed-card-top">
+                  <span className="ed-card-badge">Wearable & App</span>
                   <a
-                    href="https://zuccano.in"
+                    href="https://github.com/Zuccan/Zfit"
                     target="_blank"
                     rel="noreferrer"
-                    className="ed-p-link"
+                    className="ed-card-link"
                   >
-                    <span>Inspect</span>
+                    <span>Repository</span>
                     <ArrowUpRight size={14} />
                   </a>
                 </div>
+                <h3 className="ed-card-title">ZFIT</h3>
+                <p className="ed-card-desc">
+                  Next-generation smart wearable and companion fitness platform.
+                </p>
               </div>
 
               {/* Project 2: Zuccano Consumer */}
-              <div className="ed-project-card">
-                <div className="ed-p-header">
-                  <div className="ed-p-badge">CONSUMER PORTAL</div>
-                  <span className="ed-p-status online">LIVE</span>
-                </div>
-                <h3 className="ed-p-title">Zuccano B2C & Hardware Catalog</h3>
-                <p className="ed-p-desc">
-                  Pixel-perfect products showcase, GSAP & Framer Motion kinetic scroll carousel, mobile safety gate.
-                </p>
-                <div className="ed-p-footer">
-                  <span className="ed-p-meta">Domain: zuccano.in</span>
+              <div className="ed-card">
+                <div className="ed-card-top">
+                  <span className="ed-card-badge">Consumer Hardware</span>
                   <a
                     href="https://zuccano.in/customers"
                     target="_blank"
                     rel="noreferrer"
-                    className="ed-p-link"
+                    className="ed-card-link"
                   >
                     <span>View Site</span>
                     <ArrowUpRight size={14} />
                   </a>
                 </div>
+                <h3 className="ed-card-title">Zuccano B2C</h3>
+                <p className="ed-card-desc">
+                  Consumer electronics, everyday smart devices, and products showcase.
+                </p>
               </div>
 
-              {/* Project 3: Internal Cloud Gateway */}
-              <div className="ed-project-card">
-                <div className="ed-p-header">
-                  <div className="ed-p-badge">INTERNAL INFRA</div>
-                  <span className="ed-p-status online">STANDBY</span>
+              {/* Project 3: Zuccano Business */}
+              <div className="ed-card">
+                <div className="ed-card-top">
+                  <span className="ed-card-badge">Enterprise</span>
+                  <a
+                    href="https://zuccano.in/business"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="ed-card-link"
+                  >
+                    <span>View Site</span>
+                    <ArrowUpRight size={14} />
+                  </a>
                 </div>
-                <h3 className="ed-p-title">Zuccano Cloud API & Vault</h3>
-                <p className="ed-p-desc">
-                  Employee authentication hub, single sign-on microservices, telemetry collector.
+                <h3 className="ed-card-title">Zuccano Business</h3>
+                <p className="ed-card-desc">
+                  Hardware and software solutions built for business and enterprise workflows.
                 </p>
-                <div className="ed-p-footer">
-                  <span className="ed-p-meta">Domain: zuccano.me</span>
-                  <span className="ed-p-badge-sub">Internal Only</span>
-                </div>
               </div>
             </div>
           </section>
 
-          {/* Quick Team Feed */}
+          {/* Team Directory */}
           <section className="ed-section">
-            <div className="ed-section-header">
-              <h2 className="ed-section-title">EXECUTIVE & TEAM DIRECTORY</h2>
-              <span className="ed-section-tag">LEADERSHIP</span>
-            </div>
+            <h2 className="ed-section-heading">Team Directory</h2>
 
-            <div className="ed-team-table">
-              <div className="ed-tt-row ed-tt-head">
-                <span>MEMBER</span>
-                <span>ROLE</span>
-                <span>DEPARTMENT</span>
-                <span>ACCESS LEVEL</span>
-                <span>STATUS</span>
+            <div className="ed-team-card">
+              <div className="ed-team-row ed-team-head">
+                <span>Name</span>
+                <span>Role</span>
+                <span>Email</span>
               </div>
 
-              <div className="ed-tt-row">
-                <div className="ed-tt-user">
-                  <img src="/team-ayaan.jpg" alt="Pavan" className="ed-tt-avatar" />
+              <div className="ed-team-row">
+                <div className="ed-team-user">
+                  <img src="/team-ayaan.jpg" alt="Pavan" className="ed-team-avatar" />
                   <strong>Pavan Reddy</strong>
                 </div>
                 <span>CEO - Zuccano & Zfit</span>
-                <span>Executive</span>
-                <span className="ed-tt-badge root">Root / Admin</span>
-                <span className="ed-tt-status"><span className="ed-tt-dot" /> Active</span>
+                <span className="ed-team-email">pavan.reddy@zuccano.com</span>
               </div>
 
-              <div className="ed-tt-row">
-                <div className="ed-tt-user">
-                  <img src="/team-sameer.jpg" alt="Kumar" className="ed-tt-avatar" />
+              <div className="ed-team-row">
+                <div className="ed-team-user">
+                  <img src="/team-sameer.jpg" alt="Kumar" className="ed-team-avatar" />
                   <strong>Kumar MS</strong>
                 </div>
                 <span>COO (Chief Operating Officer)</span>
-                <span>Operations</span>
-                <span className="ed-tt-badge admin">Tier 1 Admin</span>
-                <span className="ed-tt-status"><span className="ed-tt-dot" /> Active</span>
+                <span className="ed-team-email">kumar.ms@zuccano.com</span>
               </div>
 
-              <div className="ed-tt-row">
-                <div className="ed-tt-user">
-                  <img src="/team-sara.jpg" alt="Sara" className="ed-tt-avatar" />
+              <div className="ed-team-row">
+                <div className="ed-team-user">
+                  <img src="/team-sara.jpg" alt="Sara" className="ed-team-avatar" />
                   <strong>Sara K.</strong>
                 </div>
                 <span>Lead Product Designer</span>
-                <span>Design & Hardware</span>
-                <span className="ed-tt-badge dev">Engineering</span>
-                <span className="ed-tt-status"><span className="ed-tt-dot" /> Active</span>
+                <span className="ed-team-email">sara.k@zuccano.com</span>
               </div>
             </div>
           </section>
-        </main>
-      </div>
+
+          {/* Quick Resources */}
+          <section className="ed-section">
+            <h2 className="ed-section-heading">Quick Resources</h2>
+            <div className="ed-links-row">
+              <a href="https://zuccano.in" target="_blank" rel="noreferrer" className="ed-link-pill">
+                <Globe size={14} />
+                <span>zuccano.in</span>
+                <ExternalLink size={12} />
+              </a>
+              <a href="https://github.com/Zuccan" target="_blank" rel="noreferrer" className="ed-link-pill">
+                <FolderGit2 size={14} />
+                <span>GitHub Org</span>
+                <ExternalLink size={12} />
+              </a>
+              <a href="mailto:contact@zuccano.com" className="ed-link-pill">
+                <Mail size={14} />
+                <span>Internal Email</span>
+              </a>
+            </div>
+          </section>
+        </div>
+      </main>
 
       {/* ── Footer ── */}
       <footer className="ed-footer">
-        <div className="ed-footer-left">
-          <span className="ed-f-num">01</span>
-          <span className="ed-f-line" />
-          <span>ZUCCANO INC. INTERNAL SYSTEMS • ALL SESSIONS RECORDED</span>
-        </div>
-        <div className="ed-footer-right">
-          <span>HOST: <strong>ZUCCANO.ME</strong></span>
-          <span className="ed-f-dot">•</span>
-          <span>EST. 2026</span>
-        </div>
+        <span>ZUCCANO INC. • EMPLOYEES PORTAL</span>
+        <span>zuccano.me</span>
       </footer>
     </div>
   );

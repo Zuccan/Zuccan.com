@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    ZUCCANO — EMPLOYEES PORTAL LOGIN (ZUCCANO.ME)
-   Aesthetic: Pure Architectural White, Jet Black, Accent Red Dot
+   Clean, Elegant, Real Corporate Login
    ═══════════════════════════════════════════════════════════════ */
 
 .employee-login-root {
@@ -15,10 +15,9 @@
   box-sizing: border-box;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
-/* ── Background Architectural Grid Lines (matching Zuccano.in) ── */
+/* Background Grid Lines */
 .el-grid-lines {
   position: fixed;
   inset: 0;
@@ -33,23 +32,21 @@
   height: 100%;
 }
 
-/* ── Header Bar ── */
+/* Header */
 .el-header {
   position: relative;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 3.5rem;
+  padding: 1.5rem 3rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
 }
 
 .el-header-left {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .el-brand {
@@ -59,103 +56,48 @@
 }
 
 .el-brand-name {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 800;
   letter-spacing: -0.04em;
   color: #000000;
 }
 
 .el-brand-dot {
-  font-size: 1.65rem;
+  font-size: 1.6rem;
   font-weight: 900;
   color: #E3262E;
   margin-left: 1px;
 }
 
-.el-portal-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 11px;
-  background-color: #F5F5F7;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 9999px;
-  font-size: 0.68rem;
+.el-portal-tag {
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.09em;
-  color: #333333;
-}
-
-.el-badge-pulse {
-  width: 6px;
-  height: 6px;
-  background-color: #E3262E;
-  border-radius: 50%;
-  animation: elPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes elPulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.35;
-    transform: scale(1.3);
-  }
-}
-
-.el-header-right {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.el-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 5px 12px;
-  background-color: #F8F9FA;
-  border: 1px solid rgba(0, 0, 0, 0.07);
+  letter-spacing: 0.05em;
+  color: #666666;
+  padding: 3px 10px;
+  background-color: #F4F4F6;
   border-radius: 9999px;
-  font-size: 0.7rem;
-  color: #222222;
-  font-weight: 600;
-}
-
-.el-status-indicator {
-  width: 7px;
-  height: 7px;
-  background-color: #10B981;
-  border-radius: 50%;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
-}
-
-.el-status-region {
-  color: #888890;
-  font-size: 0.68rem;
 }
 
 .el-back-link {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.8rem;
+  gap: 6px;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #555555;
   text-decoration: none;
   padding: 6px 14px;
   border-radius: 9999px;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .el-back-link:hover {
   color: #000000;
-  background-color: #F2F2F5;
+  background-color: #F4F4F6;
 }
 
-/* ── Main Canvas ── */
+/* Main Container */
 .el-main {
   position: relative;
   z-index: 10;
@@ -163,55 +105,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 2rem;
-  max-width: 1240px;
-  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* Centered Login Card */
+.el-card {
   width: 100%;
+  max-width: 440px;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.06);
 }
 
-.el-content-grid {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 3.5rem;
-  width: 100%;
-  align-items: start;
-}
-
-/* ── Left Form Panel ── */
-.el-form-panel {
-  display: flex;
-  flex-direction: column;
-  max-width: 540px;
-}
-
-.el-intro {
+.el-card-header {
   margin-bottom: 1.75rem;
 }
 
-.el-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  color: #666670;
-  margin-bottom: 0.85rem;
-  text-transform: uppercase;
-}
-
-.el-eyebrow-icon {
-  color: #E3262E;
-}
-
 .el-title {
-  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  font-size: 1.9rem;
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
+  letter-spacing: -0.03em;
   color: #000000;
-  margin: 0 0 1rem;
-  text-transform: uppercase;
+  margin: 0 0 0.5rem;
 }
 
 .el-title-dot {
@@ -219,50 +136,10 @@
 }
 
 .el-subtitle {
-  font-size: 0.95rem;
-  color: #555560;
-  line-height: 1.55;
-  font-weight: 500;
+  font-size: 0.88rem;
+  color: #666666;
+  line-height: 1.5;
   margin: 0;
-}
-
-/* ── Auth Method Tabs ── */
-.el-tabs {
-  display: flex;
-  background-color: #F2F2F5;
-  padding: 4px;
-  border-radius: 12px;
-  gap: 4px;
-  margin-bottom: 1.5rem;
-}
-
-.el-tab-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0.65rem 1rem;
-  border-radius: 9px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #666670;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.el-tab-btn.active {
-  background-color: #FFFFFF;
-  color: #000000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-/* ── Form Inputs ── */
-.el-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
 }
 
 .el-alert-error {
@@ -275,7 +152,14 @@
   border-radius: 10px;
   font-size: 0.82rem;
   color: #DC2626;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Form */
+.el-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
 }
 
 .el-field-group {
@@ -287,28 +171,7 @@
 .el-label {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #222226;
-  letter-spacing: -0.01em;
-}
-
-.el-label-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.el-forgot-link {
-  font-size: 0.75rem;
-  color: #666670;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: underline;
-  padding: 0;
-}
-
-.el-forgot-link:hover {
-  color: #000000;
+  color: #222222;
 }
 
 .el-input-wrap {
@@ -320,30 +183,30 @@
 .el-input-icon {
   position: absolute;
   left: 14px;
-  color: #888892;
+  color: #888888;
   pointer-events: none;
 }
 
 .el-input {
   width: 100%;
-  padding: 0.85rem 1rem 0.85rem 2.6rem;
+  padding: 0.85rem 1rem 0.85rem 2.5rem;
   background-color: #FAFAFA;
   border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 12px;
-  font-size: 0.92rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
   font-family: inherit;
   color: #000000;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   box-sizing: border-box;
 }
 
 .el-input-pass {
-  padding-right: 2.8rem;
+  padding-right: 2.75rem;
 }
 
 .el-input:focus {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-color: #000000;
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
@@ -353,7 +216,7 @@
   right: 12px;
   background: none;
   border: none;
-  color: #777780;
+  color: #777777;
   cursor: pointer;
   padding: 4px;
   display: flex;
@@ -367,8 +230,6 @@
 .el-options-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 0.2rem;
 }
 
 .el-checkbox-label {
@@ -376,469 +237,127 @@
   align-items: center;
   gap: 8px;
   font-size: 0.82rem;
-  color: #555560;
+  color: #555555;
   cursor: pointer;
 }
 
 .el-checkbox {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   accent-color: #000000;
   cursor: pointer;
 }
 
-/* ── Submit Action ── */
 .el-submit-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  padding: 0.95rem 1.6rem;
+  padding: 0.9rem 1.4rem;
   background-color: #000000;
-  color: #FFFFFF;
+  color: #ffffff;
   border: none;
   border-radius: 9999px;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
   cursor: pointer;
-  margin-top: 0.75rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transition: all 0.15s ease;
 }
 
 .el-submit-btn:hover:not(:disabled) {
-  background-color: #1a1a1e;
+  background-color: #1a1a1a;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-
-.el-submit-btn:active:not(:disabled) {
-  transform: translateY(0);
 }
 
 .el-submit-btn:disabled {
-  opacity: 0.75;
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
 .el-btn-arrow {
-  transition: transform 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
 .el-submit-btn:hover .el-btn-arrow {
   transform: translateX(3px);
 }
 
-.el-loading-state {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Demo helper */
+.el-demo-section {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.el-spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #FFFFFF;
-  border-radius: 50%;
-  animation: elSpin 0.7s linear infinite;
-}
-
-@keyframes elSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* ── SSO Container ── */
-.el-sso-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.el-sso-desc {
-  font-size: 0.85rem;
-  color: #555560;
-  margin: 0;
-}
-
-.el-sso-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.el-sso-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 0.85rem 1.25rem;
-  background-color: #FAFAFA;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #111111;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.el-sso-btn:hover {
-  background-color: #FFFFFF;
-  border-color: #000000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.el-sso-icon {
-  flex-shrink: 0;
-}
-
-/* ── Demo Accounts Quick Bar ── */
-.el-demo-box {
-  margin-top: 2rem;
-  padding: 1.15rem;
-  background-color: #F8F9FA;
-  border: 1px dashed rgba(0, 0, 0, 0.15);
-  border-radius: 14px;
-}
-
-.el-demo-title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #444450;
-  margin-bottom: 0.75rem;
-}
-
-.el-demo-sparkle {
-  color: #E3262E;
-}
-
-.el-demo-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.el-demo-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 12px;
-  background-color: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.el-demo-chip:hover {
-  border-color: #000000;
-  background-color: #000000;
-  color: #FFFFFF;
-}
-
-.el-demo-chip:hover .el-demo-chip-role {
-  color: #CCCCCC;
-}
-
-.el-demo-chip-name {
-  font-weight: 700;
-}
-
-.el-demo-chip-role {
-  color: #777784;
-}
-
-/* ── Right Column: Info & Telemetry Card ── */
-.el-info-panel {
-  display: flex;
-  flex-direction: column;
-}
-
-.el-info-card {
-  padding: 2rem;
-  background-color: #FAFAFB;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
-}
-
-.el-info-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  margin-bottom: 1.25rem;
-}
-
-.el-info-title {
+.el-demo-label {
+  display: block;
   font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  color: #555560;
-}
-
-.el-info-chip {
-  font-size: 0.65rem;
-  font-weight: 800;
-  padding: 3px 8px;
-  background-color: #E6F4EA;
-  color: #137333;
-  border-radius: 9999px;
+  font-weight: 700;
+  color: #888888;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.el-metrics-list {
+.el-demo-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.el-metric-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.82rem;
-}
-
-.el-m-label {
-  color: #666670;
-  font-weight: 500;
-}
-
-.el-m-val {
-  color: #000000;
-  font-weight: 700;
-}
-
-.el-m-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.78rem;
-  color: #E3262E;
-}
-
-.el-security-notice {
-  padding: 1.15rem;
-  background-color: #FFFFFF;
+.el-demo-btn {
+  padding: 5px 11px;
+  background-color: #F6F6F8;
   border: 1px solid rgba(0, 0, 0, 0.07);
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-}
-
-.el-sec-badge {
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: #222222;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: #111111;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.4rem;
-}
-
-.el-sec-text {
-  font-size: 0.78rem;
-  color: #666672;
-  line-height: 1.5;
-  margin: 0;
-}
-
-.el-sub-links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  padding-top: 1.25rem;
-}
-
-.el-sub-link {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-  color: #444450;
-  text-decoration: none;
-  padding: 6px 4px;
-  font-weight: 600;
+  gap: 4px;
   transition: all 0.15s ease;
 }
 
-.el-sub-link:hover {
-  color: #000000;
-  transform: translateX(3px);
+.el-demo-btn:hover {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
 }
 
-/* ── Footer ── */
+.el-demo-btn span {
+  opacity: 0.7;
+}
+
+/* Footer */
 .el-footer {
   position: relative;
   z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.4rem 3.5rem;
+  padding: 1.4rem 3rem;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   font-size: 0.72rem;
-  color: #777785;
-  background-color: #FFFFFF;
-}
-
-.el-footer-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.el-f-num {
-  font-weight: 800;
-  color: #000000;
-}
-
-.el-f-line {
-  width: 16px;
-  height: 1px;
-  background-color: #CCCCCC;
-}
-
-.el-f-text {
-  letter-spacing: 0.08em;
-  font-weight: 600;
-}
-
-.el-footer-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 500;
-}
-
-.el-footer-right strong {
-  color: #000000;
-}
-
-.el-f-dot {
-  color: #CCCCCC;
-}
-
-/* ── Modal ── */
-.el-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.el-modal-card {
-  background: #FFFFFF;
-  border-radius: 18px;
-  padding: 2rem;
-  max-width: 440px;
-  width: 100%;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-}
-
-.el-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.el-modal-header h3 {
-  font-size: 1.15rem;
-  font-weight: 800;
-  margin: 0;
-}
-
-.el-modal-close {
-  background: none;
-  border: none;
-  font-size: 1.1rem;
-  cursor: pointer;
-  color: #666;
-}
-
-.el-modal-desc {
-  font-size: 0.85rem;
-  color: #555;
-  line-height: 1.5;
-  margin-bottom: 1.25rem;
-}
-
-.el-modal-contacts {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  background: #F8F9FA;
-  padding: 1rem;
-  border-radius: 10px;
-  font-size: 0.82rem;
-  margin-bottom: 1.5rem;
-}
-
-.el-contact-item strong {
-  color: #000;
-}
-
-.el-modal-btn {
-  width: 100%;
-  padding: 0.8rem;
-  background: #000;
-  color: #FFF;
-  border: none;
-  border-radius: 9999px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* ── Responsive Viewports ── */
-@media (max-width: 992px) {
-  .el-content-grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-
-  .el-form-panel {
-    max-width: 100%;
-  }
-
-  .el-header {
-    padding: 1.2rem 1.5rem;
-  }
-
-  .el-footer {
-    padding: 1.2rem 1.5rem;
-    flex-direction: column;
-    gap: 0.6rem;
-    align-items: flex-start;
-  }
+  color: #888888;
+  letter-spacing: 0.04em;
 }
 
 @media (max-width: 640px) {
-  .el-status-region {
-    display: none;
+  .el-header {
+    padding: 1.2rem 1.5rem;
   }
-
-  .el-title {
-    font-size: 2.1rem;
+  .el-card {
+    padding: 1.75rem 1.4rem;
+    border-radius: 16px;
   }
-
-  .el-portal-badge {
-    display: none;
+  .el-footer {
+    padding: 1.2rem 1.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
   }
 }
