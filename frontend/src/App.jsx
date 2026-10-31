@@ -10,6 +10,7 @@ import { Business } from './pages/Business/Business';
 import { NotFound } from './pages/NotFound/NotFound';
 import { EmployeeLogin } from './pages/EmployeePortal/EmployeeLogin';
 import { EmployeeDashboard } from './pages/EmployeePortal/EmployeeDashboard';
+import { PortalHome } from './pages/EmployeePortal/PortalHome';
 import './App.css';
 
 function App() {
@@ -25,21 +26,23 @@ function App() {
       <AuthProvider>
         <NavigationProvider>
           <Routes>
-            {/* ── EMPLOYEES PORTAL ROUTES (zuccano.me & /login & /dashboard) ── */}
+            {/* ── EMPLOYEES PORTAL ROUTES (zuccano.me & /portal) ── */}
+            <Route path="/portal" element={<PortalHome />} />
+            <Route path="/workspaces" element={<PortalHome />} />
+            <Route path="/select-product" element={<PortalHome />} />
             <Route path="/login" element={<EmployeeLogin />} />
-            <Route path="/employee" element={<EmployeeLogin />} />
+            <Route path="/employee" element={<PortalHome />} />
             <Route path="/employee/login" element={<EmployeeLogin />} />
-            <Route path="/portal" element={<EmployeeLogin />} />
             <Route path="/dashboard" element={<EmployeeDashboard />} />
             <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
             <Route path="/portal/dashboard" element={<EmployeeDashboard />} />
 
             {/* ── PUBLIC ZUCCANO SITES & PAGES ── */}
             <Route element={<MainLayout />}>
-              {/* If on zuccano.me root, serve the employee login; otherwise public ParentHome */}
+              {/* If on zuccano.me root, serve the PortalHome product selector; otherwise public ParentHome */}
               <Route
                 path="/"
-                element={isEmployeeDomain ? <EmployeeLogin /> : <ParentHome />}
+                element={isEmployeeDomain ? <PortalHome /> : <ParentHome />}
               />
 
               {/* Child Landing 1: Zuccano for Customers / B2C */}
