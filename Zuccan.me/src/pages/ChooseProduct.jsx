@@ -152,6 +152,30 @@ export const ChooseProduct = () => {
           </div>
         )}
 
+        {/* ── Parent Holding Master Workspace Quick Entry Banner ── */}
+        <div className="holding-executive-banner">
+          <div className="holding-banner-content">
+            <div className="holding-banner-badge">
+              <span className="holding-badge-pulse" />
+              <span>PARENT HOLDING ENTITY • ZUCCANO GROUP HOLDINGS</span>
+            </div>
+            <h3 className="holding-banner-title">
+              Central Master Workspace & Cap Table Depository
+            </h3>
+            <p className="holding-banner-desc">
+              Parent-company management platform overseeing all subsidiaries (ZFIT, Consumer, Business), holding equity cap table (Naseer 51%, Pavan 40%, Others 9%), parent approvals, and statutory governance.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="holding-banner-btn"
+            onClick={() => navigate('/master-workspace')}
+          >
+            <span>Enter Holding Master Workspace</span>
+            <ArrowRight size={16} />
+          </button>
+        </div>
+
         {/* ── Product Cards Grid ── */}
         <div className="products-grid-row">
           

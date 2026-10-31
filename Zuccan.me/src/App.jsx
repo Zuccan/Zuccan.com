@@ -5,6 +5,7 @@ import ApplyJob from './pages/ApplyJob';
 import ChooseProduct from './pages/ChooseProduct';
 import WorkspaceDashboard from './pages/WorkspaceDashboard';
 import ResetPassword from './pages/ResetPassword';
+import MasterWorkspace from './pages/master-workspace/MasterWorkspace';
 
 function App() {
   return (
@@ -20,6 +21,11 @@ function App() {
         {/* Post-Login Choose Product Page (Exact match to reference) */}
         <Route path="/choose-product" element={<ChooseProduct />} />
         <Route path="/products" element={<ChooseProduct />} />
+
+        {/* Zuccano Master Workspace — Central Parent-Company Management & Holding Ecosystem */}
+        <Route path="/master-workspace" element={<MasterWorkspace />} />
+        <Route path="/holding" element={<MasterWorkspace />} />
+        <Route path="/master" element={<MasterWorkspace />} />
 
         {/* Role-Based Product Workspace (CEO vs Employee Dashboards) */}
         <Route path="/workspace/:productId" element={<WorkspaceDashboard />} />
