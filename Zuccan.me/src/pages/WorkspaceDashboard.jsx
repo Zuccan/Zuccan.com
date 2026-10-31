@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { messageService } from '../lib/messageService';
 import { isSupabaseConfigured } from '../lib/supabase';
+import CeoWorkspace from './ceo-workspace/CeoWorkspace';
 import './WorkspaceDashboard.css';
 
 const PRODUCT_CONFIG = {
@@ -95,6 +96,11 @@ export const WorkspaceDashboard = () => {
 
   const currentProduct = PRODUCT_CONFIG[productId] || PRODUCT_CONFIG.zfit;
   const isCeo = user.role?.toLowerCase() === 'ceo';
+
+  // Delegate CEO users directly to the autonomous Subsidiary CEO Workspace Operating System!
+  if (isCeo) {
+    return <CeoWorkspace />;
+  }
 
   // Check access permission
   const userAssignedProduct = user.product || 'zfit';
