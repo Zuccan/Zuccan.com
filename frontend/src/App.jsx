@@ -8,8 +8,6 @@ import { Customers } from './pages/Customers/Customers';
 import { Products } from './pages/Products/Products';
 import { Business } from './pages/Business/Business';
 import { NotFound } from './pages/NotFound/NotFound';
-import { EmployeeLogin } from './pages/EmployeePortal/EmployeeLogin';
-import { EmployeeDashboard } from './pages/EmployeePortal/EmployeeDashboard';
 import { PortalHome } from './pages/EmployeePortal/PortalHome';
 import './App.css';
 
@@ -30,12 +28,7 @@ function App() {
             <Route path="/portal" element={<PortalHome />} />
             <Route path="/workspaces" element={<PortalHome />} />
             <Route path="/select-product" element={<PortalHome />} />
-            <Route path="/login" element={<EmployeeLogin />} />
             <Route path="/employee" element={<PortalHome />} />
-            <Route path="/employee/login" element={<EmployeeLogin />} />
-            <Route path="/dashboard" element={<EmployeeDashboard />} />
-            <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
-            <Route path="/portal/dashboard" element={<EmployeeDashboard />} />
 
             {/* ── PUBLIC ZUCCANO SITES & PAGES ── */}
             <Route element={<MainLayout />}>
