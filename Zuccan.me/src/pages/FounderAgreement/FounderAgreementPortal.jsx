@@ -1,91 +1,64 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Shield,
-  FileCheck,
-  CheckCircle,
-  AlertCircle,
   Printer,
   Download,
   Lock,
   PenTool,
   Type,
   RotateCcw,
-  CheckSquare,
-  Square,
-  Calendar,
-  Building,
-  User,
-  Info,
+  CheckCircle,
+  Shield,
 } from 'lucide-react';
+import zuccanoLogo from '../../assets/Zucaano logo.png';
 import './FounderAgreement.css';
 
 export const FounderAgreementPortal = () => {
-  // Current time in IST
-  const getFormattedDateIST = () => {
-    return new Date().toLocaleString('en-IN', {
-      timeZone: 'Asia/Kolkata',
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    }) + ' IST';
+  // Current Indian Standard Time formatted string
+  const getCurrentIST = () => {
+    return (
+      new Date().toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }) + ' IST'
+    );
   };
 
-  // Signer form fields
-  const [formData, setFormData] = useState({
-    fullName: 'Pavan Zuccano',
-    email: 'pavan.ceo@zfit.zuccano.me',
-    subsidiary: 'ZFIT Technologies',
-    role: 'Chief Executive Officer (CEO)',
-    govtId: 'AAAPZ9845K',
-    dateIST: getFormattedDateIST(),
-  });
-
-  // Affirmation checkboxes (default unchecked per legal requirements)
-  const [affirmations, setAffirmations] = useState({
-    readComplete: false,
-    ownershipUnderstood: false,
-    fiduciaryDutyAccepted: false,
-    ipAssigned: false,
-    confidentialityAgreed: false,
-    vestingAndExitAccepted: false,
-    arbitrationAgreed: false,
-    independentCounselOpportunity: false,
-  });
-
-  // E-Signature state
+  const [signerName, setSignerName] = useState('Pavan Zuccano');
+  const [signerRole, setSignerRole] = useState('Founder & CEO, ZFIT Technologies');
   const [sigMode, setSigMode] = useState('DRAW'); // 'DRAW' | 'TYPE'
   const [typedSig, setTypedSig] = useState('');
   const [sigDataUrl, setSigDataUrl] = useState(null);
   const [hasDrawn, setHasDrawn] = useState(false);
+  const [isExecuted, setIsExecuted] = useState(false);
+  const [auditStamp, setAuditStamp] = useState(null);
+
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  // Execution state
-  const [isExecuted, setIsExecuted] = useState(false);
-  const [auditRecord, setAuditRecord] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
   // Check if previously executed in localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('zuccano_formal_founder_execution');
+    const saved = localStorage.getItem('zuccano_formal_letter_execution');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setAuditRecord(parsed);
+        setAuditStamp(parsed);
         setIsExecuted(true);
+        if (parsed.signatureData) {
+          setSigDataUrl(parsed.signatureData);
+        }
       } catch (e) {
-        console.error('Error loading execution record', e);
+        console.error(e);
       }
     }
   }, []);
 
   // Canvas Drawing
   const startDrawing = (e) => {
-    if (sigMode !== 'DRAW') return;
+    if (sigMode !== 'DRAW' || isExecuted) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -95,15 +68,14 @@ export const FounderAgreementPortal = () => {
 
     ctx.beginPath();
     ctx.moveTo(x, y);
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 2;
     ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#09090B';
+    ctx.strokeStyle = '#000000';
     setIsDrawing(true);
   };
 
   const draw = (e) => {
-    if (!isDrawing || sigMode !== 'DRAW') return;
+    if (!isDrawing || sigMode !== 'DRAW' || isExecuted) return;
     e.preventDefault();
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -127,6 +99,7 @@ export const FounderAgreementPortal = () => {
   };
 
   const clearCanvas = () => {
+    if (isExecuted) return;
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
@@ -142,112 +115,32 @@ export const FounderAgreementPortal = () => {
       setSigDataUrl(null);
       return;
     }
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100">
-      <text x="15" y="65" font-family="'Brush Script MT', 'Dancing Script', cursive" font-size="38" fill="#09090B">${text}</text>
-      <line x1="10" y1="80" x2="380" y2="80" stroke="#71717A" stroke-dasharray="3,3" />
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="350" height="70">
+      <text x="10" y="48" font-family="'Brush Script MT', 'Dancing Script', cursive" font-size="34" fill="#000000">${text}</text>
     </svg>`;
     setSigDataUrl(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`);
   };
 
-  // Select all affirmations helper
-  const handleSelectAllAffirmations = () => {
-    const allChecked = Object.values(affirmations).every(Boolean);
-    const newVal = !allChecked;
-    setAffirmations({
-      readComplete: newVal,
-      ownershipUnderstood: newVal,
-      fiduciaryDutyAccepted: newVal,
-      ipAssigned: newVal,
-      confidentialityAgreed: newVal,
-      vestingAndExitAccepted: newVal,
-      arbitrationAgreed: newVal,
-      independentCounselOpportunity: newVal,
-    });
-  };
-
-  // Validation
-  const allAffirmationsChecked = Object.values(affirmations).every(Boolean);
-  const hasValidSignature = Boolean(sigDataUrl);
-  const canSubmit = allAffirmationsChecked && hasValidSignature && formData.fullName.trim() && formData.email.trim();
-
-  // Compute SHA-256 hash
-  const computeHash = async (content) => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(content);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-  };
-
-  // Handle Form Submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
-
-    if (!canSubmit) {
-      if (!allAffirmationsChecked) {
-        setErrorMessage('Please check all legal affirmation declarations before signing.');
-      } else if (!hasValidSignature) {
-        setErrorMessage('Please provide your electronic signature (draw or type signature).');
-      }
+  const handleExecute = () => {
+    if (!sigDataUrl) {
+      alert('Please provide your electronic signature in the box on Page 2 before submitting.');
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      const timestampISO = new Date().toISOString();
-      const executionTimestampIST = getFormattedDateIST();
+    const stamp = {
+      auditEventId: `ZUC-AGR-${Date.now().toString(36).toUpperCase()}`,
+      timestampIST: getCurrentIST(),
+      signerName,
+      signerRole,
+      signatureData: sigDataUrl,
+      documentRef: 'ZUC/CORP/GOV/2026-27/041',
+      status: 'EXECUTED_AND_FILED',
+    };
 
-      const documentPayload = JSON.stringify({
-        form: 'FORM ZUC-FGA-2026',
-        version: 'v2026.1-STABLE',
-        company: 'Zuccano Group Holdings Private Limited',
-        subsidiary: formData.subsidiary,
-        signer: formData.fullName,
-        email: formData.email,
-        role: formData.role,
-        govtId: formData.govtId,
-        affirmations,
-        timestampISO,
-      });
-
-      const hash = await computeHash(documentPayload);
-      const auditEventId = `ZUC-AGR-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
-
-      const executionRecord = {
-        auditEventId,
-        formTitle: 'FORM ZUC-FGA: FOUNDER GOVERNANCE & POLICY ACCEPTANCE AGREEMENT',
-        version: 'v2026.1-STABLE',
-        effectiveDate: '01 Nov 2026',
-        fullName: formData.fullName,
-        email: formData.email,
-        subsidiary: formData.subsidiary,
-        role: formData.role,
-        govtId: formData.govtId,
-        timestampIST: executionTimestampIST,
-        timestampISO,
-        documentHash: `sha256:${hash}`,
-        signatureData: sigDataUrl,
-        affirmations,
-        governingLaw: 'Companies Act, 2013 & Information Technology Act, 2000 (India)',
-        status: 'EXECUTED_AND_REGISTERED',
-      };
-
-      // Save to localStorage
-      localStorage.setItem('zuccano_formal_founder_execution', JSON.stringify(executionRecord));
-      setAuditRecord(executionRecord);
-      setIsExecuted(true);
-
-      // Scroll to certificate
-      setTimeout(() => {
-        const cert = document.getElementById('execution-certificate-box');
-        if (cert) cert.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } catch (err) {
-      setErrorMessage(err.message || 'Execution submission failed.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    localStorage.setItem('zuccano_formal_letter_execution', JSON.stringify(stamp));
+    setAuditStamp(stamp);
+    setIsExecuted(true);
+    alert('Agreement executed and registered successfully in Zuccano Corporate Depository.');
   };
 
   const handlePrint = () => {
@@ -255,569 +148,321 @@ export const FounderAgreementPortal = () => {
   };
 
   return (
-    <div className="gov-form-wrapper">
-      {/* Top Formal Action Bar */}
-      <div className="gov-action-bar no-print">
-        <div className="gov-bar-container">
-          <div className="gov-bar-left">
-            <span className="gov-flag-mark">FORM ZUC-FGA-1</span>
-            <span className="gov-bar-divider">•</span>
-            <span className="gov-bar-text">Official Corporate Governance & Founder Agreement Portal</span>
-          </div>
-          <div className="gov-bar-right">
-            <button type="button" className="gov-btn-secondary" onClick={handlePrint}>
-              <Printer size={13} />
-              <span>Print Official Form</span>
+    <div className="letter-outer-wrapper">
+      {/* =================================================================
+          TOP ACTION TOOLBAR (Hidden on Print)
+         ================================================================= */}
+      <div className="letter-action-toolbar no-print">
+        <div className="toolbar-info">
+          <span className="toolbar-badge">FORM ZUC-FGA (2-PAGE STATUTORY INSTRUMENT)</span>
+          <span>Zuccano Corporate Depository</span>
+        </div>
+
+        <div className="toolbar-buttons">
+          <button type="button" className="toolbar-btn" onClick={handlePrint}>
+            <Printer size={13} />
+            <span>Print 2-Page Letter (PDF)</span>
+          </button>
+
+          {!isExecuted ? (
+            <button
+              type="button"
+              className="toolbar-btn primary"
+              onClick={handleExecute}
+              disabled={!sigDataUrl}
+            >
+              <Lock size={13} />
+              <span>Sign & Execute Letter</span>
             </button>
-          </div>
+          ) : (
+            <span className="text-xs font-bold text-green-700 inline-flex items-center gap-1 font-mono">
+              <CheckCircle size={14} /> EXECUTED & LOCKED
+            </span>
+          )}
         </div>
       </div>
 
-      <div className="gov-document-sheet">
-        {/* =================================================================
-            OFFICIAL COMPANY & GOVERNMENT STATUTORY HEADER
-           ================================================================= */}
-        <header className="gov-form-header">
-          <div className="gov-header-emblem">
-            <div className="emblem-shield">
-              <Shield size={26} className="text-neutral-900" />
+      {/* =================================================================
+          A4 SHEET 1 (PAGE 1 OF 2)
+         ================================================================= */}
+      <div className="a4-sheet" id="page-1">
+        <div>
+          {/* Official Letterhead Header */}
+          <div className="letterhead-header">
+            <div className="letterhead-top-row">
+              <div className="letterhead-logo-wrap">
+                <img
+                  src={zuccanoLogo || '/zuccano-logo.png'}
+                  alt="Zuccano Logo"
+                  className="letterhead-logo"
+                />
+              </div>
+              <div className="letterhead-company-info">
+                <div className="letterhead-company-name">ZUCCANO GROUP HOLDINGS PRIVATE LIMITED</div>
+                <div className="letterhead-cin">CIN: U72900KA2025PTC184920 &bull; INCORPORATED UNDER COMPANIES ACT, 2013</div>
+                <div className="letterhead-address">
+                  Registered Office: Level 14, Outer Ring Road, Bengaluru, Karnataka 560103, India<br />
+                  Email: corporate@zuccano.in &bull; Telephone: +91 (80) 4920-1849 &bull; Website: www.zuccano.in
+                </div>
+              </div>
             </div>
-            <div className="emblem-text">
-              <span className="emblem-parent">ZUCCANO GROUP HOLDINGS PRIVATE LIMITED</span>
-              <span className="emblem-statutory">CORPORATE GOVERNANCE & STATUTORY LEGAL DEPOSITORY</span>
+            <div className="letterhead-double-rule" />
+          </div>
+
+          {/* Reference & Date */}
+          <div className="letter-ref-bar">
+            <div>
+              <strong>REF. NO.:</strong> <span className="letter-ref-no">ZUC/CORP/GOV/2026-27/041</span>
+            </div>
+            <div>
+              <strong>DATE:</strong> 01st November, 2026
             </div>
           </div>
 
-          <div className="gov-cin-bar">
-            <span><strong>CIN:</strong> U72900KA2025PTC184920</span>
-            <span><strong>Incorporation:</strong> 12 Jan 2025</span>
-            <span><strong>Registered Office:</strong> Level 14, Outer Ring Road, Bengaluru, Karnataka 560103</span>
+          {/* Recipient Address */}
+          <div className="letter-to-block">
+            <strong>To,</strong>
+            <strong>The Founder / Executive Appointee,</strong>
+            ZFIT Technologies & Participating Subsidiary Ventures,<br />
+            Zuccano Group Holdings Private Limited,<br />
+            Bengaluru, Karnataka, India.
           </div>
 
-          <div className="gov-title-block">
-            <h1 className="gov-main-title">FORM ZUC-FGA</h1>
-            <h2 className="gov-sub-title">FOUNDER GOVERNANCE & EQUITY POLICY ACCEPTANCE AGREEMENT</h2>
-            <p className="gov-lead-statement">
-              "Building together requires clarity."
-            </p>
+          {/* Subject Line */}
+          <div className="letter-subject-line">
+            SUBJECT: STATUTORY FOUNDER AGREEMENT, EQUITY GOVERNANCE CHARTER & POLICY ACCEPTANCE — REG.
           </div>
 
-          <div className="gov-metadata-strip">
-            <div className="gov-meta-cell">
-              <span className="cell-label">Document Version</span>
-              <span className="cell-val font-mono">v2026.1-STABLE</span>
-            </div>
-            <div className="gov-meta-cell">
-              <span className="cell-label">Effective Date</span>
-              <span className="cell-val">01 November 2026</span>
-            </div>
-            <div className="gov-meta-cell">
-              <span className="cell-label">Governing Jurisdiction</span>
-              <span className="cell-val">Bengaluru, Karnataka (India)</span>
-            </div>
-            <div className="gov-meta-cell">
-              <span className="cell-label">Statutory Form Status</span>
-              <span className={`cell-status ${isExecuted ? 'executed' : 'pending'}`}>
-                {isExecuted ? '✓ Executed & Registered' : '● Pending Founder Signature'}
-              </span>
-            </div>
-          </div>
-        </header>
+          {/* Salutation */}
+          <div className="letter-salutation">Dear Sir / Madam,</div>
 
-        {/* Preamble Notice */}
-        <div className="gov-notice-box">
-          <p>
-            <strong>STATUTORY NOTICE:</strong> This agreement establishes the binding principles, ownership arrangements, intellectual property assignments, fiduciary responsibilities, and dispute-resolution rules applicable to founders participating in Zuccano Group Holdings Private Limited and its operating subsidiaries (including ZFIT Technologies). Review every clause below, verify your identity, and provide your electronic signature under the Information Technology Act, 2000.
+          {/* Formal Preamble */}
+          <p className="letter-preamble">
+            With reference to your engagement as Founder / Executive Officer within Zuccano Group Holdings Private Limited ("Parent Company") and its subsidiary operating ventures (including ZFIT Technologies), this statutory instrument sets forth the binding ownership framework, fiduciary obligations, intellectual property assignment, and corporate governance rules applicable under the Companies Act, 2013:
           </p>
+
+          {/* Numbered Legal Clauses (Clauses 1 to 5 on Page 1) */}
+          <div className="letter-clauses-list">
+            <div className="letter-clause-item">
+              <span className="clause-num">1.</span>
+              <div className="clause-body-text">
+                <strong>Corporate Holding Hierarchy:</strong> Zuccano Group Holdings Private Limited functions as the central parent entity. Subsidiaries (including ZFIT Technologies) operate under delegated executive leadership, subject to Parent Board statutory oversight, capital allocation controls, and parent charter guidelines.
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">2.</span>
+              <div className="clause-body-text">
+                <strong>Authoritative Share Capital & Cap Table Transparency:</strong> Equity ownership is determined exclusively by the formal Register of Members (MGT-1) maintained pursuant to Section 88 of the Companies Act, 2013, as detailed hereunder:
+                
+                <div className="letter-table-wrap">
+                  <table className="letter-table">
+                    <thead>
+                      <tr>
+                        <th>Corporate Entity</th>
+                        <th>Shareholder / Entity</th>
+                        <th>Legal Role</th>
+                        <th>Equity %</th>
+                        <th>Statutory Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td rowSpan="3" style={{ verticalAlign: 'middle', fontWeight: 'bold' }}>
+                          Zuccano Group Holdings Pvt. Ltd.<br />(Parent Entity)
+                        </td>
+                        <td><strong>Naseer</strong></td>
+                        <td>Founding Shareholder & Signatory</td>
+                        <td style={{ fontWeight: 'bold' }}>51.0%</td>
+                        <td>Majority Voting Control; no direct personal shares in ZFIT.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Pavan</strong></td>
+                        <td>Co-Founding Shareholder & Director</td>
+                        <td style={{ fontWeight: 'bold' }}>40.0%</td>
+                        <td>Parent Director; Appointed CEO of ZFIT Subsidiary.</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Other Shareholders</strong></td>
+                        <td>Minority Shareholders Pool</td>
+                        <td style={{ fontWeight: 'bold' }}>9.0%</td>
+                        <td>Reserved contributor and angel pool under Board resolution.</td>
+                      </tr>
+                      <tr style={{ background: '#F4F4F5' }}>
+                        <td rowSpan="2" style={{ verticalAlign: 'middle', fontWeight: 'bold' }}>
+                          ZFIT Technologies<br />(Subsidiary)
+                        </td>
+                        <td><strong>Zuccano Group Holdings</strong></td>
+                        <td>Parent Corporation (Controlling)</td>
+                        <td style={{ fontWeight: 'bold' }}>51.0%</td>
+                        <td>Corporate Treasury Ownership (Pavan serves as CEO).</td>
+                      </tr>
+                      <tr style={{ background: '#F4F4F5' }}>
+                        <td><strong>Unassigned Minority Pool</strong></td>
+                        <td>Product Reserve / Secondary Pool</td>
+                        <td style={{ fontWeight: 'bold' }}>49.0%</td>
+                        <td>Subject to verified subsidiary records and Board allotment.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="letter-statutory-warning">
+                  <strong>STATUTORY MANDATE:</strong> Operational titles (CEO, Product Founder, Director, Employee, Administrator) do <u>NOT</u> constitute proof of legal share ownership. Legal equity exists strictly via valid Share Certificates (Form SH-1) and RoC filings.
+                </div>
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">3.</span>
+              <div className="clause-body-text">
+                <strong>Fiduciary Obligations & Expenditure Limit:</strong> Every founder is bound by fiduciary duties under Section 166 of the Companies Act, 2013. No founder may commit company funds exceeding ₹1,00,000 (Rupees One Lakh) without prior written approval of the CEO or Parent Board.
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">4.</span>
+              <div className="clause-body-text">
+                <strong>Equity Vesting Schedule (Four Years with One-Year Cliff):</strong> Founder equity allocations vest over forty-eight (48) months with a mandatory twelve (12) month cliff (25% vesting at Month 12; balance in 36 equal monthly installments). Unvested shares forfeit upon departure.
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">5.</span>
+              <div className="clause-body-text">
+                <strong>Remuneration & Corporate Funds Integrity:</strong> All revenues belong to the corporate treasury. Founder compensation requires Board sanction; personal commingling of corporate funds constitutes gross fiduciary breach.
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* =================================================================
-            14 SHORT, CLEAR, PROFESSIONAL POLICY ARTICLES
-           ================================================================= */}
-        <section className="gov-clauses-body">
-          {/* Article 1 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">01</span>
-            <div className="gov-clause-content">
-              <h3>Corporate Structure & Holding Framework</h3>
-              <p>
-                Zuccano Group Holdings Private Limited operates as the central corporate parent entity. Operating ventures and subsidiaries (including ZFIT Technologies) operate under autonomous executive leadership delegated by the Board of Directors, while remaining bound by Parent Holding governance and capital oversight.
-              </p>
-            </div>
-          </article>
+        {/* Page 1 Footer */}
+        <div className="letter-page-footer">
+          <span>Ref: ZUC/CORP/GOV/2026-27/041 &bull; Confidential & Privileged Corporate Instrument</span>
+          <span>Page 1 of 2</span>
+        </div>
+      </div>
 
-          {/* Article 2: Verified Ownership Table */}
-          <article className="gov-clause-row highlight-article">
-            <span className="gov-clause-num">02</span>
-            <div className="gov-clause-content">
-              <h3>Verified Ownership & Equity Transparency</h3>
-              <p className="mb-2">
-                All equity shareholdings are governed strictly by the formal Register of Members maintained pursuant to Section 88 of the Companies Act, 2013:
-              </p>
-
-              {/* Table 1: Parent Cap Table */}
-              <div className="gov-table-wrap">
-                <div className="gov-table-heading">
-                  <span>TABLE A — ZUCCANO GROUP HOLDINGS PRIVATE LIMITED (PARENT ENTITY)</span>
-                  <span className="font-mono text-xs">100% PAID-UP EQUITY</span>
-                </div>
-                <table className="gov-table">
-                  <thead>
-                    <tr>
-                      <th>Shareholder</th>
-                      <th>Legal Designation</th>
-                      <th>Equity Stake</th>
-                      <th>Statutory Verification</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="bg-neutral-50 font-semibold">
-                      <td>Naseer</td>
-                      <td>Founding Shareholder & Authorized Signatory</td>
-                      <td className="font-mono text-neutral-900">51.0%</td>
-                      <td>Majority Voting Control. Does <em>not</em> personally own ZFIT shares.</td>
-                    </tr>
-                    <tr>
-                      <td>Pavan</td>
-                      <td>Co-Founding Shareholder & Director</td>
-                      <td className="font-mono text-neutral-900">40.0%</td>
-                      <td>Parent Director & Shareholder. Appointed as CEO of ZFIT subsidiary.</td>
-                    </tr>
-                    <tr>
-                      <td>Other Shareholders Pool</td>
-                      <td>Minority Shareholders Collective</td>
-                      <td className="font-mono text-neutral-900">9.0%</td>
-                      <td>Reserved early contributor and institutional equity pool.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Table 2: ZFIT Subsidiary */}
-              <div className="gov-table-wrap mt-3">
-                <div className="gov-table-heading">
-                  <span>TABLE B — ZFIT TECHNOLOGIES (SUBSIDIARY VENTURE)</span>
-                  <span className="font-mono text-xs">CIN/REGISTRY CONTROL</span>
-                </div>
-                <table className="gov-table">
-                  <thead>
-                    <tr>
-                      <th>Entity / Pool</th>
-                      <th>Corporate Relationship</th>
-                      <th>Allocated Stake</th>
-                      <th>Statutory Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="bg-neutral-50 font-semibold">
-                      <td>Zuccano Group Holdings Private Limited</td>
-                      <td>Parent Holding (Controlling Interest)</td>
-                      <td className="font-mono text-neutral-900">51.0%</td>
-                      <td>Corporate Treasury Ownership (Board Approved)</td>
-                    </tr>
-                    <tr>
-                      <td>Unassigned Minority Allocation Pool</td>
-                      <td>Product Founders, ESOP & Strategic Reserve</td>
-                      <td className="font-mono text-neutral-900">49.0%</td>
-                      <td className="text-amber-800 font-medium">Subject to verified subsidiary records & board allotment</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Strict Distinction Callout */}
-              <div className="gov-callout-warning mt-3">
-                <strong>LEGAL MANDATE:</strong> Operational titles (CEO, Product Founder, Director, Employee, Workspace Administrator) do <strong>NOT</strong> constitute proof of legal share ownership. Legal shareholding exists <strong>strictly</strong> through issued Share Certificates (Form SH-1) and entries in the statutory Register of Members.
-              </div>
-            </div>
-          </article>
-
-          {/* Article 3 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">03</span>
-            <div className="gov-clause-content">
-              <h3>Founder Duties & Standard of Fiduciary Care</h3>
-              <p>
-                Every founder owes a strict fiduciary duty under Section 166 of the Companies Act, 2013 to act in good faith, in the best interest of the enterprise, employees, and shareholders. No founder may commit company resources exceeding ₹1,00,000 without prior written approval of the CEO or Parent Board.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 4 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">04</span>
-            <div className="gov-clause-content">
-              <h3>Equity Vesting & Cliff Schedule</h3>
-              <p>
-                All founder equity allocations are subject to a <strong>four (4) year vesting schedule</strong> with a mandatory <strong>one (1) year cliff</strong> (25% vests at Month 12, followed by equal monthly vesting over the subsequent 36 months). Unvested shares are forfeited and returned to company treasury at nominal par value upon departure.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 5 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">05</span>
-            <div className="gov-clause-content">
-              <h3>Compensation, Runway & Company Funds</h3>
-              <p>
-                All company revenue belongs to corporate accounts. Founder compensation must be formally approved by the Board of Directors and calibrated to company cash flow. Commingling of personal and corporate funds constitutes gross fiduciary breach.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 6 */}
-          <article className="gov-clause-row highlight-article">
-            <span className="gov-clause-num">06</span>
-            <div className="gov-clause-content">
-              <h3>100% Intellectual Property Assignment</h3>
-              <p>
-                All software, source code, AI models, UI/UX designs, trademarks, domain names, algorithms, and documentation authored or conceived by founders during their engagement belong <strong>exclusively and perpetually to Zuccano Group Holdings or the designated subsidiary</strong>, with an express waiver of moral rights under Section 57 of the Copyright Act, 1957.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 7 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">07</span>
-            <div className="gov-clause-content">
-              <h3>Decision Authority & Reserved Board Matters</h3>
-              <p>
-                Day-to-day sprint management is delegated to the subsidiary CEO. Fundamental matters—including equity dilution, debt over ₹5,00,000, intellectual property sale or licensing, executive hiring/firing, and corporate restructuring—require affirmative Parent Board approval.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 8 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">08</span>
-            <div className="gov-clause-content">
-              <h3>Confidentiality & Data Protection</h3>
-              <p>
-                Founders are bound by a perpetual Non-Disclosure obligation covering source code, cap table data, user records, and financial statements, adhering strictly to the Digital Personal Data Protection (DPDP) Act, 2023.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 9 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">09</span>
-            <div className="gov-clause-content">
-              <h3>Share Transfer Restrictions & 30-Day ROFR</h3>
-              <p>
-                No founder may sell, pledge, or transfer equity shares to any third party without first extending a thirty (30) day Right of First Refusal (ROFR) to Zuccano Parent Holding and existing co-founders.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 10 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">10</span>
-            <div className="gov-clause-content">
-              <h3>Founder Exit (Good Leaver vs. Bad Leaver)</h3>
-              <p>
-                Voluntary departure requires ninety (90) days written notice. A Good Leaver retains earned vested equity. A founder terminated for Cause (fraud, criminal conduct, IP theft, or breach of non-compete) is designated a Bad Leaver, triggering an immediate mandatory buyback of shares at nominal par value (₹10/share).
-              </p>
-            </div>
-          </article>
-
-          {/* Article 11 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">11</span>
-            <div className="gov-clause-content">
-              <h3>Exclusivity & Non-Compete Undertaking</h3>
-              <p>
-                Founders must dedicate their full commercial focus to their assigned venture. During active tenure and for twelve (12) months following exit, no founder shall engage in, finance, or advise a commercially competitive business.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 12 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">12</span>
-            <div className="gov-clause-content">
-              <h3>Dispute Resolution & Fast-Track Arbitration</h3>
-              <p>
-                Disputes are subject to mandatory thirty (30) days good-faith internal mediation. Unresolved disputes shall be finally settled by binding arbitration in Bengaluru, Karnataka under the Arbitration and Conciliation Act, 1996.
-              </p>
-            </div>
-          </article>
-
-          {/* Article 13 */}
-          <article className="gov-clause-row">
-            <span className="gov-clause-num">13</span>
-            <div className="gov-clause-content">
-              <h3>Immutability of Executed Document</h3>
-              <p>
-                Once executed, this agreement is cryptographically hashed and permanently locked. Administrators cannot alter signed records. Any future amendment requires a formal board resolution and re-execution.
-              </p>
-            </div>
-          </article>
-        </section>
-
-        {/* =================================================================
-            STATUTORY DECLARATIONS & AFFIRMATIONS CHECKLIST
-           ================================================================= */}
-        <section className="gov-declarations-section">
-          <div className="gov-section-header">
-            <div>
-              <h2 className="gov-section-title">STATUTORY AFFIRMATIONS & ACKNOWLEDGEMENTS</h2>
-              <p className="gov-section-desc">Check each mandatory declaration to confirm your informed agreement:</p>
-            </div>
-            <button
-              type="button"
-              className="gov-select-all-btn no-print"
-              onClick={handleSelectAllAffirmations}
-            >
-              {Object.values(affirmations).every(Boolean) ? 'Deselect All' : 'Select All Declarations'}
-            </button>
+      {/* =================================================================
+          A4 SHEET 2 (PAGE 2 OF 2)
+         ================================================================= */}
+      <div className="a4-sheet" id="page-2">
+        <div>
+          {/* Header of Page 2 */}
+          <div className="letter-page2-header">
+            <span>ZUCCANO GROUP HOLDINGS PRIVATE LIMITED &bull; STATUTORY FOUNDER AGREEMENT</span>
+            <span>REF: ZUC/CORP/GOV/2026-27/041 (PAGE 2 OF 2)</span>
           </div>
 
-          <div className="gov-checkbox-grid">
-            <label className={`gov-check-card ${affirmations.readComplete ? 'checked' : ''}`}>
-              <input
-                type="checkbox"
-                checked={affirmations.readComplete}
-                onChange={() => setAffirmations({ ...affirmations, readComplete: !affirmations.readComplete })}
-              />
-              <span>1. I have read and understand all 13 governance articles above in full.</span>
-            </label>
-
-            <label className={`gov-check-card ${affirmations.ownershipUnderstood ? 'checked' : ''}`}>
-              <input
-                type="checkbox"
-                checked={affirmations.ownershipUnderstood}
-                onChange={() => setAffirmations({ ...affirmations, ownershipUnderstood: !affirmations.ownershipUnderstood })}
-              />
-              <span>2. I acknowledge the verified ownership cap tables and the rule that titles do not equal shares.</span>
-            </label>
-
-            <label className={`gov-check-card ${affirmations.fiduciaryDutyAccepted ? 'checked' : ''}`}>
-              <input
-                type="checkbox"
-                checked={affirmations.fiduciaryDutyAccepted}
-                onChange={() => setAffirmations({ ...affirmations, fiduciaryDutyAccepted: !affirmations.fiduciaryDutyAccepted })}
-              />
-              <span>3. I accept my fiduciary duty of care and expenditure limits under Section 166 of the Companies Act.</span>
-            </label>
-
-            <label className={`gov-check-card ${affirmations.ipAssigned ? 'checked' : ''}`}>
-              <input
-                type="checkbox"
-                checked={affirmations.ipAssigned}
-                onChange={() => setAffirmations({ ...affirmations, ipAssigned: !affirmations.ipAssigned })}
-              />
-              <span>4. I irrevocably assign all intellectual property and inventions to Zuccano Group Holdings.</span>
-            </label>
-
-            <label className={`gov-check-card ${affirmations.confidentialityAgreed ? 'checked' : ''}`}>
-              <input
-                type="checkbox"
-                checked={affirmations.confidentialityAgreed}
-                onChange={() => setAffirmations({ ...affirmations, confidentialityAgreed: !affirmations.confidentialityAgreed })}
-              />
-              <span>5. I agree to strict perpetual non-disclosure and compliance with the DPDP Act, 2023.</span>
-            </label>
-
-            <label className={`gov-check-card ${affirmations.vestingAndExitAccepted ? 'checked' : ''}`}>
-              <input
-                type="checkbox"
-                checked={affirmations.vestingAndExitAccepted}
-                onChange={() => setAffirmations({ ...affirmations, vestingAndExitAccepted: !affirmations.vestingAndExitAccepted })}
-              />
-              <span>6. I accept the 4-year vesting, 1-year cliff, and Bad Leaver par-value buyback terms.</span>
-            </label>
-
-            <label className={`gov-check-card ${affirmations.arbitrationAgreed ? 'checked' : ''}`}>
-              <input
-                type="checkbox"
-                checked={affirmations.arbitrationAgreed}
-                onChange={() => setAffirmations({ ...affirmations, arbitrationAgreed: !affirmations.arbitrationAgreed })}
-              />
-              <span>7. I accept the 30-day internal mediation and Bengaluru binding arbitration procedure.</span>
-            </label>
-
-            <label className={`gov-check-card ${affirmations.independentCounselOpportunity ? 'checked' : ''}`}>
-              <input
-                type="checkbox"
-                checked={affirmations.independentCounselOpportunity}
-                onChange={() => setAffirmations({ ...affirmations, independentCounselOpportunity: !affirmations.independentCounselOpportunity })}
-              />
-              <span>8. I confirm I have had full opportunity to obtain independent legal/financial counsel before signing.</span>
-            </label>
-          </div>
-        </section>
-
-        {/* =================================================================
-            IDENTITY & OFFICIAL DIGITAL SIGNATURE (E-SIGN) BLOCK
-           ================================================================= */}
-        {isExecuted && auditRecord ? (
-          /* Executed Certificate Display */
-          <div id="execution-certificate-box" className="gov-certificate-box">
-            <div className="cert-top-badge">
-              <CheckCircle size={16} className="text-green-800" />
-              <span>OFFICIALLY EXECUTED & REGISTERED IN ZUCCANO CORPORATE DEPOSITORY</span>
+          {/* Numbered Legal Clauses (Clauses 6 to 13 on Page 2) */}
+          <div className="letter-clauses-list">
+            <div className="letter-clause-item">
+              <span className="clause-num">6.</span>
+              <div className="clause-body-text">
+                <strong>100% Comprehensive Invention Assignment:</strong> All software code, algorithms, AI models, UI/UX designs, trademarks, domain names, and technical documentation created by the founder belong <u>exclusively and perpetually to Zuccano Group Holdings or the designated subsidiary</u>, with an express waiver of moral rights under Section 57 of the Copyright Act, 1957.
+              </div>
             </div>
 
-            <h3 className="cert-title">CERTIFICATE OF FOUNDER AGREEMENT EXECUTION</h3>
-            <p className="cert-lead">
-              This certifies that the undersigned founder has formally acknowledged and electronically executed Form ZUC-FGA pursuant to the Information Technology Act, 2000 and Companies Act, 2013.
+            <div className="letter-clause-item">
+              <span className="clause-num">7.</span>
+              <div className="clause-body-text">
+                <strong>Operational Authority vs. Reserved Board Matters:</strong> Day-to-day sprint management is delegated to the subsidiary CEO. Fundamental matters—including equity issuances, debt exceeding ₹5,00,000, licensing of core intellectual property, C-suite appointments, or corporate restructuring—require affirmative Parent Board approval.
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">8.</span>
+              <div className="clause-body-text">
+                <strong>Perpetual Confidentiality & DPDP Act, 2023:</strong> Founders are bound by perpetual non-disclosure covering source code, cap tables, user records, and financial accounts, complying with the Digital Personal Data Protection Act, 2023.
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">9.</span>
+              <div className="clause-body-text">
+                <strong>Share Transfer Restrictions & 30-Day ROFR:</strong> No founder may sell, pledge, or transfer shares to third parties without extending a thirty (30) day Right of First Refusal (ROFR) to Zuccano Parent Holding and existing co-founders.
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">10.</span>
+              <div className="clause-body-text">
+                <strong>Exit Terms (Good Leaver vs. Bad Leaver):</strong> Voluntary departure requires ninety (90) days notice. Good Leavers retain earned vested shares. Bad Leavers (terminated for fraud, criminal indictment, IP theft, or breach of non-compete) face mandatory par-value buyback (₹10/share).
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">11.</span>
+              <div className="clause-body-text">
+                <strong>Exclusivity & 12-Month Non-Compete:</strong> Founders must dedicate full commercial focus to their assigned venture. During tenure and for twelve (12) months following exit, founders shall not directly or indirectly compete within the same commercial domain.
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">12.</span>
+              <div className="clause-body-text">
+                <strong>Dispute Resolution & Sole Arbitration in Bengaluru:</strong> Disputes are subject to mandatory thirty (30) days internal mediation. Unresolved disputes shall be finally settled by binding arbitration in Bengaluru, Karnataka under the Arbitration and Conciliation Act, 1996.
+              </div>
+            </div>
+
+            <div className="letter-clause-item">
+              <span className="clause-num">13.</span>
+              <div className="clause-body-text">
+                <strong>Immutability of Executed Instrument:</strong> Once executed, this agreement is permanently locked and cryptographically registered. Any material alteration requires a formal Board resolution and re-execution.
+              </div>
+            </div>
+          </div>
+
+          {/* Formal Closing Paragraph */}
+          <div className="letter-closing-section">
+            <p className="letter-closing-text">
+              Please acknowledge your formal acceptance, confirmation, and receipt of the terms hereinabove by affixing your digital signature in the duplicate space provided hereunder.
             </p>
 
-            <div className="cert-details-grid">
-              <div>
-                <span className="cd-label">Audit Event ID</span>
-                <span className="cd-val font-mono text-red-900">{auditRecord.auditEventId}</span>
-              </div>
-              <div>
-                <span className="cd-label">Execution Timestamp (IST)</span>
-                <span className="cd-val font-semibold">{auditRecord.timestampIST}</span>
-              </div>
-              <div>
-                <span className="cd-label">Signer Legal Name</span>
-                <span className="cd-val font-semibold">{auditRecord.fullName}</span>
-              </div>
-              <div>
-                <span className="cd-label">Corporate Email</span>
-                <span className="cd-val font-mono">{auditRecord.email}</span>
-              </div>
-              <div>
-                <span className="cd-label">Assigned Subsidiary / Product</span>
-                <span className="cd-val font-semibold">{auditRecord.subsidiary}</span>
-              </div>
-              <div>
-                <span className="cd-label">Official Role / Designation</span>
-                <span className="cd-val font-semibold">{auditRecord.role}</span>
-              </div>
-              <div className="col-span-full">
-                <span className="cd-label">Cryptographic Fingerprint (SHA-256)</span>
-                <span className="cd-val font-mono text-xs break-all">{auditRecord.documentHash}</span>
-              </div>
+            <div className="letter-valediction">
+              Thanking you,<br />
+              <strong>Yours faithfully,</strong>
             </div>
 
-            <div className="cert-sig-row">
-              <div>
-                <span className="cd-label">Recorded Digital E-Signature</span>
-                <img src={auditRecord.signatureData} alt="E-Signature" className="cert-sig-preview" />
-                <span className="text-xs text-neutral-500 font-mono block mt-1">Verified Signer: {auditRecord.fullName}</span>
-              </div>
-
-              <div className="no-print">
-                <button type="button" className="gov-btn-primary" onClick={handlePrint}>
-                  <Printer size={14} />
-                  <span>Print & Download Certificate</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          /* Execution Form */
-          <section className="gov-execution-section">
-            <h2 className="gov-section-title">FOUNDER IDENTITY & E-SIGNATURE EXECUTION</h2>
-            <p className="gov-section-desc">Complete all fields below and provide your digital signature to execute this agreement:</p>
-
-            <form onSubmit={handleSubmit} className="gov-form">
-              <div className="gov-inputs-grid">
-                <div className="gov-input-group">
-                  <label>Full Legal Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  />
+            {/* =============================================================
+                SIDE-BY-SIDE FORMAL SIGNATURE BLOCK
+               ============================================================= */}
+            <div className="letter-signatures-grid">
+              {/* Left Side: Zuccano Parent Holding */}
+              <div className="sig-side-box">
+                <div className="sig-side-title">FOR AND ON BEHALF OF:</div>
+                <div style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>
+                  ZUCCANO GROUP HOLDINGS PRIVATE LIMITED
                 </div>
 
-                <div className="gov-input-group">
-                  <label>Official Corporate Email</label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
+                <div className="official-seal-badge">
+                  <Shield size={12} />
+                  <span>OFFICIAL CORPORATE SEAL &bull; BENGALURU</span>
                 </div>
 
-                <div className="gov-input-group">
-                  <label>Assigned Subsidiary / Product</label>
-                  <select
-                    value={formData.subsidiary}
-                    onChange={(e) => setFormData({ ...formData, subsidiary: e.target.value })}
-                  >
-                    <option value="ZFIT Technologies">ZFIT Technologies</option>
-                    <option value="Zuccano Group Holdings">Zuccano Group Holdings Private Limited</option>
-                    <option value="Zuccano Retail Ventures">Zuccano Retail Ventures</option>
-                    <option value="Zuccano Media Lab">Zuccano Media Lab</option>
-                  </select>
-                </div>
-
-                <div className="gov-input-group">
-                  <label>Designation / Role</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.role}
-                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  />
-                </div>
-
-                <div className="gov-input-group">
-                  <label>Government Identification (PAN / DIN)</label>
-                  <input
-                    type="text"
-                    value={formData.govtId}
-                    onChange={(e) => setFormData({ ...formData, govtId: e.target.value })}
-                    placeholder="e.g. AAAPZ9845K"
-                  />
-                </div>
-
-                <div className="gov-input-group">
-                  <label>Execution Timestamp (IST)</label>
-                  <input
-                    type="text"
-                    readOnly
-                    value={formData.dateIST}
-                    className="bg-neutral-100 font-mono text-xs cursor-not-allowed"
-                  />
+                <div className="sig-signatory-name">(Naseer Pasha)</div>
+                <div className="sig-signatory-desig">
+                  Director & Authorized Signatory<br />
+                  DIN: 09845120<br />
+                  Date: 01 Nov 2026 | Place: Bengaluru
                 </div>
               </div>
 
-              {/* Digital Signature Canvas Block */}
-              <div className="gov-signature-box">
-                <div className="gov-sig-header">
-                  <span className="font-semibold text-xs tracking-wider uppercase">Electronic Signature Pad (IT Act, 2000)</span>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className={`gov-sig-tab ${sigMode === 'DRAW' ? 'active' : ''}`}
-                      onClick={() => setSigMode('DRAW')}
-                    >
-                      <PenTool size={12} />
-                      <span>Draw Signature</span>
-                    </button>
-                    <button
-                      type="button"
-                      className={`gov-sig-tab ${sigMode === 'TYPE' ? 'active' : ''}`}
-                      onClick={() => setSigMode('TYPE')}
-                    >
-                      <Type size={12} />
-                      <span>Type Signature</span>
-                    </button>
-                    {sigMode === 'DRAW' && hasDrawn && (
-                      <button type="button" className="gov-sig-reset" onClick={clearCanvas}>
-                        <RotateCcw size={12} />
-                        <span>Clear</span>
-                      </button>
-                    )}
-                  </div>
+              {/* Right Side: Accepting Founder / Appointee */}
+              <div className="sig-side-box">
+                <div className="sig-side-title">ACCEPTED, CONFIRMED & AGREED:</div>
+                <div style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>
+                  {signerRole}
                 </div>
 
-                {sigMode === 'DRAW' ? (
-                  <div className="gov-canvas-wrap">
+                {/* Founder Interactive Signature Box */}
+                <div className="founder-sig-interactive mt-1">
+                  {sigMode === 'DRAW' ? (
                     <canvas
                       ref={canvasRef}
-                      width={700}
-                      height={120}
-                      className="gov-canvas"
+                      width={350}
+                      height={80}
+                      className="founder-sig-canvas"
                       onMouseDown={startDrawing}
                       onMouseMove={draw}
                       onMouseUp={stopDrawing}
@@ -826,73 +471,67 @@ export const FounderAgreementPortal = () => {
                       onTouchMove={draw}
                       onTouchEnd={stopDrawing}
                     />
-                    <div className="gov-canvas-guide">
-                      <span>Sign above using mouse, pen, or touch</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="gov-type-sig-wrap">
+                  ) : (
                     <input
                       type="text"
-                      placeholder="Type your official name to sign..."
+                      placeholder="Type official legal name..."
                       value={typedSig}
                       onChange={(e) => handleTypedSignature(e.target.value)}
-                      className="gov-typed-input"
+                      className="founder-typed-sig-input"
                     />
-                    <span className="text-xs text-neutral-500 font-mono block mt-1">
-                      Rendered in legally binding digital script under Section 10A of the IT Act, 2000.
-                    </span>
-                  </div>
-                )}
+                  )}
+
+                  {!isExecuted && (
+                    <div className="sig-tools-mini no-print">
+                      <button
+                        type="button"
+                        className={`sig-tool-btn ${sigMode === 'DRAW' ? 'active' : ''}`}
+                        onClick={() => setSigMode('DRAW')}
+                      >
+                        <PenTool size={10} /> Draw
+                      </button>
+                      <button
+                        type="button"
+                        className={`sig-tool-btn ${sigMode === 'TYPE' ? 'active' : ''}`}
+                        onClick={() => setSigMode('TYPE')}
+                      >
+                        <Type size={10} /> Type
+                      </button>
+                      {sigMode === 'DRAW' && hasDrawn && (
+                        <button type="button" className="sig-tool-btn text-red-700" onClick={clearCanvas}>
+                          <RotateCcw size={10} /> Clear
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div className="sig-signatory-name mt-1">
+                  ({signerName})
+                </div>
+                <div className="sig-signatory-desig">
+                  Founder & CEO, ZFIT Technologies<br />
+                  Date: 01 Nov 2026 | Place: Bengaluru, Karnataka
+                </div>
               </div>
+            </div>
 
-              {/* Final Submit Button */}
-              <div className="gov-submit-wrap no-print">
-                <button
-                  type="submit"
-                  disabled={!canSubmit || isSubmitting}
-                  className="gov-submit-btn"
-                >
-                  <Lock size={15} />
-                  <span>
-                    {isSubmitting
-                      ? 'Executing & Registering Agreement...'
-                      : 'EXECUTE & SUBMIT FORMAL FOUNDER ACCEPTANCE'}
-                  </span>
-                </button>
-
-                {!canSubmit && (
-                  <p className="gov-submit-hint">
-                    {!allAffirmationsChecked
-                      ? '⚠️ Please check all 8 statutory affirmations above.'
-                      : !hasValidSignature
-                      ? '⚠️ Please draw or type your electronic signature above.'
-                      : '⚠️ Please complete all required identity fields.'}
-                  </p>
-                )}
-
-                {errorMessage && (
-                  <p className="text-red-700 text-xs font-bold text-center mt-2">
-                    {errorMessage}
-                  </p>
-                )}
+            {/* Audit Stamp Strip */}
+            {isExecuted && auditStamp && (
+              <div className="letter-audit-strip">
+                <span><strong>AUDIT EVENT ID:</strong> {auditStamp.auditEventId}</span>
+                <span><strong>REGISTERED:</strong> {auditStamp.timestampIST}</span>
+                <span><strong>ELECTRONICALLY EXECUTED (IT ACT, 2000)</strong></span>
               </div>
-            </form>
-          </section>
-        )}
-
-        {/* =================================================================
-            OFFICIAL FOOTER
-           ================================================================= */}
-        <footer className="gov-form-footer">
-          <div className="gov-footer-line">
-            <span>ZUCCANO GROUP HOLDINGS PRIVATE LIMITED • CORPORATE GOVERNANCE DEPOSITORY</span>
-            <span>BENGALURU, KARNATAKA</span>
+            )}
           </div>
-          <p className="gov-footer-sub">
-            This instrument is executed electronically pursuant to the Information Technology Act, 2000. A copy of this document is permanently archived in the Board Depository.
-          </p>
-        </footer>
+        </div>
+
+        {/* Page 2 Footer */}
+        <div className="letter-page-footer">
+          <span>Ref: ZUC/CORP/GOV/2026-27/041 &bull; Registered in the Zuccano Board Depository</span>
+          <span>Page 2 of 2</span>
+        </div>
       </div>
     </div>
   );

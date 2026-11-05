@@ -1,743 +1,552 @@
 /* ==========================================================================
-   FORM ZUC-FGA: OFFICIAL CORPORATE GOVERNANCE & FOUNDER AGREEMENT
-   Simple, Professional, Clean Corporate/Government Form Layout
+   FORMAL TWO-PAGE A4 STATUTORY GOVERNMENT / CORPORATE LETTER FORMAT
+   ZUCCANO GROUP HOLDINGS PRIVATE LIMITED
    ========================================================================== */
 
 :root {
-  --gov-bg: #F4F4F5;
-  --gov-paper: #FFFFFF;
-  --gov-text: #09090B;
-  --gov-text-muted: #52525B;
-  --gov-border: #D4D4D8;
-  --gov-border-subtle: #E4E4E7;
-  --gov-border-dark: #27272A;
-  --gov-red: #B91C1C;
-  --gov-red-bg: #FEF2F2;
-  --gov-serif: "Charter", Georgia, "Times New Roman", serif;
-  --gov-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --gov-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --letter-bg: #E4E4E7;
+  --letter-paper: #FFFFFF;
+  --letter-ink: #0A0A0A;
+  --letter-ink-muted: #3F3F46;
+  --letter-border: #18181B;
+  --letter-border-light: #D4D4D8;
+  --letter-seal: #991B1B;
+  --font-letter-serif: "Times New Roman", Times, "Cambria", Georgia, serif;
+  --font-letter-sans: "Arial", "Helvetica Neue", -apple-system, sans-serif;
+  --font-letter-mono: "Courier New", Courier, monospace;
 }
 
-.gov-form-wrapper {
-  background-color: var(--gov-bg);
+/* Page Background */
+.letter-outer-wrapper {
+  background-color: var(--letter-bg);
   min-height: 100vh;
-  padding: 2rem 1rem 4rem;
-  font-family: var(--gov-sans);
-  color: var(--gov-text);
-  line-height: 1.55;
+  padding: 2.5rem 1rem 5rem;
+  font-family: var(--font-letter-serif);
+  color: var(--letter-ink);
+  line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Action Bar */
-.gov-action-bar {
-  max-width: 900px;
-  margin: 0 auto 1rem;
-}
-
-.gov-bar-container {
+/* Floating Action Toolbar on Top */
+.letter-action-toolbar {
+  max-width: 820px;
+  margin: 0 auto 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 0.75rem;
   background: #FFFFFF;
-  border: 1px solid var(--gov-border);
+  border: 1px solid #D4D4D8;
+  padding: 0.6rem 1rem;
   border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
-.gov-bar-left {
+.toolbar-info {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--font-letter-sans);
   font-size: 0.8rem;
+  font-weight: 600;
+  color: #27272A;
 }
 
-.gov-flag-mark {
-  font-family: var(--gov-mono);
+.toolbar-badge {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #991B1B;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-family: var(--font-letter-mono);
+  font-size: 0.72rem;
   font-weight: 700;
-  color: var(--gov-red);
 }
 
-.gov-bar-divider {
-  color: var(--gov-border);
+.toolbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.gov-bar-text {
-  color: var(--gov-text-muted);
-}
-
-.gov-btn-secondary {
+.toolbar-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: #FFFFFF;
-  border: 1px solid var(--gov-border);
+  border: 1px solid #A1A1AA;
+  color: #09090B;
   padding: 5px 12px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
+  font-family: var(--font-letter-sans);
   font-weight: 600;
-  color: var(--gov-text);
   cursor: pointer;
   border-radius: 2px;
   transition: all 0.15s;
 }
 
-.gov-btn-secondary:hover {
+.toolbar-btn:hover {
   background: #F4F4F5;
-  border-color: #A1A1AA;
+  border-color: #27272A;
 }
 
-/* Main Form Sheet (Official Paper look) */
-.gov-document-sheet {
-  max-width: 900px;
-  margin: 0 auto;
-  background: var(--gov-paper);
-  border: 1px solid var(--gov-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  padding: 3rem 3.5rem;
-}
-
-/* Header & Emblem */
-.gov-form-header {
-  border-bottom: 2px solid var(--gov-border-dark);
-  padding-bottom: 1.5rem;
-  margin-bottom: 1.75rem;
-}
-
-.gov-header-emblem {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 1rem;
-}
-
-.emblem-shield {
-  width: 44px;
-  height: 44px;
-  background: #F4F4F5;
-  border: 1px solid var(--gov-border-dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
-}
-
-.emblem-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.emblem-parent {
-  font-weight: 900;
-  font-size: 1.05rem;
-  letter-spacing: 0.08em;
-  color: var(--gov-text);
-}
-
-.emblem-statutory {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--gov-red);
-}
-
-.gov-cin-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  background: #FAFAFA;
-  border: 1px solid var(--gov-border-subtle);
-  padding: 6px 12px;
-  font-size: 0.78rem;
-  color: var(--gov-text-muted);
-  margin-bottom: 1.5rem;
-}
-
-.gov-title-block {
-  text-align: center;
-  margin: 1.5rem 0 1.25rem;
-}
-
-.gov-main-title {
-  font-family: var(--gov-mono);
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  color: var(--gov-red);
-  margin-bottom: 4px;
-}
-
-.gov-sub-title {
-  font-family: var(--gov-serif);
-  font-size: 1.65rem;
-  font-weight: 700;
-  color: var(--gov-text);
-  line-height: 1.25;
-  margin-bottom: 8px;
-}
-
-.gov-lead-statement {
-  font-family: var(--gov-serif);
-  font-style: italic;
-  font-size: 1.1rem;
-  color: var(--gov-text-muted);
-}
-
-.gov-metadata-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  border-top: 1px solid var(--gov-border);
-  padding-top: 1rem;
-  margin-top: 1rem;
-}
-
-.gov-meta-cell {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.cell-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--gov-text-muted);
-}
-
-.cell-val {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--gov-text);
-}
-
-.cell-status {
-  font-size: 0.78rem;
-  font-weight: 700;
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 2px;
-}
-
-.cell-status.pending {
-  background: #FEF3C7;
-  color: #92400E;
-}
-
-.cell-status.executed {
-  background: #DCFCE7;
-  color: #166534;
-}
-
-/* Notice box */
-.gov-notice-box {
-  background: #FAFAFA;
-  border: 1px solid var(--gov-border);
-  border-left: 4px solid var(--gov-text);
-  padding: 1rem 1.25rem;
-  font-size: 0.88rem;
-  color: var(--gov-text);
-  line-height: 1.6;
-  margin-bottom: 2.25rem;
-}
-
-/* Clauses list */
-.gov-clauses-body {
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-  margin-bottom: 3rem;
-}
-
-.gov-clause-row {
-  display: grid;
-  grid-template-columns: 42px 1fr;
-  gap: 16px;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--gov-border-subtle);
-}
-
-.gov-clause-row:last-child {
-  border-bottom: none;
-}
-
-.gov-clause-row.highlight-article {
-  background: #FCFCFC;
-  padding: 1.25rem;
-  border: 1px solid var(--gov-border);
-  border-left: 4px solid var(--gov-red);
-}
-
-.gov-clause-num {
-  font-family: var(--gov-mono);
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--gov-red);
-  padding-top: 2px;
-}
-
-.gov-clause-content h3 {
-  font-family: var(--gov-serif);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--gov-text);
-  margin-bottom: 0.4rem;
-}
-
-.gov-clause-content p {
-  font-size: 0.92rem;
-  color: var(--gov-text-muted);
-  line-height: 1.6;
-}
-
-/* Tables */
-.gov-table-wrap {
-  border: 1px solid var(--gov-border);
-  border-radius: 2px;
-  overflow-x: auto;
-  margin-top: 0.75rem;
-}
-
-.gov-table-heading {
-  background: #F4F4F5;
-  border-bottom: 1px solid var(--gov-border);
-  padding: 6px 10px;
-  font-size: 0.74rem;
-  font-weight: 700;
-  display: flex;
-  justify-content: space-between;
-}
-
-.gov-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-  text-align: left;
-}
-
-.gov-table th {
-  background: #FAFAFA;
-  border-bottom: 1px solid var(--gov-border);
-  padding: 8px 10px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--gov-text-muted);
-}
-
-.gov-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--gov-border-subtle);
-}
-
-.gov-table tr:last-child td {
-  border-bottom: none;
-}
-
-.gov-callout-warning {
-  background: #FEF2F2;
-  border: 1px solid #FECACA;
-  padding: 10px 12px;
-  font-size: 0.82rem;
-  color: #991B1B;
-  line-height: 1.5;
-}
-
-/* Affirmations Section */
-.gov-declarations-section {
-  border-top: 2px solid var(--gov-border-dark);
-  padding-top: 2rem;
-  margin-bottom: 3rem;
-}
-
-.gov-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 1.25rem;
-}
-
-.gov-section-title {
-  font-family: var(--gov-serif);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--gov-text);
-}
-
-.gov-section-desc {
-  font-size: 0.85rem;
-  color: var(--gov-text-muted);
-}
-
-.gov-select-all-btn {
-  background: transparent;
-  border: 1px solid var(--gov-border);
-  padding: 5px 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 2px;
-}
-
-.gov-select-all-btn:hover {
-  background: #F4F4F5;
-}
-
-.gov-checkbox-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.gov-check-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: #FAFAFA;
-  border: 1px solid var(--gov-border);
-  padding: 10px 14px;
-  cursor: pointer;
-  border-radius: 2px;
-  font-size: 0.88rem;
-  color: var(--gov-text);
-  line-height: 1.5;
-  transition: all 0.15s;
-}
-
-.gov-check-card:hover {
-  border-color: #A1A1AA;
-}
-
-.gov-check-card.checked {
-  background: #F0FDF4;
-  border-color: #86EFAC;
-}
-
-.gov-check-card input[type="checkbox"] {
-  width: 17px;
-  height: 17px;
-  margin-top: 2px;
-  accent-color: #166534;
-  cursor: pointer;
-}
-
-/* Execution Section */
-.gov-execution-section {
-  border-top: 2px solid var(--gov-border-dark);
-  padding-top: 2rem;
-  margin-bottom: 3rem;
-}
-
-.gov-inputs-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin: 1.25rem 0 2rem;
-}
-
-.gov-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.gov-input-group label {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--gov-text-muted);
-}
-
-.gov-input-group input,
-.gov-input-group select {
-  border: 1px solid var(--gov-border);
-  padding: 9px 12px;
-  font-size: 0.88rem;
-  color: var(--gov-text);
-  background: #FFFFFF;
-  border-radius: 2px;
-  outline: none;
-}
-
-.gov-input-group input:focus,
-.gov-input-group select:focus {
-  border-color: var(--gov-text);
-}
-
-/* Signature Pad */
-.gov-signature-box {
-  border: 1px solid var(--gov-border);
-  background: #FAFAFA;
-  padding: 1.25rem;
-  margin-bottom: 2rem;
-  border-radius: 2px;
-}
-
-.gov-sig-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.gov-sig-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: #FFFFFF;
-  border: 1px solid var(--gov-border);
-  padding: 4px 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 2px;
-}
-
-.gov-sig-tab.active {
+.toolbar-btn.primary {
   background: #09090B;
   color: #FFFFFF;
   border-color: #09090B;
 }
 
-.gov-sig-reset {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: transparent;
-  border: none;
-  color: var(--gov-red);
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
+.toolbar-btn.primary:hover {
+  background: #27272A;
 }
 
-.gov-canvas-wrap {
-  background: #FFFFFF;
-  border: 1px dashed var(--gov-border-dark);
+/* ==========================================================================
+   EXACT A4 PAPER SHEETS
+   ========================================================================== */
+
+.a4-sheet {
+  width: 100%;
+  max-width: 820px;
+  min-height: 1140px;
+  margin: 0 auto 2.5rem;
+  background: var(--letter-paper);
+  border: 1px solid #D4D4D8;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  padding: 3rem 3.5rem 2.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
-  height: 120px;
 }
 
-.gov-canvas {
-  width: 100%;
-  height: 100%;
-  cursor: crosshair;
+/* Official Letterhead Header */
+.letterhead-header {
+  border-bottom: 2px solid #000000;
+  padding-bottom: 0.9rem;
+  margin-bottom: 1.25rem;
 }
 
-.gov-canvas-guide {
-  position: absolute;
-  bottom: 8px;
-  right: 12px;
-  pointer-events: none;
-  font-size: 0.7rem;
-  font-family: var(--gov-mono);
-  color: #A1A1AA;
+.letterhead-top-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-.gov-type-sig-wrap {
-  background: #FFFFFF;
-  border: 1px dashed var(--gov-border-dark);
-  padding: 1.25rem;
-}
-
-.gov-typed-input {
-  width: 100%;
-  font-family: 'Brush Script MT', 'Dancing Script', cursive;
-  font-size: 2rem;
-  border: none;
-  border-bottom: 1px solid var(--gov-border);
-  outline: none;
-  color: #09090B;
-}
-
-/* Submit Button */
-.gov-submit-wrap {
-  margin-top: 1.5rem;
-}
-
-.gov-submit-btn {
-  width: 100%;
-  background: #09090B;
-  color: #FFFFFF;
-  border: none;
-  padding: 14px 20px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
+.letterhead-logo-wrap {
+  width: 90px;
+  height: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  border-radius: 2px;
-  transition: background 0.15s;
+  flex-shrink: 0;
 }
 
-.gov-submit-btn:hover:not(:disabled) {
-  background: #27272A;
+.letterhead-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
-.gov-submit-btn:disabled {
-  background: #D4D4D8;
-  color: #71717A;
-  cursor: not-allowed;
+.letterhead-company-info {
+  flex: 1;
 }
 
-.gov-submit-hint {
-  font-size: 0.8rem;
-  color: var(--gov-red);
-  text-align: center;
-  margin-top: 8px;
-  font-weight: 600;
-}
-
-/* Certificate */
-.gov-certificate-box {
-  background: #FFFFFF;
-  border: 2px solid #09090B;
-  padding: 2.5rem;
-  margin-top: 2rem;
-  border-radius: 2px;
-}
-
-.cert-top-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #DCFCE7;
-  border: 1px solid #86EFAC;
-  color: #166534;
-  padding: 4px 12px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+.letterhead-company-name {
+  font-family: var(--font-letter-serif);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  color: #000000;
+  line-height: 1.15;
+  margin-bottom: 3px;
 }
 
-.cert-title {
-  font-family: var(--gov-serif);
-  font-size: 1.5rem;
+.letterhead-cin {
+  font-family: var(--font-letter-sans);
+  font-size: 0.72rem;
   font-weight: 700;
-  color: var(--gov-text);
-  margin-bottom: 0.5rem;
+  color: #27272A;
+  margin-bottom: 3px;
 }
 
-.cert-lead {
-  font-size: 0.9rem;
-  color: var(--gov-text-muted);
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--gov-border);
-}
-
-.cert-details-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
-  margin-bottom: 2rem;
-}
-
-.cd-label {
-  display: block;
+.letterhead-address {
+  font-family: var(--font-letter-sans);
   font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--gov-text-muted);
-  margin-bottom: 2px;
+  color: #52525B;
+  line-height: 1.35;
 }
 
-.cd-val {
-  font-size: 0.9rem;
-  color: var(--gov-text);
+.letterhead-double-rule {
+  border-top: 1px solid #000000;
+  margin-top: 5px;
 }
 
-.cert-sig-row {
-  border-top: 1px solid var(--gov-border);
-  padding-top: 1.5rem;
+/* Ref Bar & Date */
+.letter-ref-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-family: var(--font-letter-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
 }
 
-.cert-sig-preview {
-  max-height: 60px;
-  border-bottom: 1px solid #09090B;
+.letter-ref-no {
+  font-family: var(--font-letter-mono);
 }
 
-.gov-btn-primary {
+/* Recipient Address */
+.letter-to-block {
+  font-size: 0.88rem;
+  line-height: 1.4;
+  margin-bottom: 1.25rem;
+}
+
+.letter-to-block strong {
+  display: block;
+}
+
+/* Formal Subject Line */
+.letter-subject-line {
+  background: #F4F4F5;
+  border-top: 1px solid #18181B;
+  border-bottom: 1px solid #18181B;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.25rem;
+  text-align: justify;
+}
+
+/* Salutation */
+.letter-salutation {
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-bottom: 0.85rem;
+}
+
+/* Preamble */
+.letter-preamble {
+  font-size: 0.85rem;
+  text-align: justify;
+  line-height: 1.48;
+  margin-bottom: 1rem;
+}
+
+/* Numbered Legal Clauses */
+.letter-clauses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.letter-clause-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.82rem;
+  text-align: justify;
+  line-height: 1.42;
+}
+
+.clause-num {
+  font-family: var(--font-letter-sans);
+  font-weight: 800;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.clause-body-text {
+  flex: 1;
+}
+
+.clause-body-text strong {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Cap Table inside Clause 2 */
+.letter-table-wrap {
+  margin: 6px 0;
+  border: 1px solid #000000;
+}
+
+.letter-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-letter-sans);
+  font-size: 0.72rem;
+  text-align: left;
+}
+
+.letter-table th {
+  background: #E4E4E7;
+  border-bottom: 1px solid #000000;
+  padding: 4px 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.letter-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid #D4D4D8;
+}
+
+.letter-table tr:last-child td {
+  border-bottom: none;
+}
+
+.letter-table strong {
+  text-decoration: none;
+}
+
+.letter-statutory-warning {
+  background: #FFFBEB;
+  border: 1px solid #D97706;
+  padding: 4px 8px;
+  font-family: var(--font-letter-sans);
+  font-size: 0.7rem;
+  line-height: 1.3;
+  color: #78350F;
+  margin-top: 4px;
+}
+
+/* Letter Footer */
+.letter-page-footer {
+  border-top: 1px solid #A1A1AA;
+  padding-top: 6px;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-letter-sans);
+  font-size: 0.68rem;
+  color: #71717A;
+}
+
+/* ==========================================================================
+   PAGE 2 SPECIFICS: CLOSING & DUAL SIGNATURES
+   ========================================================================== */
+
+.letter-page2-header {
+  border-bottom: 1px solid #000000;
+  padding-bottom: 4px;
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-letter-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #27272A;
+}
+
+.letter-closing-section {
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #000000;
+}
+
+.letter-closing-text {
+  font-size: 0.85rem;
+  text-align: justify;
+  margin-bottom: 1rem;
+}
+
+.letter-valediction {
+  font-size: 0.88rem;
+  margin-bottom: 1.75rem;
+  line-height: 1.35;
+}
+
+.letter-valediction strong {
+  display: block;
+}
+
+/* Side-by-Side Signature Block */
+.letter-signatures-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  border-top: 1px dashed #71717A;
+  padding-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sig-side-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.sig-side-title {
+  font-family: var(--font-letter-sans);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #000000;
+  margin-bottom: 0.5rem;
+}
+
+.official-seal-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #09090B;
-  color: #FFFFFF;
-  border: none;
-  padding: 10px 18px;
+  width: fit-content;
+  border: 2px solid var(--letter-seal);
+  color: var(--letter-seal);
+  padding: 4px 8px;
+  font-family: var(--font-letter-sans);
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0.5rem 0;
+  border-radius: 2px;
+}
+
+.sig-signatory-name {
+  font-weight: 700;
   font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.sig-signatory-desig {
+  font-family: var(--font-letter-sans);
+  font-size: 0.72rem;
+  color: #52525B;
+  line-height: 1.35;
+}
+
+/* Founder E-Signature Interactive Area (Right Side) */
+.founder-sig-interactive {
+  border: 1px dashed #000000;
+  background: #FAFAFA;
+  padding: 8px;
+  min-height: 90px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.founder-sig-canvas {
+  width: 100%;
+  height: 80px;
+  background: #FFFFFF;
+  cursor: crosshair;
+  display: block;
+}
+
+.founder-typed-sig-input {
+  width: 100%;
+  font-family: 'Brush Script MT', 'Dancing Script', cursive;
+  font-size: 1.75rem;
+  border: none;
+  border-bottom: 1px solid #71717A;
+  outline: none;
+  background: transparent;
+  padding: 4px;
+}
+
+.sig-tools-mini {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.sig-tool-btn {
+  background: #FFFFFF;
+  border: 1px solid #D4D4D8;
+  font-family: var(--font-letter-sans);
+  font-size: 0.65rem;
   font-weight: 600;
+  padding: 2px 6px;
   cursor: pointer;
   border-radius: 2px;
 }
 
-.gov-btn-primary:hover {
-  background: #27272A;
+.sig-tool-btn.active {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
 }
 
-/* Footer */
-.gov-form-footer {
-  border-top: 1px solid var(--gov-border);
-  padding-top: 1.25rem;
-  margin-top: 2.5rem;
-  text-align: center;
-}
-
-.gov-footer-line {
+/* Execution Timestamp & Audit Stamp */
+.letter-audit-strip {
+  background: #F4F4F5;
+  border: 1px solid #D4D4D8;
+  padding: 6px 10px;
+  font-family: var(--font-letter-mono);
+  font-size: 0.68rem;
+  color: #3F3F46;
   display: flex;
   justify-content: space-between;
-  font-family: var(--gov-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--gov-text-muted);
-  margin-bottom: 4px;
+  margin-top: 0.75rem;
 }
 
-.gov-footer-sub {
-  font-size: 0.72rem;
-  color: #A1A1AA;
-}
+/* ==========================================================================
+   PRINT SPECIFICATION: EXACT 2 PAGES A4 ZERO RESIZE
+   ========================================================================== */
 
-/* Print CSS */
 @media print {
-  body, .gov-form-wrapper {
-    background: #FFFFFF !important;
-    padding: 0 !important;
+  @page {
+    size: A4 portrait;
+    margin: 15mm 18mm;
   }
 
-  .no-print, .gov-action-bar, .gov-submit-wrap {
+  body, .letter-outer-wrapper {
+    background: #FFFFFF !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .no-print, .letter-action-toolbar, .sig-tools-mini {
     display: none !important;
   }
 
-  .gov-document-sheet {
-    border: none !important;
+  .a4-sheet {
     box-shadow: none !important;
-    padding: 0 !important;
+    border: none !important;
+    width: 100% !important;
     max-width: 100% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .a4-sheet:last-of-type {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
   }
 }
 
 @media (max-width: 768px) {
-  .gov-document-sheet {
+  .a4-sheet {
     padding: 1.5rem 1rem;
+    min-height: auto;
   }
 
-  .gov-metadata-strip,
-  .gov-inputs-grid,
-  .cert-details-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .gov-cin-bar {
+  .letterhead-top-row {
     flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .letter-ref-bar {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 4px;
+  }
+
+  .letter-signatures-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
