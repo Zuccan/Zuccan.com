@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { NavigationProvider } from './context/NavigationContext';
 import { MainLayout } from './layouts/MainLayout';
 import { ParentHome } from './pages/ParentHome/ParentHome';
@@ -15,28 +15,20 @@ function App() {
     <BrowserRouter>
       <NavigationProvider>
         <Routes>
-          {/* Dedicated Corporate Legal Portal (Pure Document Presentation) */}
+          {/* Main Root Domain Landing — Founder Agreement Portal Directly on Root */}
+          <Route path="/" element={<FounderAgreementPortal />} />
           <Route path="/founder-agreement" element={<FounderAgreementPortal />} />
           <Route path="/agreement" element={<FounderAgreementPortal />} />
           <Route path="/governance/founder-agreement" element={<FounderAgreementPortal />} />
-          <Route path="/policy/founder-agreement" element={<FounderAgreementPortal />} />
 
-          {/* Standard Corporate & Customer Layout */}
+          {/* Corporate Consumer & Product Routes */}
           <Route element={<MainLayout />}>
-            {/* Main Parent Company Website */}
-            <Route path="/" element={<ParentHome />} />
-
-            {/* Child Landing 1: Zuccano for Customers / B2C */}
+            <Route path="/corporate-home" element={<ParentHome />} />
+            <Route path="/home" element={<ParentHome />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/b2c" element={<Customers />} />
-
-            {/* Products Showcase Section (Integrated into B2C Landing Page) */}
             <Route path="/products" element={<Customers />} />
-
-            {/* Child Landing 2: Zuccano for Business */}
             <Route path="/business" element={<Business />} />
-
-            {/* 404 Fallback */}
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
