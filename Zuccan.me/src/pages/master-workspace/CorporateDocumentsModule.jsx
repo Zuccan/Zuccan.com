@@ -32,15 +32,28 @@ export const CorporateDocumentsModule = ({ data, holdingData }) => {
           </p>
         </div>
 
-        <button
-          type="button"
-          className="ceo-action-btn-red"
-          style={{ background: '#09090B' }}
-          onClick={() => alert('Secure board instrument upload protocol initialized.')}
-        >
-          <Upload size={14} />
-          <span>Upload Board Instrument</span>
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <a
+            href="/founder-agreement"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ceo-action-btn-red"
+            style={{ background: '#B91C1C', textDecoration: 'none' }}
+          >
+            <FileText size={14} />
+            <span>Founder Agreement Portal</span>
+          </a>
+
+          <button
+            type="button"
+            className="ceo-action-btn-red"
+            style={{ background: '#09090B' }}
+            onClick={() => alert('Secure board instrument upload protocol initialized.')}
+          >
+            <Upload size={14} />
+            <span>Upload Board Instrument</span>
+          </button>
+        </div>
       </div>
 
       {/* ── Category Filters ── */}

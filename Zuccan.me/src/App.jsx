@@ -6,6 +6,7 @@ import ChooseProduct from './pages/ChooseProduct';
 import WorkspaceDashboard from './pages/WorkspaceDashboard';
 import ResetPassword from './pages/ResetPassword';
 import MasterWorkspace from './pages/master-workspace/MasterWorkspace';
+import FounderAgreementPortal from './pages/FounderAgreement/FounderAgreementPortal';
 
 function App() {
   return (
@@ -15,10 +16,16 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
 
+        {/* Zuccano Founder Agreement & Policy Acceptance Portal */}
+        <Route path="/founder-agreement" element={<FounderAgreementPortal />} />
+        <Route path="/agreement" element={<FounderAgreementPortal />} />
+        <Route path="/governance/founder-agreement" element={<FounderAgreementPortal />} />
+        <Route path="/policy/founder-agreement" element={<FounderAgreementPortal />} />
+
         {/* Password Reset Handler from Supabase Auth */}
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Post-Login Choose Product Page (Exact match to reference) */}
+        {/* Post-Login Choose Product Page */}
         <Route path="/choose-product" element={<ChooseProduct />} />
         <Route path="/products" element={<ChooseProduct />} />
 

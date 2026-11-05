@@ -73,15 +73,28 @@ export const OwnershipEquityModule = ({ data, holdingData, onRecordTransaction }
           </p>
         </div>
 
-        <button
-          type="button"
-          className="ceo-action-btn-red"
-          style={{ background: '#09090B' }}
-          onClick={() => setShowTransferModal(true)}
-        >
-          <Lock size={13} />
-          <span>Record Authorized Share Transfer</span>
-        </button>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <a
+            href="/founder-agreement"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ceo-action-btn-red"
+            style={{ background: '#B91C1C', textDecoration: 'none' }}
+          >
+            <FileText size={13} />
+            <span>Founder Agreement & Policy Portal</span>
+          </a>
+
+          <button
+            type="button"
+            className="ceo-action-btn-red"
+            style={{ background: '#09090B' }}
+            onClick={() => setShowTransferModal(true)}
+          >
+            <Lock size={13} />
+            <span>Record Authorized Share Transfer</span>
+          </button>
+        </div>
       </div>
 
       {/* ── Governance Warning: Ownership vs Roles Distinction ── */}

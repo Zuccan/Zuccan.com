@@ -7,6 +7,7 @@ import { Customers } from './pages/Customers/Customers';
 import { Products } from './pages/Products/Products';
 import { Business } from './pages/Business/Business';
 import { NotFound } from './pages/NotFound/NotFound';
+import FounderAgreementPortal from './pages/FounderAgreement/FounderAgreementPortal';
 import './App.css';
 
 function App() {
@@ -14,6 +15,13 @@ function App() {
     <BrowserRouter>
       <NavigationProvider>
         <Routes>
+          {/* Dedicated Corporate Legal Portal (Pure Document Presentation) */}
+          <Route path="/founder-agreement" element={<FounderAgreementPortal />} />
+          <Route path="/agreement" element={<FounderAgreementPortal />} />
+          <Route path="/governance/founder-agreement" element={<FounderAgreementPortal />} />
+          <Route path="/policy/founder-agreement" element={<FounderAgreementPortal />} />
+
+          {/* Standard Corporate & Customer Layout */}
           <Route element={<MainLayout />}>
             {/* Main Parent Company Website */}
             <Route path="/" element={<ParentHome />} />
