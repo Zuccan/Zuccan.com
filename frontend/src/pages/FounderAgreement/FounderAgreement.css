@@ -16,56 +16,195 @@
   --font-letter-mono: "Courier New", Courier, monospace;
 }
 
-/* Page Background */
+/* ==========================================================================
+   OFFICIAL PASSWORD GATE (Access restricted with passkey pavanpr@gn@)
+   ========================================================================== */
+.gov-gate-wrapper {
+  background-color: #121316;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  font-family: var(--font-letter-sans);
+}
+
+.gov-gate-card {
+  width: 100%;
+  max-width: 480px;
+  background: #FFFFFF;
+  border: 1px solid #27272A;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  padding: 2.25rem 2.5rem;
+}
+
+.gate-header {
+  text-align: center;
+}
+
+.gate-logo-box {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gate-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.gate-title {
+  font-family: var(--font-letter-serif);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #09090B;
+  margin-bottom: 2px;
+}
+
+.gate-subtitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #991B1B;
+}
+
+.gate-divider {
+  height: 1px;
+  background: #E4E4E7;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.gate-body {
+  text-align: center;
+}
+
+.gate-icon-badge {
+  width: 44px;
+  height: 44px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+}
+
+.gate-prompt {
+  font-family: var(--font-letter-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #09090B;
+  margin-bottom: 0.5rem;
+}
+
+.gate-desc {
+  font-size: 0.8rem;
+  color: #52525B;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.gate-form {
+  margin-bottom: 1rem;
+}
+
+.gate-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gate-input {
+  width: 100%;
+  border: 1px solid #27272A;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  font-family: var(--font-letter-sans);
+  border-radius: 2px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.gate-input:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.gate-submit-btn {
+  background: #09090B;
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s;
+}
+
+.gate-submit-btn:hover {
+  background: #27272A;
+}
+
+.gate-error-msg {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: #991B1B;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  padding: 6px 10px;
+  border-radius: 2px;
+}
+
+.gate-footer {
+  text-align: center;
+  font-size: 0.68rem;
+  font-family: var(--font-letter-mono);
+  color: #71717A;
+  border-top: 1px solid #F4F4F5;
+  padding-top: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* ==========================================================================
+   PAGE BACKGROUND & TOP QUICKBAR
+   ========================================================================== */
 .letter-outer-wrapper {
   background-color: var(--letter-bg);
   min-height: 100vh;
-  padding: 2.5rem 1rem 5rem;
+  padding: 2rem 1rem 5rem;
   font-family: var(--font-letter-serif);
   color: var(--letter-ink);
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Floating Action Toolbar on Top */
-.letter-action-toolbar {
+.letter-top-quickbar {
   max-width: 820px;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1.25rem;
+}
+
+.quickbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #FFFFFF;
   border: 1px solid #D4D4D8;
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 2px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-}
-
-.toolbar-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-letter-sans);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #27272A;
-}
-
-.toolbar-badge {
-  background: #FEF2F2;
-  border: 1px solid #FECACA;
-  color: #991B1B;
-  padding: 2px 8px;
-  border-radius: 2px;
-  font-family: var(--font-letter-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.toolbar-buttons {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .toolbar-btn {
@@ -89,20 +228,9 @@
   border-color: #27272A;
 }
 
-.toolbar-btn.primary {
-  background: #09090B;
-  color: #FFFFFF;
-  border-color: #09090B;
-}
-
-.toolbar-btn.primary:hover {
-  background: #27272A;
-}
-
 /* ==========================================================================
    EXACT A4 PAPER SHEETS
    ========================================================================== */
-
 .a4-sheet {
   width: 100%;
   max-width: 820px;
@@ -332,7 +460,6 @@
 /* ==========================================================================
    PAGE 2 SPECIFICS: CLOSING & DUAL SIGNATURES
    ========================================================================== */
-
 .letter-page2-header {
   border-bottom: 1px solid #000000;
   padding-bottom: 4px;
@@ -422,7 +549,7 @@
   line-height: 1.35;
 }
 
-/* Founder E-Signature Interactive Area (Right Side) */
+/* Founder E-Signature Interactive Area (Right Side - Always Editable!) */
 .founder-sig-interactive {
   border: 1px dashed #000000;
   background: #FAFAFA;
@@ -490,9 +617,78 @@
 }
 
 /* ==========================================================================
+   ACTIONS AT END OF FORM (SUBMIT & PRINT BUTTONS ON PAGE 2)
+   ========================================================================== */
+.letter-bottom-actions {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #E4E4E7;
+}
+
+.actions-cluster {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.gov-submit-main-btn {
+  background: #000000;
+  color: #FFFFFF;
+  border: 1px solid #000000;
+  padding: 10px 22px;
+  font-family: var(--font-letter-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.gov-submit-main-btn:hover {
+  background: #27272A;
+}
+
+.gov-print-sub-btn {
+  background: #FFFFFF;
+  color: #09090B;
+  border: 1px solid #71717A;
+  padding: 10px 18px;
+  font-family: var(--font-letter-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.gov-print-sub-btn:hover {
+  background: #F4F4F5;
+  border-color: #000000;
+}
+
+.submit-success-indicator {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-letter-sans);
+  font-size: 0.78rem;
+  color: #15803D;
+  font-weight: 600;
+  justify-content: flex-end;
+}
+
+/* ==========================================================================
    PRINT SPECIFICATION: EXACT 2 PAGES A4 ZERO RESIZE
    ========================================================================== */
-
 @media print {
   @page {
     size: A4 portrait;
@@ -505,7 +701,7 @@
     margin: 0 !important;
   }
 
-  .no-print, .letter-action-toolbar, .sig-tools-mini {
+  .no-print, .letter-top-quickbar, .letter-bottom-actions, .sig-tools-mini {
     display: none !important;
   }
 
@@ -548,5 +744,14 @@
   .letter-signatures-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .actions-cluster {
+    flex-direction: column;
+  }
+
+  .gov-submit-main-btn, .gov-print-sub-btn {
+    width: 100%;
+    justify-content: center;
   }
 }

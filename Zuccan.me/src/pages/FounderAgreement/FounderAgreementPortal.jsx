@@ -1,19 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Printer,
-  Download,
   Lock,
   PenTool,
   Type,
   RotateCcw,
   CheckCircle,
   Shield,
+  KeyRound,
+  ArrowRight,
 } from 'lucide-react';
 import zuccanoLogo from '../../assets/Zucaano logo.png';
 import './FounderAgreement.css';
 
 export const FounderAgreementPortal = () => {
-  // Current Indian Standard Time formatted string
+  // Password Protection State
+  const [isUnlocked, setIsUnlocked] = useState(() => {
+    return sessionStorage.getItem('zuccano_doc_unlocked') === 'true';
+  });
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  // Handle Password Unlock
+  const handleUnlock = (e) => {
+    e.preventDefault();
+    if (passwordInput === 'pavanpr@gn@') {
+      setIsUnlocked(true);
+      sessionStorage.setItem('zuccano_doc_unlocked', 'true');
+      setPasswordError('');
+    } else {
+      setPasswordError('Access Denied: Invalid Passkey. Authorized founders only.');
+    }
+  };
+
+  // Current Indian Standard Time
   const getCurrentIST = () => {
     return (
       new Date().toLocaleString('en-IN', {
@@ -27,26 +47,28 @@ export const FounderAgreementPortal = () => {
     );
   };
 
-  const [signerName, setSignerName] = useState('Pavan Zuccano');
-  const [signerRole, setSignerRole] = useState('Founder & CEO, ZFIT Technologies');
+  const signerName = 'Pavan Reddy';
+  const signerRole = 'Founder & CEO, ZFIT Technologies';
+
+  // Signature state
   const [sigMode, setSigMode] = useState('DRAW'); // 'DRAW' | 'TYPE'
   const [typedSig, setTypedSig] = useState('');
   const [sigDataUrl, setSigDataUrl] = useState(null);
   const [hasDrawn, setHasDrawn] = useState(false);
-  const [isExecuted, setIsExecuted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [auditStamp, setAuditStamp] = useState(null);
 
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  // Check if previously executed in localStorage
+  // Check if previously submitted in localStorage
   useEffect(() => {
     const saved = localStorage.getItem('zuccano_formal_letter_execution');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         setAuditStamp(parsed);
-        setIsExecuted(true);
+        setIsSubmitted(true);
         if (parsed.signatureData) {
           setSigDataUrl(parsed.signatureData);
         }
@@ -58,7 +80,7 @@ export const FounderAgreementPortal = () => {
 
   // Canvas Drawing
   const startDrawing = (e) => {
-    if (sigMode !== 'DRAW' || isExecuted) return;
+    if (sigMode !== 'DRAW') return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -68,14 +90,14 @@ export const FounderAgreementPortal = () => {
 
     ctx.beginPath();
     ctx.moveTo(x, y);
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.2;
     ctx.lineCap = 'round';
     ctx.strokeStyle = '#000000';
     setIsDrawing(true);
   };
 
   const draw = (e) => {
-    if (!isDrawing || sigMode !== 'DRAW' || isExecuted) return;
+    if (!isDrawing || sigMode !== 'DRAW') return;
     e.preventDefault();
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -99,7 +121,6 @@ export const FounderAgreementPortal = () => {
   };
 
   const clearCanvas = () => {
-    if (isExecuted) return;
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
@@ -121,9 +142,11 @@ export const FounderAgreementPortal = () => {
     setSigDataUrl(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`);
   };
 
-  const handleExecute = () => {
+  // Submit Handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!sigDataUrl) {
-      alert('Please provide your electronic signature in the box on Page 2 before submitting.');
+      alert('Please draw or type your signature on Page 2 before submitting.');
       return;
     }
 
@@ -134,51 +157,90 @@ export const FounderAgreementPortal = () => {
       signerRole,
       signatureData: sigDataUrl,
       documentRef: 'ZUC/CORP/GOV/2026-27/041',
-      status: 'EXECUTED_AND_FILED',
+      status: 'SUBMITTED_AND_REGISTERED',
     };
 
     localStorage.setItem('zuccano_formal_letter_execution', JSON.stringify(stamp));
     setAuditStamp(stamp);
-    setIsExecuted(true);
-    alert('Agreement executed and registered successfully in Zuccano Corporate Depository.');
+    setIsSubmitted(true);
   };
 
   const handlePrint = () => {
     window.print();
   };
 
+  // =========================================================================
+  // PASSWORD GATE SCREEN (If not unlocked)
+  // =========================================================================
+  if (!isUnlocked) {
+    return (
+      <div className="gov-gate-wrapper">
+        <div className="gov-gate-card">
+          <div className="gate-header">
+            <div className="gate-logo-box">
+              <img src={zuccanoLogo || '/zuccano-logo.png'} alt="Zuccano" className="gate-logo" />
+            </div>
+            <h1 className="gate-title">ZUCCANO GROUP HOLDINGS PRIVATE LIMITED</h1>
+            <p className="gate-subtitle">CONFIDENTIAL CORPORATE GOVERNANCE DEPOSITORY</p>
+          </div>
+
+          <div className="gate-divider" />
+
+          <div className="gate-body">
+            <div className="gate-icon-badge">
+              <KeyRound size={22} className="text-red-700" />
+            </div>
+            <h2 className="gate-prompt">Restricted Access Legal Instrument</h2>
+            <p className="gate-desc">
+              This statutory agreement (Form ZUC-FGA) contains proprietary corporate equity allocations and governance covenants. Enter your authorized founder passkey to access:
+            </p>
+
+            <form onSubmit={handleUnlock} className="gate-form">
+              <div className="gate-input-wrap">
+                <input
+                  type="password"
+                  placeholder="Enter Authorization Passkey..."
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  autoFocus
+                  required
+                  className="gate-input"
+                />
+                <button type="submit" className="gate-submit-btn">
+                  <span>Unlock Document</span>
+                  <ArrowRight size={15} />
+                </button>
+              </div>
+
+              {passwordError && (
+                <div className="gate-error-msg">{passwordError}</div>
+              )}
+            </form>
+          </div>
+
+          <div className="gate-footer">
+            <span>CIN: U72900KA2025PTC184920 &bull; Bengaluru, Karnataka</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // THE AUTHENTIC 2-PAGE A4 STATUTORY GOVERNMENT / CORPORATE LETTER
+  // =========================================================================
   return (
     <div className="letter-outer-wrapper">
-      {/* =================================================================
-          TOP ACTION TOOLBAR (Hidden on Print)
-         ================================================================= */}
-      <div className="letter-action-toolbar no-print">
-        <div className="toolbar-info">
-          <span className="toolbar-badge">FORM ZUC-FGA (2-PAGE STATUTORY INSTRUMENT)</span>
-          <span>Zuccano Corporate Depository</span>
-        </div>
-
-        <div className="toolbar-buttons">
+      {/* Top Floating Print Tool (Clean & Minimal) */}
+      <div className="letter-top-quickbar no-print">
+        <div className="quickbar-inner">
+          <span className="font-mono text-xs font-bold text-red-800">
+            FORM ZUC-FGA &bull; 2-PAGE STATUTORY INSTRUMENT
+          </span>
           <button type="button" className="toolbar-btn" onClick={handlePrint}>
             <Printer size={13} />
-            <span>Print 2-Page Letter (PDF)</span>
+            <span>Print / Save as PDF</span>
           </button>
-
-          {!isExecuted ? (
-            <button
-              type="button"
-              className="toolbar-btn primary"
-              onClick={handleExecute}
-              disabled={!sigDataUrl}
-            >
-              <Lock size={13} />
-              <span>Sign & Execute Letter</span>
-            </button>
-          ) : (
-            <span className="text-xs font-bold text-green-700 inline-flex items-center gap-1 font-mono">
-              <CheckCircle size={14} /> EXECUTED & LOCKED
-            </span>
-          )}
         </div>
       </div>
 
@@ -289,13 +351,13 @@ export const FounderAgreementPortal = () => {
                         <td><strong>Zuccano Group Holdings</strong></td>
                         <td>Parent Corporation (Controlling)</td>
                         <td style={{ fontWeight: 'bold' }}>51.0%</td>
-                        <td>Corporate Treasury Ownership (Pavan serves as CEO).</td>
+                        <td>Corporate Treasury Ownership (Pavan Reddy serves as CEO).</td>
                       </tr>
                       <tr style={{ background: '#F4F4F5' }}>
-                        <td><strong>Board Members</strong></td>
-                        <td>Governing Board & Executive Allocation Pool</td>
+                        <td><strong>Pavan Reddy</strong></td>
+                        <td>Co-Founder & Chief Executive Officer (CEO)</td>
                         <td style={{ fontWeight: 'bold' }}>40.0%</td>
-                        <td>Allocated to Governing Board members and leadership pursuant to Board filings.</td>
+                        <td>Subsidiary Equity Shareholder & Executive Director.</td>
                       </tr>
                       <tr style={{ background: '#F4F4F5' }}>
                         <td><strong>Unassigned Minority Pool</strong></td>
@@ -455,7 +517,7 @@ export const FounderAgreementPortal = () => {
                   {signerRole}
                 </div>
 
-                {/* Founder Interactive Signature Box */}
+                {/* Founder Interactive Signature Box (Always Accessible to Edit!) */}
                 <div className="founder-sig-interactive mt-1">
                   {sigMode === 'DRAW' ? (
                     <canvas
@@ -474,36 +536,32 @@ export const FounderAgreementPortal = () => {
                   ) : (
                     <input
                       type="text"
-                      placeholder="Type official legal name..."
+                      placeholder="Type official name to sign..."
                       value={typedSig}
                       onChange={(e) => handleTypedSignature(e.target.value)}
                       className="founder-typed-sig-input"
                     />
                   )}
 
-                  {!isExecuted && (
-                    <div className="sig-tools-mini no-print">
-                      <button
-                        type="button"
-                        className={`sig-tool-btn ${sigMode === 'DRAW' ? 'active' : ''}`}
-                        onClick={() => setSigMode('DRAW')}
-                      >
-                        <PenTool size={10} /> Draw
-                      </button>
-                      <button
-                        type="button"
-                        className={`sig-tool-btn ${sigMode === 'TYPE' ? 'active' : ''}`}
-                        onClick={() => setSigMode('TYPE')}
-                      >
-                        <Type size={10} /> Type
-                      </button>
-                      {sigMode === 'DRAW' && hasDrawn && (
-                        <button type="button" className="sig-tool-btn text-red-700" onClick={clearCanvas}>
-                          <RotateCcw size={10} /> Clear
-                        </button>
-                      )}
-                    </div>
-                  )}
+                  <div className="sig-tools-mini no-print">
+                    <button
+                      type="button"
+                      className={`sig-tool-btn ${sigMode === 'DRAW' ? 'active' : ''}`}
+                      onClick={() => setSigMode('DRAW')}
+                    >
+                      <PenTool size={10} /> Draw
+                    </button>
+                    <button
+                      type="button"
+                      className={`sig-tool-btn ${sigMode === 'TYPE' ? 'active' : ''}`}
+                      onClick={() => setSigMode('TYPE')}
+                    >
+                      <Type size={10} /> Type
+                    </button>
+                    <button type="button" className="sig-tool-btn text-red-700" onClick={clearCanvas}>
+                      <RotateCcw size={10} /> Clear / Re-sign
+                    </button>
+                  </div>
                 </div>
 
                 <div className="sig-signatory-name mt-1">
@@ -516,14 +574,46 @@ export const FounderAgreementPortal = () => {
               </div>
             </div>
 
-            {/* Audit Stamp Strip */}
-            {isExecuted && auditStamp && (
+            {/* Audit Stamp Strip (If Submitted) */}
+            {isSubmitted && auditStamp && (
               <div className="letter-audit-strip">
                 <span><strong>AUDIT EVENT ID:</strong> {auditStamp.auditEventId}</span>
                 <span><strong>REGISTERED:</strong> {auditStamp.timestampIST}</span>
                 <span><strong>ELECTRONICALLY EXECUTED (IT ACT, 2000)</strong></span>
               </div>
             )}
+
+            {/* =============================================================
+                END OF FORM ACTION BLOCK (SUBMIT & PRINT AT THE VERY END)
+               ============================================================= */}
+            <div className="letter-bottom-actions no-print">
+              <div className="actions-cluster">
+                <button
+                  type="button"
+                  className="gov-submit-main-btn"
+                  onClick={handleSubmit}
+                >
+                  <Lock size={15} />
+                  <span>{isSubmitted ? 'SUBMITTED & REGISTERED (CLICK TO RE-SUBMIT)' : 'SUBMIT FORMAL AGREEMENT'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="gov-print-sub-btn"
+                  onClick={handlePrint}
+                >
+                  <Printer size={15} />
+                  <span>PRINT / SAVE AS PDF</span>
+                </button>
+              </div>
+
+              {isSubmitted && (
+                <div className="submit-success-indicator">
+                  <CheckCircle size={15} className="text-green-700" />
+                  <span>Form successfully registered in Zuccano Corporate Board Depository.</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
