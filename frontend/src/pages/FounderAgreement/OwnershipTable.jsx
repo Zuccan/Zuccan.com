@@ -34,24 +34,13 @@ export const OwnershipTable = () => {
             </tr>
             <tr>
               <td>
-                <strong>Pavan</strong>
+                <strong>Board Members</strong>
               </td>
-              <td>Co-Founding Shareholder & Director</td>
-              <td>Class A Equity (Voting)</td>
-              <td className="table-percentage">40.0%</td>
+              <td>Governing Board & Strategic Allocation Pool</td>
+              <td>Class A/B Equity</td>
+              <td className="table-percentage">49.0%</td>
               <td>
-                Co-Founding shareholder and Board Director of Parent Holding. Concurrently appointed as Chief Executive Officer (CEO) of ZFIT subsidiary.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Other Shareholders (Collective Pool)</strong>
-              </td>
-              <td>Minority Shareholders Pool</td>
-              <td>Class B Equity</td>
-              <td className="table-percentage">9.0%</td>
-              <td>
-                Held collectively by early angel contributors and reserved parent corporate equity pool under approved board resolutions.
+                Governing Board & strategic reserve governed under Parent Articles of Association.
               </td>
             </tr>
             <tr style={{ background: '#FAFAFA', fontWeight: 'bold' }}>
@@ -97,10 +86,22 @@ export const OwnershipTable = () => {
             </tr>
             <tr>
               <td>
+                <strong>Board Members</strong>
+              </td>
+              <td>Governing Board & Executive Allocation Pool</td>
+              <td className="table-percentage font-mono text-neutral-900 font-bold">40.0%</td>
+              <td>
+                <span className="inline-flex items-center gap-1 text-neutral-700 font-semibold text-xs">
+                  <CheckCircle size={13} /> Allocated under Governing Board filings
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
                 <strong>Unassigned Minority Pool / Secondary Allotments</strong>
               </td>
               <td>Product Founders, ESOP & Strategic Reserve</td>
-              <td className="table-percentage font-mono text-amber-800">49.0%</td>
+              <td className="table-percentage font-mono text-amber-800">9.0%</td>
               <td>
                 <span className="inline-flex items-center gap-1 text-amber-700 font-semibold text-xs">
                   <Info size={13} /> Subject to Verified Subsidiary Records & Board Filings

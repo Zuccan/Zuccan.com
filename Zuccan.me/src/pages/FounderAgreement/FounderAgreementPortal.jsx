@@ -268,7 +268,7 @@ export const FounderAgreementPortal = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td rowSpan="3" style={{ verticalAlign: 'middle', fontWeight: 'bold' }}>
+                        <td rowSpan="2" style={{ verticalAlign: 'middle', fontWeight: 'bold' }}>
                           Zuccano Group Holdings Pvt. Ltd.<br />(Parent Entity)
                         </td>
                         <td><strong>Naseer</strong></td>
@@ -277,19 +277,13 @@ export const FounderAgreementPortal = () => {
                         <td>Majority Voting Control; no direct personal shares in ZFIT.</td>
                       </tr>
                       <tr>
-                        <td><strong>Pavan</strong></td>
-                        <td>Co-Founding Shareholder & Director</td>
-                        <td style={{ fontWeight: 'bold' }}>40.0%</td>
-                        <td>Parent Director; Appointed CEO of ZFIT Subsidiary.</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Other Shareholders</strong></td>
-                        <td>Minority Shareholders Pool</td>
-                        <td style={{ fontWeight: 'bold' }}>9.0%</td>
-                        <td>Reserved contributor and angel pool under Board resolution.</td>
+                        <td><strong>Board Members</strong></td>
+                        <td>Governing Board & Strategic Allocation Pool</td>
+                        <td style={{ fontWeight: 'bold' }}>49.0%</td>
+                        <td>Governing Board & strategic reserve governed under Parent Articles of Association.</td>
                       </tr>
                       <tr style={{ background: '#F4F4F5' }}>
-                        <td rowSpan="2" style={{ verticalAlign: 'middle', fontWeight: 'bold' }}>
+                        <td rowSpan="3" style={{ verticalAlign: 'middle', fontWeight: 'bold' }}>
                           ZFIT Technologies<br />(Subsidiary)
                         </td>
                         <td><strong>Zuccano Group Holdings</strong></td>
@@ -298,9 +292,15 @@ export const FounderAgreementPortal = () => {
                         <td>Corporate Treasury Ownership (Pavan serves as CEO).</td>
                       </tr>
                       <tr style={{ background: '#F4F4F5' }}>
+                        <td><strong>Board Members</strong></td>
+                        <td>Governing Board & Executive Allocation Pool</td>
+                        <td style={{ fontWeight: 'bold' }}>40.0%</td>
+                        <td>Allocated to Governing Board members and leadership pursuant to Board filings.</td>
+                      </tr>
+                      <tr style={{ background: '#F4F4F5' }}>
                         <td><strong>Unassigned Minority Pool</strong></td>
-                        <td>Product Reserve / Secondary Pool</td>
-                        <td style={{ fontWeight: 'bold' }}>49.0%</td>
+                        <td>Product Reserve / Secondary Minority Pool</td>
+                        <td style={{ fontWeight: 'bold' }}>9.0%</td>
                         <td>Subject to verified subsidiary records and Board allotment.</td>
                       </tr>
                     </tbody>

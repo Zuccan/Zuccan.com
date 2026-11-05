@@ -74,13 +74,13 @@ export const AGREEMENT_SECTIONS = [
       {
         ref: '3.1',
         title: 'Verified Parent Holding Cap Table',
-        text: 'As per verified statutory records of Zuccano Group Holdings Private Limited, the issued and paid-up equity share capital is held as follows: Naseer: 51.0% (Majority Equity Shareholder & Authorized Signatory); Pavan: 40.0% (Co-Founding Shareholder & Director); Other Shareholders (Collective Pool): 9.0%. Total Parent Issued Capital: 100.0%.',
+        text: 'As per verified statutory records of Zuccano Group Holdings Private Limited, the issued and paid-up equity share capital is held as follows: Naseer: 51.0% (Majority Equity Shareholder & Authorized Signatory); Board Members (Governing Board Pool): 49.0%. Total Parent Issued Capital: 100.0%.',
         highlight: true,
       },
       {
         ref: '3.2',
         title: 'ZFIT Subsidiary Ownership Architecture',
-        text: 'Zuccano Group Holdings Private Limited owns 51.0% of the equity capital of ZFIT Technologies. Pavan serves as Chief Executive Officer (CEO) of ZFIT. Naseer does NOT personally hold ZFIT shares through this arrangement; the 51.0% controlling interest is held strictly by Zuccano corporate treasury. The remaining 49.0% equity pool is subject to verified subsidiary company records and Board allotment.',
+        text: 'Zuccano Group Holdings Private Limited owns 51.0% of the equity capital of ZFIT Technologies. Governing Board Members hold a 40.0% allocation pool. Pavan serves as Chief Executive Officer (CEO) of ZFIT. Naseer does NOT personally hold ZFIT shares through this arrangement; the 51.0% controlling interest is held strictly by Zuccano corporate treasury. The remaining 9.0% unassigned minority pool is subject to verified subsidiary company records and Board allotment.',
         highlight: true,
       },
       {
@@ -680,4 +680,3 @@ class AgreementStore {
 
 export const agreementStore = new AgreementStore();
 export default agreementStore;
-
